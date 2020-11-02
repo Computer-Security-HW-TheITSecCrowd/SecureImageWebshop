@@ -8,7 +8,11 @@ namespace SecureImageWebShopService.Data
 {
     public class AppDbContext : IdentityDbContext<AppUser>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        private readonly IPasswordHasher<AppUser> _passwordHasher;
+        public AppDbContext(DbContextOptions<AppDbContext> options, IPasswordHasher<AppUser> passwordHasher) : base(options)
+        {
+            _passwordHasher = passwordHasher;
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -75,8 +79,6 @@ namespace SecureImageWebShopService.Data
                 }
             };
 
-            var hasher = new PasswordHasher<AppUser>();
-
             foreach (var userToSeed in usersToSeed)
             {
                 modelBuilder.Entity<AppUser>().HasData(new AppUser
@@ -86,7 +88,7 @@ namespace SecureImageWebShopService.Data
                     NormalizedUserName = userToSeed.UserName.ToUpper(),
                     Email = userToSeed.Email,
                     NormalizedEmail = userToSeed.Email.ToUpper(),
-                    PasswordHash = hasher.HashPassword(null, userToSeed.Password)
+                    PasswordHash = _passwordHasher.HashPassword(null, userToSeed.Password)
                 });
             }
         }

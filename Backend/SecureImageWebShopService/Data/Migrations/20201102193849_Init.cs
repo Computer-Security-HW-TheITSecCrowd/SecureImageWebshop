@@ -157,8 +157,8 @@ namespace SecureImageWebShopService.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1cecd966-12d4-4d94-bc22-315745820aec", "cef76007-6a0c-45cf-90bb-5366eb7debb6", "Admin", "ADMIN" },
-                    { "dd730692-bca5-4e01-952f-2da63f1091f7", "6ab3b92d-0974-4807-82df-99f2ce7057ed", "Customer", "CUSTOMER" }
+                    { "1cecd966-12d4-4d94-bc22-315745820aec", "9043f5b6-0f5c-458c-87b2-3024a5056846", "Admin", "ADMIN" },
+                    { "dd730692-bca5-4e01-952f-2da63f1091f7", "124855f7-29ec-4073-94fd-a0d08cef51bd", "Customer", "CUSTOMER" }
                 });
 
             migrationBuilder.InsertData(
@@ -166,9 +166,9 @@ namespace SecureImageWebShopService.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "9a6fe9ae-223a-4f1e-bd4a-38aafc313120", 0, "e18138fe-96b8-4868-8f5a-f91a8284d860", "admin1@secwebshop.com", false, false, null, "ADMIN1@SECWEBSHOP.COM", "ADMIN1", "AQAAAAEAACcQAAAAELqJhGpcuOjH2vWtiSWmwIoba3o+ScgDG8H5OL8s2xEGmmiogh/b/YKWV7SGsg8bHA==", null, false, "354ac734-a434-4f70-8d7e-e85477e3603d", false, "admin1" },
-                    { "50455bb6-55ce-4f2a-84d3-f3397a840ffa", 0, "b95951f4-216a-45e7-a7d1-970c37126755", "customer1@secwebshop.com", false, false, null, "CUSTOMER1@SECWEBSHOP.COM", "CUSTOMER1", "AQAAAAEAACcQAAAAEECRnKdBLATvlRB8eaCZhIFRZ9s0b7lnNn65INbTJ/PpBI86q3XmMh+1x66EACqNVA==", null, false, "a09270aa-b69b-482e-8bed-883c5304095d", false, "customer1" },
-                    { "acfd83c7-01f4-4be5-a939-7206b6c3eac3", 0, "aeb2b93f-363e-4b5e-ae84-ea30cd09bcff", "customer2@secwebshop.com", false, false, null, "CUSTOMER2@SECWEBSHOP.COM", "CUSTOMER2", "AQAAAAEAACcQAAAAEB+9lSGwTEJhz8bI3j0IjEda/PlgCxE3hWGOGxpVYKskS2+2lQ/fGtJVcaneD0Bb2g==", null, false, "2bff3e56-4424-432a-9735-8a92316fdf8b", false, "customer2" }
+                    { "9a6fe9ae-223a-4f1e-bd4a-38aafc313120", 0, "d3d5a7a9-d002-455f-b1a5-ced36d9c13bb", "admin1@secwebshop.com", false, false, null, "ADMIN1@SECWEBSHOP.COM", "ADMIN1", "$argon2id$v=19$m=65536,t=3,p=1$kc/riXWd9HF4dM0r766JNw$9i701259En1eR0/7m7l3W6G16g1Pa4kn33Z31C45kp0", null, false, "79c68d19-3be9-46c2-b3e4-b041f91040db", false, "admin1" },
+                    { "50455bb6-55ce-4f2a-84d3-f3397a840ffa", 0, "bb70ea18-7f7a-4896-aa95-58804e42506e", "customer1@secwebshop.com", false, false, null, "CUSTOMER1@SECWEBSHOP.COM", "CUSTOMER1", "$argon2id$v=19$m=65536,t=3,p=1$GwHzLuZ4L3T88blx3M9ZgQ$DuvW8Tiy7f9kXiJnlUYq0y3fbu18J442Yz6b/RfFLy0", null, false, "ec7fb4c8-3ac1-47f4-b7da-58848647e4ca", false, "customer1" },
+                    { "acfd83c7-01f4-4be5-a939-7206b6c3eac3", 0, "5ec099bc-9f5c-4e1f-a41d-417c30b17209", "customer2@secwebshop.com", false, false, null, "CUSTOMER2@SECWEBSHOP.COM", "CUSTOMER2", "$argon2id$v=19$m=65536,t=3,p=1$wlJQO/frMAIft5UCUPHsLg$jBdORU6vpUFUvJV6hYizRHZLzxwjdqoizySPsaI+jbM", null, false, "9d9c1192-f2d7-464b-95ae-73e75af09ba2", false, "customer2" }
                 });
 
             migrationBuilder.InsertData(

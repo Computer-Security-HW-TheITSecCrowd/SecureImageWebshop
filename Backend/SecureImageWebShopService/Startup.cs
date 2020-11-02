@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using SecureImageWebShopService.Data;
 using SecureImageWebShopService.Models;
+using SecureImageWebShopService.Services;
 
 namespace SecureImageWebShopService
 {
@@ -53,6 +54,8 @@ namespace SecureImageWebShopService
             })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
+
+            services.AddScoped<IPasswordHasher<AppUser>, AppPasswordHasher>();
 
             services.AddAuthentication(options =>
             {

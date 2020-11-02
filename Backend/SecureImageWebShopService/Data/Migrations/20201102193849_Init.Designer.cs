@@ -10,7 +10,7 @@ using SecureImageWebShopService.Data;
 namespace SecureImageWebShopService.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201102161608_Init")]
+    [Migration("20201102193849_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,14 +51,14 @@ namespace SecureImageWebShopService.Data.Migrations
                         new
                         {
                             Id = "1cecd966-12d4-4d94-bc22-315745820aec",
-                            ConcurrencyStamp = "cef76007-6a0c-45cf-90bb-5366eb7debb6",
+                            ConcurrencyStamp = "9043f5b6-0f5c-458c-87b2-3024a5056846",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "dd730692-bca5-4e01-952f-2da63f1091f7",
-                            ConcurrencyStamp = "6ab3b92d-0974-4807-82df-99f2ce7057ed",
+                            ConcurrencyStamp = "124855f7-29ec-4073-94fd-a0d08cef51bd",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -254,15 +254,15 @@ namespace SecureImageWebShopService.Data.Migrations
                         {
                             Id = "9a6fe9ae-223a-4f1e-bd4a-38aafc313120",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e18138fe-96b8-4868-8f5a-f91a8284d860",
+                            ConcurrencyStamp = "d3d5a7a9-d002-455f-b1a5-ced36d9c13bb",
                             Email = "admin1@secwebshop.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN1@SECWEBSHOP.COM",
                             NormalizedUserName = "ADMIN1",
-                            PasswordHash = "AQAAAAEAACcQAAAAELqJhGpcuOjH2vWtiSWmwIoba3o+ScgDG8H5OL8s2xEGmmiogh/b/YKWV7SGsg8bHA==",
+                            PasswordHash = "$argon2id$v=19$m=65536,t=3,p=1$kc/riXWd9HF4dM0r766JNw$9i701259En1eR0/7m7l3W6G16g1Pa4kn33Z31C45kp0",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "354ac734-a434-4f70-8d7e-e85477e3603d",
+                            SecurityStamp = "79c68d19-3be9-46c2-b3e4-b041f91040db",
                             TwoFactorEnabled = false,
                             UserName = "admin1"
                         },
@@ -270,15 +270,15 @@ namespace SecureImageWebShopService.Data.Migrations
                         {
                             Id = "50455bb6-55ce-4f2a-84d3-f3397a840ffa",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b95951f4-216a-45e7-a7d1-970c37126755",
+                            ConcurrencyStamp = "bb70ea18-7f7a-4896-aa95-58804e42506e",
                             Email = "customer1@secwebshop.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "CUSTOMER1@SECWEBSHOP.COM",
                             NormalizedUserName = "CUSTOMER1",
-                            PasswordHash = "AQAAAAEAACcQAAAAEECRnKdBLATvlRB8eaCZhIFRZ9s0b7lnNn65INbTJ/PpBI86q3XmMh+1x66EACqNVA==",
+                            PasswordHash = "$argon2id$v=19$m=65536,t=3,p=1$GwHzLuZ4L3T88blx3M9ZgQ$DuvW8Tiy7f9kXiJnlUYq0y3fbu18J442Yz6b/RfFLy0",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a09270aa-b69b-482e-8bed-883c5304095d",
+                            SecurityStamp = "ec7fb4c8-3ac1-47f4-b7da-58848647e4ca",
                             TwoFactorEnabled = false,
                             UserName = "customer1"
                         },
@@ -286,15 +286,15 @@ namespace SecureImageWebShopService.Data.Migrations
                         {
                             Id = "acfd83c7-01f4-4be5-a939-7206b6c3eac3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aeb2b93f-363e-4b5e-ae84-ea30cd09bcff",
+                            ConcurrencyStamp = "5ec099bc-9f5c-4e1f-a41d-417c30b17209",
                             Email = "customer2@secwebshop.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "CUSTOMER2@SECWEBSHOP.COM",
                             NormalizedUserName = "CUSTOMER2",
-                            PasswordHash = "AQAAAAEAACcQAAAAEB+9lSGwTEJhz8bI3j0IjEda/PlgCxE3hWGOGxpVYKskS2+2lQ/fGtJVcaneD0Bb2g==",
+                            PasswordHash = "$argon2id$v=19$m=65536,t=3,p=1$wlJQO/frMAIft5UCUPHsLg$jBdORU6vpUFUvJV6hYizRHZLzxwjdqoizySPsaI+jbM",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2bff3e56-4424-432a-9735-8a92316fdf8b",
+                            SecurityStamp = "9d9c1192-f2d7-464b-95ae-73e75af09ba2",
                             TwoFactorEnabled = false,
                             UserName = "customer2"
                         });
