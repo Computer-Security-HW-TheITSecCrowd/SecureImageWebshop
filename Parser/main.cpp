@@ -12,11 +12,11 @@ using std::endl;
 // UTILS
 struct ParsingException : public std::exception
 {
-    ParsingException(const char* message) {
+    explicit ParsingException(const char* message) {
         this->message = message;
     }
 
-    const char * what () const throw ()
+    const char* what () const throw ()
     {
         return this->message;
     }
@@ -371,13 +371,16 @@ struct AnimationImage {
     }
 };
 
-
-void parse() {
-    auto content = readFile("./test_files/1.caff");
+void parse(const char* filePath) {
+    auto content = readFile(filePath);
     cout << content.size() << endl;
 
     int index = 0;
     auto headerTlv = Tlv::parse(content, index);
+    if (headerTlv.type != TlvType::Header) {
+        throw ParsingException("The first block is not a header");
+    }
+
     auto header = Header::parse(headerTlv);
 
     std::vector<Credits> credits;
@@ -398,18 +401,15 @@ void parse() {
                 cout << "animation" << endl;
                 animationImages.push_back(AnimationImage::parse(nextTlv));
                 break;
-            default:
-                cout << "default" << endl;
-                break;
         }
     }
 }
 
 int main() {
     try {
-        parse();
-    } catch (ParsingException& exception) {
-        cout << "Sad :(";
+        parse("./test_files/error_1.caff");
+    } catch (const ParsingException& exception) {
+        cout << "Sad :( " << exception.what();
         return 1;
     }
 
