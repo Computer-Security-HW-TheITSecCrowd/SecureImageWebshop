@@ -10,14 +10,12 @@ using std::cout;
 using std::endl;
 
 // UTILS
-struct ParsingException : public std::exception
-{
+struct ParsingException : public std::exception {
     explicit ParsingException(const char* message) {
         this->message = message;
     }
 
-    const char* what () const throw ()
-    {
+    [[nodiscard]] const char* what() const noexcept override {
         return this->message;
     }
 
@@ -30,71 +28,57 @@ std::vector<uint8_t> readFile(const char* filePath) {
     if (!input) {
         throw ParsingException("Could not find the given file!");
     }
-    std::vector<uint8_t> buffer(
-            (std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>() /* {} */);
+    auto buffer = std::vector<uint8_t>((std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>());
 
     input.close();
     return buffer;
 }
 
 template<typename T>
-typename std::enable_if<std::is_arithmetic<T>::value, T>::type
-convertUint8s(const std::vector<uint8_t>& chars)
-{
+std::enable_if_t<std::is_arithmetic_v<T>, T>
+convertUint8s(const std::vector<uint8_t>& chars) noexcept {
     T temp = 0;
-    for(int i = sizeof(T) - 1; i >= 0; i--)
-    {
+    for (int i = sizeof(T) - 1; i >= 0; i--) {
         temp <<= 8;
-        temp |= (T)chars[i];
+        temp |= (T) chars[i];
     }
     return temp;
 }
 
 template<typename T>
-typename std::enable_if<std::is_arithmetic<T>::value, T>::type
-parseInteger(const std::vector<uint8_t>& data, int& index)
-{
-    int size = sizeof(T);
+std::enable_if_t<std::is_arithmetic_v<T>, T>
+parseInteger(const std::vector<uint8_t>& data, size_t& index) {
+    size_t size = sizeof(T);
 
     if (data.size() - size < index) {
         throw ParsingException("Could not parse integer: Not enough space");
     }
 
-    std::vector<uint8_t> temp;
+    auto temp = std::vector<uint8_t>();
     std::copy_n(data.begin() + index, size, std::back_inserter(temp));
     index += size;
 
     return convertUint8s<T>(temp);
 }
 
-std::string parseString(const std::vector<uint8_t>& data, int length, int& index) {
+std::string parseString(const std::vector<uint8_t>& data, size_t length, size_t& index) {
     if (data.size() - length < index) {
         throw ParsingException("Could not parse string: Not enough space");
     }
 
-    std::string str;
+    auto str = std::string();
     std::copy_n(data.begin() + index, length, std::back_inserter(str));
     index += length;
 
     return str;
 }
 
-std::string parseStringUntilChar(const std::vector<uint8_t>& data, int& index, char ch) {
-    int length = 0;
-    int i = index;
-    if (data.size() < i) {
-        throw ParsingException("Could not parse string: Not enough space");
+std::string parseStringUntilChar(const std::vector<uint8_t>& data, size_t& index, char ch) {
+    auto chIterator = std::find(data.begin() + index, data.end(), ch);
+    if (chIterator == data.cend()) {
+        throw ParsingException("Could not parse string: Ending character is not found");
     }
-
-    while (data[i++] != ch)
-    {
-        length++;
-
-        if (data.size() < i) {
-            throw ParsingException("Could not parse string: Not enough space");
-        }
-    }
-
+    auto length = std::distance(data.begin() + index, chIterator);
 
     auto result = parseString(data, length, index);
     index++;
@@ -109,9 +93,8 @@ enum class TlvType : uint8_t {
     Animation = 0x3,
 };
 
-constexpr auto tlvTypes = std::array<TlvType, 3>{ TlvType::Header, TlvType::Credits, TlvType::Animation };
 auto isTlvType(uint8_t n) -> bool {
-    return std::find(std::begin(tlvTypes), std::end(tlvTypes), (TlvType)n) != std::end(tlvTypes);
+    return n >= 1 && n <= 3;
 }
 
 struct Tlv {
@@ -119,10 +102,10 @@ struct Tlv {
     uint64_t length = 0;
     std::vector<uint8_t> value;
 
-    static Tlv parse(const std::vector<uint8_t>& content, int& startIndex) {
-        int index = startIndex;
+    static Tlv parse(const std::vector<uint8_t>& content, size_t& startIndex) {
+        size_t index = startIndex;
 
-        Tlv result;
+        auto result = Tlv();
 
         // Type
         if (!isEnoughSpace(content, index, sizeof(result.type))) {
@@ -154,9 +137,9 @@ struct Tlv {
         return result;
     }
 
-    private:
+private:
 
-    static bool isEnoughSpace(const std::vector<uint8_t>& content, int currentIndex, int requiredSpace) {
+    static bool isEnoughSpace(const std::vector<uint8_t>& content, size_t currentIndex, size_t requiredSpace) noexcept {
         return content.size() - currentIndex >= requiredSpace;
     }
 };
@@ -169,13 +152,13 @@ struct Header {
     uint64_t numberOfAnimations = 0;
 
     static Header parse(const Tlv& tlv) {
-        int magicLength = 4;
+        size_t magicLength = 4;
         if (tlv.length != magicLength + sizeof(length) + sizeof(numberOfAnimations)) {
             throw ParsingException("The TLV's length is not equal to the header's size");
         }
 
         Header header;
-        int index = 0;
+        size_t index = 0;
 
         header.magic = parseString(tlv.value, magicLength, index);
         header.length = parseInteger<uint64_t>(tlv.value, index);
@@ -200,9 +183,9 @@ struct DateTime {
     uint8_t hour = 0;
     uint8_t minute = 0;
 
-    static DateTime parse(const std::vector<uint8_t>& data) {
-        int index = 0;
-        DateTime dateTime;
+    static DateTime parse(const std::vector<uint8_t>& data) noexcept {
+        size_t index = 0;
+        auto dateTime = DateTime();
 
         dateTime.year = parseInteger<uint16_t>(data, index);
         dateTime.month = parseInteger<uint8_t>(data, index);
@@ -218,9 +201,9 @@ struct Creator {
     uint64_t length = 0;
     std::string name;
 
-    static Creator parse(const std::vector<uint8_t>& data) {
-        Creator creator;
-        int index = 0;
+    static Creator parse(const std::vector<uint8_t>& data) noexcept {
+        auto creator = Creator();
+        size_t index = 0;
 
         creator.length = parseInteger<uint64_t>(data, index);
         creator.name = parseString(data, creator.length, index);
@@ -233,10 +216,10 @@ struct Credits {
     DateTime creationDateTime;
     Creator creator;
 
-    static Credits parse(const Tlv& tlv) {
-        Credits credits;
+    static Credits parse(const Tlv& tlv) noexcept {
+        auto credits = Credits();
 
-        int datetimeLength = 6;
+        size_t datetimeLength = 6;
         credits.creationDateTime = DateTime::parse(tlv.value);
 
         std::vector<uint8_t> creator;
@@ -252,8 +235,8 @@ struct Pixel {
     uint8_t g = 0;
     uint8_t b = 0;
 
-    static Pixel parse(const std::vector<uint8_t>& data, int& index) {
-        Pixel pixel;
+    static Pixel parse(const std::vector<uint8_t>& data, size_t& index) noexcept {
+        auto pixel = Pixel();
 
         pixel.r = parseInteger<uint8_t>(data, index);
         pixel.g = parseInteger<uint8_t>(data, index);
@@ -274,8 +257,8 @@ struct Image {
     std::vector<Pixel> pixels;
 
     static Image parse(const std::vector<uint8_t>& data, uint64_t imageSize) {
-        Image image;
-        int index = 0;
+        auto image = Image();
+        size_t index = 0;
 
         image.magic = parseString(data, 4, index);
         if (image.magic != "CIFF") {
@@ -296,7 +279,7 @@ struct Image {
         image.caption = parseStringUntilChar(data, index, '\n');
         image.tags = parseTags(image, data, index);
 
-        for (int i = 0; i < image.contentSize / 3; i++) {
+        for (size_t i = 0; i < image.contentSize / 3; i++) {
             image.pixels.push_back(Pixel::parse(data, index));
         }
         if (image.pixels.size() != image.width * image.height) {
@@ -306,14 +289,14 @@ struct Image {
         return image;
     }
 
-    std::string toString() {
-        std::stringstream stream;
+    std::string toString() noexcept {
+        auto stream = std::stringstream();
         stream << "[";
-        for (int i = 0; i < height; i++) {
+        for (size_t i = 0; i < height; i++) {
             stream << "[";
-            for (int j = 0; j < width; j++) {
+            for (size_t j = 0; j < width; j++) {
                 auto pixel = pixels[i * width + j];
-                stream << "[" << (int)pixel.r << ", " << (int)pixel.g << ", " << (int)pixel.b  << "]";
+                stream << "[" << (size_t) pixel.r << ", " << (size_t) pixel.g << ", " << (size_t) pixel.b << "]";
                 if (j != width - 1) {
                     stream << ", ";
                 }
@@ -331,8 +314,8 @@ struct Image {
     }
 
 private:
-    static std::vector<std::string> parseTags(const Image& image, const std::vector<uint8_t>& data, int& index) {
-        std::vector<std::string> tags;
+    static std::vector<std::string> parseTags(const Image& image, const std::vector<uint8_t>& data, size_t& index) noexcept {
+        auto tags = std::vector<std::string>();
 
         auto tagsLength = image.headerSize - (
                 image.magic.size() +
@@ -342,7 +325,7 @@ private:
                 sizeof(image.height) +
                 image.caption.length() + 1);
 
-        int remaining = tagsLength;
+        size_t remaining = tagsLength;
         while (remaining > 0) {
             auto tag = parseStringUntilChar(data, index, '\0');
             tags.push_back(tag);
@@ -357,8 +340,8 @@ struct AnimationImage {
     uint64_t duration = 0;
     Image image;
 
-    static AnimationImage parse(const Tlv& tlv) {
-        AnimationImage animation;
+    static AnimationImage parse(const Tlv& tlv) noexcept {
+        auto animation = AnimationImage();
 
         auto durationLength = sizeof(duration);
         animation.duration = convertUint8s<uint64_t>(tlv.value);
@@ -371,20 +354,16 @@ struct AnimationImage {
     }
 };
 
-void parse(const char* filePath) {
-    auto content = readFile(filePath);
-    cout << content.size() << endl;
-
-    int index = 0;
+void parse(const std::vector<uint8_t>& content) {
+    size_t index = 0;
     auto headerTlv = Tlv::parse(content, index);
     if (headerTlv.type != TlvType::Header) {
         throw ParsingException("The first block is not a header");
     }
-
     auto header = Header::parse(headerTlv);
 
-    std::vector<Credits> credits;
-    std::vector<AnimationImage> animationImages;
+    auto credits = std::vector<Credits>();
+    auto animationImages = std::vector<AnimationImage>();
 
     while (index < content.size()) {
         Tlv nextTlv = Tlv::parse(content, index);
@@ -405,11 +384,17 @@ void parse(const char* filePath) {
     }
 }
 
-int main() {
+int main(int argc, char** argv) {
+    if (argc != 2) {
+        cout << "Invalid argument number" << endl;
+        return 1;
+    }
+
     try {
-        parse("./test_files/error_1.caff");
+        auto content = readFile(argv[1]);
+        parse(content);
     } catch (const ParsingException& exception) {
-        cout << "Sad :( " << exception.what();
+        cout << exception.what();
         return 1;
     }
 
