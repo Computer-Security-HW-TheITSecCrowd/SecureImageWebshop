@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  backend:
+    image: ${DOCKER_REGISTRY:-bkw}bkwbackendapi:${IMAGE_TAG:-latest}
+    build:
+      context: ..
+      dockerfile: Backend/BKW.Backend.Api/Dockerfile
+    ports:
+      - 42069:80
