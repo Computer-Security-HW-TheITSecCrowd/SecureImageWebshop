@@ -385,7 +385,8 @@ void parse(const std::vector<uint8_t>& content) {
 }
 
 int main(int argc, char** argv) {
-    if (argc != 2) {
+    cout << "Hello World!" << endl;
+    /*if (argc != 2) {
         cout << "Invalid argument number" << endl;
         return 1;
     }
@@ -398,5 +399,5 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    return 0;
+    return 0;*/
 }
