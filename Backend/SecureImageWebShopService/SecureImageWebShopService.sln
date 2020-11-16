@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecureImageWebShopService", "SecureImageWebShopService.csproj", "{79123A82-44BB-4AF6-9B8A-60AFE2DC274B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79123A82-44BB-4AF6-9B8A-60AFE2DC274B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79123A82-44BB-4AF6-9B8A-60AFE2DC274B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79123A82-44BB-4AF6-9B8A-60AFE2DC274B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79123A82-44BB-4AF6-9B8A-60AFE2DC274B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BC84B5F5-D09C-477B-8F96-17F9ABE77455}
+	EndGlobalSection
+EndGlobal
