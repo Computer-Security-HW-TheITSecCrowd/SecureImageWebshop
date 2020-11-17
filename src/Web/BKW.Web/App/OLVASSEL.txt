@@ -1,0 +1,6 @@
+Ebbe a mappába legyen majd a React root!
+src\Web\SecureImageWebshop.Web.App\App\
+	public\
+	node_modules\
+	src\
+	package.json
