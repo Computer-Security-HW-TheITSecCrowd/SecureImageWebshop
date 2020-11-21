@@ -1,4 +1,9 @@
 using System.Text;
+using BKW.Backend.Api.Services;
+using BKW.Backend.Dal.Animations;
+using BKW.Backend.Dal.Comments;
+using BKW.Backend.Dal.Data;
+using BKW.Backend.Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,8 +13,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using SecureImageWebShopService.Data;
-using SecureImageWebShopService.Models;
 using SecureImageWebShopService.Services;
 
 namespace SecureImageWebShopService
@@ -43,6 +46,12 @@ namespace SecureImageWebShopService
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddTransient<IAnimationRepository, AnimationRepository>();
+            services.AddTransient<ICommentRepository, CommentRepository>();
+
+            services.AddScoped<IAnimationService, AnimationService>();
+            services.AddScoped<ICommentService, CommentService>();
+
             services.AddIdentity<AppUser, IdentityRole>(option =>
             {
                 option.User.RequireUniqueEmail = true;
@@ -74,6 +83,12 @@ namespace SecureImageWebShopService
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(Configuration["Jwt:SigningKey"]))
                 };
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin"));
+                options.AddPolicy("Customer", policy => policy.RequireClaim("Role", "Customer"));
             });
         }
 

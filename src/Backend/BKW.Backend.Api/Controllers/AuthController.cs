@@ -4,17 +4,17 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using BKW.Backend.Api.Requests;
+using BKW.Backend.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using SecureImageWebShopService.Models;
-using SecureImageWebShopService.Requests;
 
 namespace SecureImageWebShopService.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SecureImageWebShopService.Data.Migrations
+namespace BKW.Backend.Dal.Data.Migrations
 {
     public partial class Init : Migration
     {
@@ -65,6 +65,28 @@ namespace SecureImageWebShopService.Data.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Animations",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Title = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    NumberOfPurchase = table.Column<int>(nullable: false),
+                    Banned = table.Column<bool>(nullable: false),
+                    OwnerId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Animations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Animations_AspNetUsers_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -152,13 +174,58 @@ namespace SecureImageWebShopService.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    AnimationId = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Animations_AnimationId",
+                        column: x => x.AnimationId,
+                        principalTable: "Animations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Purchases",
+                columns: table => new
+                {
+                    PurchaserId = table.Column<string>(nullable: false),
+                    AnimationId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchases", x => new { x.PurchaserId, x.AnimationId });
+                    table.ForeignKey(
+                        name: "FK_Purchases_Animations_AnimationId",
+                        column: x => x.AnimationId,
+                        principalTable: "Animations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Purchases_AspNetUsers_PurchaserId",
+                        column: x => x.PurchaserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1cecd966-12d4-4d94-bc22-315745820aec", "9043f5b6-0f5c-458c-87b2-3024a5056846", "Admin", "ADMIN" },
-                    { "dd730692-bca5-4e01-952f-2da63f1091f7", "124855f7-29ec-4073-94fd-a0d08cef51bd", "Customer", "CUSTOMER" }
+                    { "1cecd966-12d4-4d94-bc22-315745820aec", "4bea06c5-a96c-4785-9d1e-c706332ab9aa", "Admin", "ADMIN" },
+                    { "dd730692-bca5-4e01-952f-2da63f1091f7", "6388388f-fd69-41dd-8a6c-39bbb9112113", "Customer", "CUSTOMER" }
                 });
 
             migrationBuilder.InsertData(
@@ -166,9 +233,9 @@ namespace SecureImageWebShopService.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "9a6fe9ae-223a-4f1e-bd4a-38aafc313120", 0, "d3d5a7a9-d002-455f-b1a5-ced36d9c13bb", "admin1@secwebshop.com", false, false, null, "ADMIN1@SECWEBSHOP.COM", "ADMIN1", "$argon2id$v=19$m=65536,t=3,p=1$kc/riXWd9HF4dM0r766JNw$9i701259En1eR0/7m7l3W6G16g1Pa4kn33Z31C45kp0", null, false, "79c68d19-3be9-46c2-b3e4-b041f91040db", false, "admin1" },
-                    { "50455bb6-55ce-4f2a-84d3-f3397a840ffa", 0, "bb70ea18-7f7a-4896-aa95-58804e42506e", "customer1@secwebshop.com", false, false, null, "CUSTOMER1@SECWEBSHOP.COM", "CUSTOMER1", "$argon2id$v=19$m=65536,t=3,p=1$GwHzLuZ4L3T88blx3M9ZgQ$DuvW8Tiy7f9kXiJnlUYq0y3fbu18J442Yz6b/RfFLy0", null, false, "ec7fb4c8-3ac1-47f4-b7da-58848647e4ca", false, "customer1" },
-                    { "acfd83c7-01f4-4be5-a939-7206b6c3eac3", 0, "5ec099bc-9f5c-4e1f-a41d-417c30b17209", "customer2@secwebshop.com", false, false, null, "CUSTOMER2@SECWEBSHOP.COM", "CUSTOMER2", "$argon2id$v=19$m=65536,t=3,p=1$wlJQO/frMAIft5UCUPHsLg$jBdORU6vpUFUvJV6hYizRHZLzxwjdqoizySPsaI+jbM", null, false, "9d9c1192-f2d7-464b-95ae-73e75af09ba2", false, "customer2" }
+                    { "9a6fe9ae-223a-4f1e-bd4a-38aafc313120", 0, "e2be2c43-b77e-46f6-9884-f895aad0eab1", "admin1@secwebshop.com", false, false, null, "ADMIN1@SECWEBSHOP.COM", "ADMIN1", "$argon2id$v=19$m=65536,t=3,p=1$tje2qDQotw096j5JORjuUg$lt4TNrjFOYPJmvhzeAlReSMIVVAGUJ+lswwJpftdbkc", null, false, "e2aa0b7a-aba8-48c8-a7ef-fc3446f24db9", false, "admin1" },
+                    { "50455bb6-55ce-4f2a-84d3-f3397a840ffa", 0, "0f96dcf2-8687-4e00-8b34-00d9989492aa", "customer1@secwebshop.com", false, false, null, "CUSTOMER1@SECWEBSHOP.COM", "CUSTOMER1", "$argon2id$v=19$m=65536,t=3,p=1$wZFP+oGQkU5EPmkBDX165g$8iNqIsT2pc8JaKx9yZ1yQuiS0uzG9bq01M/VCcC5ADs", null, false, "d5ce249a-7c77-454d-88bd-59866c397ef8", false, "customer1" },
+                    { "acfd83c7-01f4-4be5-a939-7206b6c3eac3", 0, "b8ed21ea-cef4-449b-aed5-02d76bac7517", "customer2@secwebshop.com", false, false, null, "CUSTOMER2@SECWEBSHOP.COM", "CUSTOMER2", "$argon2id$v=19$m=65536,t=3,p=1$FYZR4C7flX7xrfJAqEoFCQ$R0BznCXPY5BpKDKSVwV8to9Bcw1cDpE77iuuQgfmuzc", null, false, "e8508c5c-c9ca-43c8-a7ed-d5d8cd1802be", false, "customer2" }
                 });
 
             migrationBuilder.InsertData(
@@ -185,6 +252,11 @@ namespace SecureImageWebShopService.Data.Migrations
                 table: "AspNetUserRoles",
                 columns: new[] { "UserId", "RoleId" },
                 values: new object[] { "acfd83c7-01f4-4be5-a939-7206b6c3eac3", "dd730692-bca5-4e01-952f-2da63f1091f7" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Animations_OwnerId",
+                table: "Animations",
+                column: "OwnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -224,6 +296,16 @@ namespace SecureImageWebShopService.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_AnimationId",
+                table: "Comments",
+                column: "AnimationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Purchases_AnimationId",
+                table: "Purchases",
+                column: "AnimationId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -244,7 +326,16 @@ namespace SecureImageWebShopService.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Purchases");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Animations");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
