@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BKW.Backend.Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SecureImageWebShopService.Models;
 using System.Collections.Generic;
 
-namespace SecureImageWebShopService.Data
+namespace BKW.Backend.Dal.Data
 {
     public class AppDbContext : IdentityDbContext<AppUser>
     {
@@ -14,30 +14,70 @@ namespace SecureImageWebShopService.Data
             _passwordHasher = passwordHasher;
         }
 
+        public DbSet<Animation> Animations { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            AddRoles(modelBuilder);
-            AddUsers(modelBuilder);
-            AddUserRoles(modelBuilder);  
+            addRoles(modelBuilder);
+            addUsers(modelBuilder);
+            addUserRoles(modelBuilder);
+
+            configureAppUser(modelBuilder);
+            configureAnimation(modelBuilder);
+            configurePurchase(modelBuilder);
         }
 
-        private void AddRoles(ModelBuilder modelBuilder)
+        private void configureAppUser(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
-            {
-                Id = "1cecd966-12d4-4d94-bc22-315745820aec",
-                Name = "Admin",
-                NormalizedName = "ADMIN"
-            });
+            modelBuilder.Entity<AppUser>()
+                .HasMany(a => a.OwnedAnimations)
+                .WithOne(oa => oa.Owner)
+                .HasForeignKey(oa => oa.OwnerId);
+        }
 
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
-            {
-                Id = "dd730692-bca5-4e01-952f-2da63f1091f7",
-                Name = "Customer",
-                NormalizedName = "CUSTOMER"
-            });
+        private void configureAnimation(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Animation>()
+                .HasMany(a => a.Comments)
+                .WithOne(c => c.Animation)
+                .HasForeignKey(c => c.AnimationId);
+        }
+
+        private void configurePurchase(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Purchase>()
+                .HasKey(p => new { p.PurchaserId, p.AnimationId });
+
+            modelBuilder.Entity<Purchase>()
+                .HasOne(p => p.Purchaser)
+                .WithMany(purchaser => purchaser.Purchases)
+                .HasForeignKey(p => p.PurchaserId);
+
+            modelBuilder.Entity<Purchase>()
+                .HasOne(p => p.Animation)
+                .WithMany(a => a.Purchases)
+                .HasForeignKey(p => p.AnimationId);
+        }
+
+        private void addRoles(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Id = "1cecd966-12d4-4d94-bc22-315745820aec",
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Id = "dd730692-bca5-4e01-952f-2da63f1091f7",
+                    Name = "Customer",
+                    NormalizedName = "CUSTOMER"
+                });
         }
 
         class UserToSeed
@@ -49,7 +89,7 @@ namespace SecureImageWebShopService.Data
             public string Role { get; set; }
         }
 
-        private void AddUsers(ModelBuilder modelBuilder)
+        private void addUsers(ModelBuilder modelBuilder)
         {
             var usersToSeed = new List<UserToSeed>
             {
@@ -93,7 +133,7 @@ namespace SecureImageWebShopService.Data
             }
         }
 
-        private void AddUserRoles(ModelBuilder modelBuilder)
+        private void addUserRoles(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
             new IdentityUserRole<string>

@@ -1,4 +1,4 @@
-﻿namespace SecureImageWebShopService.Requests
+﻿namespace BKW.Backend.Api.Requests
 {
     public class LoginRequest
     {

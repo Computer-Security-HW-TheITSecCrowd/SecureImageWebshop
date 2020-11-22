@@ -1,6 +1,6 @@
-﻿using Isopoh.Cryptography.Argon2;
+﻿using BKW.Backend.Domain.Models;
+using Isopoh.Cryptography.Argon2;
 using Microsoft.AspNetCore.Identity;
-using SecureImageWebShopService.Models;
 
 namespace SecureImageWebShopService.Services
 {
