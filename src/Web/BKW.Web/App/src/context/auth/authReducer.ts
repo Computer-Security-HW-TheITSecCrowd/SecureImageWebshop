@@ -4,8 +4,8 @@ import setAuthToken from '../../utils/setAuthToken';
 export interface State {
   loading: boolean,
   isAuthenticated: boolean,
-  accessToken: string,
-  error: string,
+  accessToken: string | null,
+  error: string | null,
   user: User
 };
 

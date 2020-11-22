@@ -1,19 +1,12 @@
-import React, { useReducer } from 'react';
+import React, { ReactNode, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import AuthContext from './authContext';
 import authReducer, { State, ActionType } from './authReducer';
+import { initialState } from './authContext';
 
-export const initialState: State = {
-  accessToken: localStorage.getItem('accessToken'),
-  loading: false,
-  isAuthenticated: false,
-  error: null,
-  user: null
-};
-
-const AuthState = ({ children }) => {
+const AuthState: React.FC<ReactNode> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   return (
@@ -30,3 +23,5 @@ const AuthState = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export default AuthState;
