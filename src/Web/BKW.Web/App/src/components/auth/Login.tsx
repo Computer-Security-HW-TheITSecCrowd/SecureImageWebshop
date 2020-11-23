@@ -3,6 +3,8 @@ import { Card, Row, Col, Button, Form, Input, Typography, Divider } from 'antd';
 import { KeyOutlined, UserOutlined } from '@ant-design/icons';
 
 import AuthContext from '../../context/auth/authContext';
+import { Link } from 'react-router-dom';
+import { registerRoute } from '../../constants/routeConstants';
 
 const Login: React.FC = () => {
 
@@ -85,9 +87,11 @@ const Login: React.FC = () => {
             Nincs még felhasználói fiókja?
           </Row>
           <Row justify='center' align='middle'>
-            <Button type='link' >
-                Regisztráció
-            </Button>
+            <Link to={registerRoute}>
+              <Button type='link' >
+                  Regisztráció
+              </Button>
+            </Link>
           </Row>
         </Card>
       </Col>
