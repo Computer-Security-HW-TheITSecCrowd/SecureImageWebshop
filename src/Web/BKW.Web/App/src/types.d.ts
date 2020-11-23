@@ -8,5 +8,6 @@ export type User = {
 
 export type PrivateRouteProps = {
   roles: string[],
-  component: Component
+  component: Component,
+  path: string
 }
