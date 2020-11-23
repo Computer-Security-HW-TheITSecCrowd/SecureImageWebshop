@@ -12,6 +12,7 @@
     "@types/react-router-dom": "^5.1.6",
     "antd": "^4.8.5",
     "axios": "^0.21.0",
+    "json-server": "^0.16.3",
     "jwt-decode": "^3.1.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

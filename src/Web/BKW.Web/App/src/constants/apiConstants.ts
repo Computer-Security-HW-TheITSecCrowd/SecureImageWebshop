@@ -1,4 +1,4 @@
-const baseURL: string = 'localhost:42069/api';
+const baseURL: string = 'localhost:3001/api';
 const authURL: string = `${baseURL}/auth`;
 const animationURL: string = `${baseURL}/animation`;
 const userURL: string = `${baseURL}/user`;
