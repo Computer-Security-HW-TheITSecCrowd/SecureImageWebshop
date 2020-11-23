@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 const Login: React.FC = () => {
 
   return (
-    <Fragment>
+    <h1>
       Login
-    </Fragment>
+    </h1>
   );
 };
 
