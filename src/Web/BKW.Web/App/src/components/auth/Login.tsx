@@ -1,5 +1,5 @@
-import React, { FormEvent, useContext, useState } from 'react';
-import { Card, Row, Col, Button, Form, Input, Typography, Divider } from 'antd';
+import React, { FormEvent, Fragment, useContext, useState } from 'react';
+import { Card, Row, Col, Button, Form, Input, Typography, Divider, PageHeader } from 'antd';
 import { KeyOutlined, UserOutlined } from '@ant-design/icons';
 
 import AuthContext from '../../context/auth/authContext';
@@ -35,67 +35,73 @@ const Login: React.FC = () => {
 
 
   return (
-    <Row justify='center' align='middle' style={{ minHeight: '100vh', backgroundColor: 'rgba(180, 180, 180, 0.7)' }}>
-      <Col span={6} >
-        <Card
-          title={
-            <Row justify='center' align='middle' >
-              <Title level={2}>Bejelentkezés</Title>
-            </Row>
-          }
-        >
-          <Form
-            onFinish={onLogin}
+    <Fragment>
+      <PageHeader
+        backIcon={false}
+        title="Secure Image Webshop"
+        subTitle="Login"
+			/>
+      <Row justify='center' align='middle' >
+        <Col span={6} >
+          <Card
+            title={
+              <Row justify='center' align='middle' >
+                <Title level={2}>Welcome!</Title>
+              </Row>
+            }
           >
-            <Form.Item>
-              <Input
-                type='text'
-                name='username'
-                required
-                prefix={
-                  <UserOutlined />
-                }
-                onChange={onChange}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Input.Password
-                type='password'
-                name='password'
-                required
-                prefix={
-                  <KeyOutlined />
-                }
-                
-                onChange={onChange}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Button
-                htmlType='submit'
-                type="primary"
-                onClick={onLogin}
-                loading={loading}
-                block
-              >
-              Bejelentkezés
-              </Button>
-            </Form.Item>
-          </Form>
-          <Divider />
-          <Row justify='center' align='middle'>
-            Nincs még felhasználói fiókja?
-          </Row>
-          <Row justify='center' align='middle'>
-            <Link to={registerRoute}>
-              <Button type='link' >
-                  Regisztráció
-              </Button>
-            </Link>
-          </Row>
-        </Card>
-      </Col>
-    </Row>
+            <Form
+              onFinish={onLogin}
+            >
+              <Form.Item>
+                <Input
+                  type='text'
+                  name='username'
+                  required
+                  prefix={
+                    <UserOutlined />
+                  }
+                  onChange={onChange}
+                />
+              </Form.Item>
+              <Form.Item>
+                <Input.Password
+                  type='password'
+                  name='password'
+                  required
+                  prefix={
+                    <KeyOutlined />
+                  }
+                  
+                  onChange={onChange}
+                />
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  htmlType='submit'
+                  type="primary"
+                  loading={loading}
+                  block
+                >
+                Sign In
+                </Button>
+              </Form.Item>
+            </Form>
+            <Divider />
+            <Row justify='center' align='middle'>
+              Don't have an account yet?
+            </Row>
+            <Row justify='center' align='middle'>
+              <Link to={registerRoute}>
+                <Button type='link' >
+                    Register
+                </Button>
+              </Link>
+            </Row>
+          </Card>
+        </Col>
+      </Row>
+    </Fragment>
   );
 };
 
