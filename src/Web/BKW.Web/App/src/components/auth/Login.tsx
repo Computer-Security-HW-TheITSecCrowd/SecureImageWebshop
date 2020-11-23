@@ -8,3 +8,5 @@ const Login: React.FC = () => {
     </Fragment>
   );
 };
+
+export default Login;
