@@ -57,6 +57,10 @@ server.post('/api/auth/login', (req, res) => {
     }
 });
 
+server.post('/api/auth/logout', (req, res) => {
+    res.sendStatus(201);
+});
+
 
 const isAuthorized = (req) => {
     console.log(req.headers);
