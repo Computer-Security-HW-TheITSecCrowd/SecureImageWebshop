@@ -56,7 +56,7 @@ const Navbar: React.FC = () => {
                 <img className="logo" src='images/logo.png' alt="Secure Image Webshop logo"/>
             </Link>
             <Menu theme="dark" mode="horizontal" selectedKeys={[selectedKey]}>
-                { isAuthenticated && user.role === CUSTOMER && customerLinks }
+                { isAuthenticated && user && user.role === CUSTOMER && customerLinks }
                 { isAuthenticated && authLinks }
             </Menu>
         </Header>

@@ -1,20 +1,27 @@
-import React, { FormEvent, Fragment, useContext, useState } from 'react';
+import React, { FormEvent, Fragment, useContext, useEffect, useState } from 'react';
 import { Card, Row, Col, Button, Form, Input, Typography, Divider, PageHeader } from 'antd';
 import { KeyOutlined, UserOutlined } from '@ant-design/icons';
+import { RouteComponentProps } from 'react-router-dom';
 
 import AuthContext from '../../context/auth/authContext';
 import { Link } from 'react-router-dom';
-import { registerRoute } from '../../constants/routeConstants';
+import { animationsRoute, registerRoute } from '../../constants/routeConstants';
 
-const Login: React.FC = () => {
+const Login: React.FC<RouteComponentProps> = ({ history }) => {
 
   const authContext = useContext(AuthContext);
-  const { user, isAuthenticated, error, loading } = authContext;
+  const { isAuthenticated, error, loading, login } = authContext;
 
   const [formData, setFormData] = useState({
     username: '',
     password: ''
   });
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push(animationsRoute);
+    }
+  }, [isAuthenticated]);
 
   const onChange = (event: React.FormEvent<HTMLInputElement>): void => {
     event.preventDefault();
@@ -27,8 +34,7 @@ const Login: React.FC = () => {
   };
 
   const onLogin = (): void => {
-    console.log("Login");
-    console.log(formData);
+    login && login(formData);
   }
 
   const { Title } = Typography;
