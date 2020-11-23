@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { RouteProps } from "react-router-dom";
 
 export type User = {
   username: string,
@@ -6,8 +7,12 @@ export type User = {
   id: number
 } | null;
 
-export type PrivateRouteProps = {
+export interface PrivateRouteProps extends RouteProps {
   roles: string[],
-  component: Component,
   path: string
-}
+};
+
+export type LoginCredentials = {
+  username: string,
+  password: string
+};
