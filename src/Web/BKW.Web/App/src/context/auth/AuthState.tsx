@@ -4,10 +4,10 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
 import AuthContext from './authContext';
-import authReducer, { State, ActionType } from './authReducer';
+import authReducer from './authReducer';
 import { initialState } from './authContext';
 import { LoginCredentials, User } from '../../types';
-import { loginEndpoint } from '../../constants/apiConstants';
+import { loginEndpoint, logoutEndpoint } from '../../constants/apiConstants';
 
 import openNotification from '../../utils/notification';
 import { loginRoute } from '../../constants/routeConstants';
@@ -16,6 +16,17 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   const history = useHistory();
+
+  const checkTokenInLocalStorage = async () => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      const user = jwt_decode(token) as User;
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: { user: user, jwt: token },
+      });
+    }
+  };
 
   const login = async (formData: LoginCredentials) => {
     const config = {
@@ -38,18 +49,41 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
 
     } catch (err) {
       if (err.response) {
-      dispatch({
-        type: "ERROR",
-        payload: err.response.data.msg,
-      });
-      openNotification('error', err.response.data.msg);
-    } else {
-      dispatch({
-        type: "ERROR",
-        payload: err.message,
-      });
-      openNotification('error', err.message);
+        dispatch({
+          type: "ERROR",
+          payload: err.response.data.msg,
+        });
+        openNotification('error', err.response.data.msg);
+      } else {
+        dispatch({
+          type: "ERROR",
+          payload: err.message,
+        });
+        openNotification('error', err.message);
+      }
     }
+  };
+
+  const logout = async () => {
+    try {
+      // Dispatch first: we should clear browser data even if the request fails.
+      dispatch({ type: "LOGOUT" });
+      await axios.post(logoutEndpoint);
+      history.push(loginRoute);
+    } catch (err) {
+      if (err.response) {
+        dispatch({
+          type: "ERROR",
+          payload: err.response.data.msg,
+        });
+        openNotification('error', err.response.data.msg);
+      } else {
+        dispatch({
+          type: "ERROR",
+          payload: err.message,
+        });
+        openNotification('error', err.message);
+      }
     }
   };
 
@@ -66,6 +100,8 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
         error: state.error,
         user: state.user,
         login,
+        logout,
+        checkTokenInLocalStorage
       }}
     >
       {children}

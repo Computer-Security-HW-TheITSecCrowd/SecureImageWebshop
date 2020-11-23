@@ -1,31 +1,30 @@
 import React, { Fragment, useContext, useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
-import { LoginOutlined, LogoutOutlined, UploadOutlined } from '@ant-design/icons';
+import { LogoutOutlined, UploadOutlined } from '@ant-design/icons';
 
 import { animationsRoute, galleryRoute, loginRoute, uploadRoute } from '../../constants/routeConstants';
 import AuthContext from '../../context/auth/authContext';
 
-import { ADMIN, CUSTOMER } from '../../constants/roleConstants';
+import { CUSTOMER } from '../../constants/roleConstants';
 
 const Navbar: React.FC = () => {
 
     const authContext = useContext(AuthContext);
-    const { isAuthenticated, user } = authContext;
+    const { isAuthenticated, user, logout } = authContext;
 
     const { Header } = Layout;
 
-    const history = useHistory();
-
+    /* eslint-disable no-restricted-globals */
     const [selectedKey, setSelectedKey] = useState(location.pathname.split('/')[0]);
 
     useEffect(() => {
         setSelectedKey(location.pathname)
-      }, [location])
+    }, []);
+    /* eslint-enable no-restricted-globals */
 
     const onLogout = () => {
-        console.log("Logout");
-        history.push(loginRoute);
+        logout && logout();
     }
 
     const authLinks = (
@@ -53,7 +52,7 @@ const Navbar: React.FC = () => {
     return (
         <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
             <Link to={loginRoute}>
-                <img className="logo" src='images/logo.png' alt="Secure Image Webshop logo"/>
+                <img className="logo" src='images/BKW_logo.svg' alt="Application logo"/>
             </Link>
             <Menu theme="dark" mode="horizontal" selectedKeys={[selectedKey]}>
                 { isAuthenticated && user && user.role === CUSTOMER && customerLinks }

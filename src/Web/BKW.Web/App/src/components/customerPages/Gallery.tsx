@@ -1,11 +1,14 @@
 import React from 'react';
+import AuthenticatedLayout from '../layout/AuthenticatedLayout';
 
 const Gallery: React.FC = () => {
 
     return (
-        <h1>
-            My Animation Gallery
-        </h1>
+        <AuthenticatedLayout>
+            <h1>
+                My Animation Gallery
+            </h1>
+        </AuthenticatedLayout>
     );
 };
 

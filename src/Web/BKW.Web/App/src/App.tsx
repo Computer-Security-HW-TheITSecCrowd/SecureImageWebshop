@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Router, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import AuthState from './context/auth/AuthState';
 import WebshopState from './context/webshop/WebshopState';

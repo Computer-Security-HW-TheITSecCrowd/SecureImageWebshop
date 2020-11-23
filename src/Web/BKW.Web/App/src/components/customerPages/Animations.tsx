@@ -1,11 +1,15 @@
 import React from 'react';
 
+import AuthenticatedLayout from '../layout/AuthenticatedLayout';
+
 const Animations: React.FC = () => {
 
     return (
-        <h1>
-            All Animations
-        </h1>
+        <AuthenticatedLayout>
+            <h1>
+                All Animations
+            </h1>
+        </AuthenticatedLayout>
     );
 };
 

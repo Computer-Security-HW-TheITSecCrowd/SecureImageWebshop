@@ -5,12 +5,14 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import AuthContext from '../../context/auth/authContext';
 import { Link } from 'react-router-dom';
-import { animationsRoute, registerRoute } from '../../constants/routeConstants';
+import { adminRoute, animationsRoute, registerRoute } from '../../constants/routeConstants';
+import { ADMIN, CUSTOMER } from '../../constants/roleConstants';
+import openNotification from '../../utils/notification';
 
 const Login: React.FC<RouteComponentProps> = ({ history }) => {
 
   const authContext = useContext(AuthContext);
-  const { isAuthenticated, error, loading, login } = authContext;
+  const { isAuthenticated, user, error, loading, login, checkTokenInLocalStorage } = authContext;
 
   const [formData, setFormData] = useState({
     username: '',
@@ -18,10 +20,18 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
   });
 
   useEffect(() => {
-    if (isAuthenticated) {
-      history.push(animationsRoute);
+    checkTokenInLocalStorage && checkTokenInLocalStorage();
+    if (isAuthenticated && user) {
+      if (user.role === ADMIN) {
+        history.push(adminRoute);
+      } else if (user.role === CUSTOMER) {
+        history.push(animationsRoute);
+      } else {
+        openNotification('error', 'User\'s role is unknown!');
+      }
     }
-  }, [isAuthenticated]);
+    // eslint-disable-next-line
+  }, [isAuthenticated, user]);
 
   const onChange = (event: React.FormEvent<HTMLInputElement>): void => {
     event.preventDefault();

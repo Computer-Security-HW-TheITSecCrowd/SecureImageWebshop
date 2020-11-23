@@ -8,7 +8,9 @@ export interface State {
   accessToken: string | null,
   error: string | null,
   user: User,
-  login?: (formData: LoginCredentials) => Promise<void>
+  login?: (formData: LoginCredentials) => Promise<void>,
+  logout?: () => Promise<void>,
+  checkTokenInLocalStorage?: () => Promise<void>
 };
 
 export type ActionType =
@@ -26,7 +28,6 @@ export default (state: State, action: ActionType): State => {
   switch(action.type) {
 
     case "LOGIN_SUCCESS":
-      console.log(action.payload);
       localStorage.setItem('accessToken', action.payload.jwt);
       setAuthToken(action.payload.jwt);
       return {
@@ -39,6 +40,12 @@ export default (state: State, action: ActionType): State => {
       return {
         ...state,
         loading: true
+      };
+    case "ERROR":
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
       };
     case "LOGOUT":
       localStorage.removeItem('accessToken');
