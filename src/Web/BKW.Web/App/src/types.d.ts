@@ -18,6 +18,10 @@ export type AnimationProps = {
   loading: boolean
 };
 
+export type CommentProps = {
+  comment: Comment
+}
+
 export type LoginCredentials = {
   username: string,
   password: string

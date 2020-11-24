@@ -26,7 +26,7 @@ function App() {
           <PrivateRoute path={adminRoute} roles={[ADMIN]} component={MainPage} />
           <PrivateRoute path={uploadRoute} roles={[CUSTOMER]} component={Upload} />
           <PrivateRoute path={galleryRoute} roles={[CUSTOMER]} component={Gallery} />
-          <PrivateRoute path={animationsRoute} roles={[CUSTOMER]} component={Animations} />
+          <PrivateRoute path={animationsRoute} roles={[CUSTOMER]} component={MainPage} />
           <PrivateRoute path={animationDetailsRoute} roles={[ADMIN, CUSTOMER]} component={AnimationDetails} />
           <Route path='/' component={LoginRedirect} />
         </Switch>

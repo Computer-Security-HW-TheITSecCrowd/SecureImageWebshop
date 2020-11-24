@@ -1,10 +1,13 @@
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
-import { PageHeader } from 'antd';
+import { PageHeader, Row, Col } from 'antd';
 
 import { animationsRoute } from '../../constants/routeConstants';
 import WebshopContext from '../../context/webshop/webshopContext';
 import AuthenticatedLayout from '../layout/AuthenticatedLayout';
+import AnimationSummary from './AnimationSummary';
+import AnimationComments from './AnimationComments';
+import CommentForm from './CommentForm';
 
 const AnimationDetails: React.FC = () => {
     const webshopContext = useContext(WebshopContext);
@@ -21,6 +24,9 @@ const AnimationDetails: React.FC = () => {
                     onBack={onBack}
                     title={selectedAnimation.title}
                 />
+            <AnimationSummary />
+            <AnimationComments />
+            <CommentForm />
             </AuthenticatedLayout>:
                 <Redirect to={animationsRoute} />
     );
