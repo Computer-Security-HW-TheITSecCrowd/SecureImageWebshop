@@ -15,7 +15,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ roles, component, ...rest }
         } else if (user && roles.indexOf(user.role) > -1 && component) {
           return React.createElement(component, props);
         } else {
-        return <Redirect to='/' />
+          return <Redirect to='/' />
         }
       }}
     />

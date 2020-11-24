@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import AuthState from './context/auth/AuthState';
 import WebshopState from './context/webshop/WebshopState';
@@ -9,6 +9,7 @@ import AdminMain from './components/adminPages/AdminMain';
 import Upload from './components/customerPages/Upload';
 import Gallery from './components/customerPages/Gallery';
 import Animations from './components/customerPages/Animations';
+import LoginRedirect from './components/auth/LoginRedirect';
 
 import { adminRoute, animationsRoute, galleryRoute, loginRoute, registerRoute, uploadRoute } from './constants/routeConstants';
 import { ADMIN, CUSTOMER } from './constants/roleConstants';
@@ -25,6 +26,7 @@ function App() {
           <PrivateRoute path={uploadRoute} roles={[CUSTOMER]} component={Upload} />
           <PrivateRoute path={galleryRoute} roles={[CUSTOMER]} component={Gallery} />
           <PrivateRoute path={animationsRoute} roles={[CUSTOMER]} component={Animations} />
+          <Route path='/' component={LoginRedirect} />
         </Switch>
       </WebshopState>
     </AuthState>
