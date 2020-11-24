@@ -1,18 +1,20 @@
-const baseURL: string = 'http://localhost:3001/api';
-const authURL: string = `${baseURL}/auth`;
-//const animationURL: string = `${baseURL}/animation`;
-const animationURL: string = `http://localhost:3001/animation`;
-const userURL: string = `${baseURL}/user`;
+const useMockedBackend = true;
+export const baseURL: string = useMockedBackend ? `http://localhost:3001` : 'http://localhost:42069/api';
+
+export const authURL: string = `${baseURL}/auth`;
+export const animationURL: string = `${baseURL}/animation`;
+export const userURL: string = `${baseURL}/user`;
 
 export const loginEndpoint: string = `${authURL}/login`;
 export const registrationEndpoint: string = `${authURL}/register`;
 export const logoutEndpoint: string = `${authURL}/logout`;
 
-export const animationsEndpoint: string = `${animationURL}s`;
-export const animationEndpoint = (animID: string) => `${animationURL}/${animID}/`;
+/* Retrieve all animations */
+export const animationsEndpoint: string = useMockedBackend ? `${animationURL}s` : `${animationURL}`;
+export const animationEndpoint = (animID: string) => `${animationsEndpoint}/${animID}/`;
 export const animationFileEndpoint = (animID: string) => animationEndpoint(animID) + '/file';
 export const animationDisableEndpoint = (animID: string) => animationEndpoint(animID) + '/disable';
-export const animationCommentsEndpoint = (animID: string) => animationEndpoint(animID) + '/comments';
-export const commentEndpoint = (animID: string, commentID: string) => animationCommentsEndpoint(animID) + `/${commentID}`;
+export const animationCommentsEndpoint = useMockedBackend ? (animID: string) => `${baseURL}/comments?animID=${animID}` : (animID: string) => animationEndpoint(animID) + '/comments';
+export const commentEndpoint = useMockedBackend ? (animID: string, commentID: string) => `${baseURL}/comments?animID=${animID}&id=${commentID}` : (animID: string, commentID: string) => animationCommentsEndpoint(animID) + `/${commentID}`;
 
 export const userAnimationsEndpoint = `${userURL}/animations`;

@@ -61,7 +61,7 @@ const database = {
 const router = jsonServer.router(database);
 var currentUser = null;
 
-server.post('/api/auth/register', (req, res) => {
+server.post('/auth/register', (req, res) => {
     const filteredUsers = database['users'].filter(user => user.username === req.body.username);
     if (filteredUsers.length > 0) {
         res.sendStatus(400);
@@ -71,7 +71,7 @@ server.post('/api/auth/register', (req, res) => {
     }
 });
 
-server.post('/api/auth/login', (req, res) => {
+server.post('/auth/login', (req, res) => {
     const filteredUsers = users.filter(user => user.username === req.body.username && user.password === req.body.password);
     if (filteredUsers.length > 0) {
         res.jsonp({ "token": filteredUsers[0].token});
@@ -80,12 +80,34 @@ server.post('/api/auth/login', (req, res) => {
     }
 });
 
-server.post('/api/auth/logout', (req, res) => {
+server.post('/auth/logout', (req, res) => {
     res.sendStatus(201);
 });
 
+server.post('/animations/:animID/disable', (req, res) => {
+    if (isAuthorized(req) && currentUser.role === 'admin') {
+        const filteredAnimations = database['animations'].filter(animation => animation.id == req.params.animID);
+        if (filteredAnimations.length > 0) {
+            filteredAnimations[0].banned = true;
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(404);
+        }
+    } else {
+        res.sendStatus(401);
+    }
+});
+
+server.put('/animations', (req, res) => {
+    if (isAuthorized(req) && currentUser.role === 'customer') {
+        database['animations'].find(animation => animation.id == req.body.animID).boughtcounter++;
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(401);
+    }
+});
+
 const isAuthorized = (req) => {
-    console.log(req.headers);
     if (req.headers.authorization) {
         const filteredUsers = users.filter(user => user.token === req.headers.authorization.split(" ")[1]);
         if (filteredUsers.length > 0) {
@@ -96,6 +118,7 @@ const isAuthorized = (req) => {
     currentUser = null;
     return false;
 };
+
 server.use(router);
 server.use((req, res, next) => {
  if (isAuthorized(req)) {
