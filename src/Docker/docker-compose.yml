@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   backend:
@@ -8,3 +8,25 @@ services:
       dockerfile: Backend/BKW.Backend.Api/Dockerfile
     ports:
       - 42069:80
+    depends_on:
+      - db
+    networks:
+      - bkw-network
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "BkwPassword42!"
+      ACCEPT_EULA: "Y"
+    networks:
+      - bkw-network
+    volumes:
+      - bkw-data:/var/opt/mssql
+
+volumes:
+  bkw-data:
+    external: false
+
+networks:
+  bkw-network:
+    driver: bridge
