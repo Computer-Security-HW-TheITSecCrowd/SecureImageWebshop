@@ -9,9 +9,11 @@ namespace BKW.Backend.Dal.Data
     public class AppDbContext : IdentityDbContext<AppUser>
     {
         private readonly IPasswordHasher<AppUser> _passwordHasher;
-        public AppDbContext(DbContextOptions<AppDbContext> options, IPasswordHasher<AppUser> passwordHasher) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options, IPasswordHasher<AppUser> passwordHasher)
+            : base(options)
         {
             _passwordHasher = passwordHasher;
+            this.Database.EnsureCreated();
         }
 
         public DbSet<Animation> Animations { get; set; }
