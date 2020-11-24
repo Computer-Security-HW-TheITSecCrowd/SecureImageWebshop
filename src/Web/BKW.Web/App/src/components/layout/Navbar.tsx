@@ -5,6 +5,7 @@ import { LogoutOutlined, UploadOutlined } from '@ant-design/icons';
 
 import { animationsRoute, galleryRoute, loginRoute, uploadRoute } from '../../constants/routeConstants';
 import AuthContext from '../../context/auth/authContext';
+import WebshopContext from '../../context/webshop/webshopContext';
 
 import { CUSTOMER } from '../../constants/roleConstants';
 
@@ -12,6 +13,9 @@ const Navbar: React.FC = () => {
 
     const authContext = useContext(AuthContext);
     const { isAuthenticated, user, logout } = authContext;
+
+    const webshopContext = useContext(WebshopContext);
+    const { clearWebshopState, animationSelectionClear } = webshopContext;
 
     const { Header } = Layout;
 
@@ -24,8 +28,9 @@ const Navbar: React.FC = () => {
     /* eslint-enable no-restricted-globals */
 
     const onLogout = () => {
+        clearWebshopState && clearWebshopState();
         logout && logout();
-    }
+    };
 
     const authLinks = (
         <Fragment>
@@ -51,7 +56,7 @@ const Navbar: React.FC = () => {
 
     return (
         <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-            <Link to={loginRoute}>
+            <Link to={loginRoute} onClick={animationSelectionClear}>
                 <img className="logo" src='images/BKW_logo.svg' alt="Application logo"/>
             </Link>
             <Menu theme="dark" mode="horizontal" selectedKeys={[selectedKey]}>

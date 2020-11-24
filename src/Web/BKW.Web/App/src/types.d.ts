@@ -13,6 +13,11 @@ export interface PrivateRouteProps extends RouteProps {
   path: string
 };
 
+export type AnimationProps = {
+  animation: Animation,
+  loading: boolean
+};
+
 export type LoginCredentials = {
   username: string,
   password: string
@@ -26,4 +31,22 @@ export type RegistrationCredentials = {
 
 export interface InteractionError extends Error {
   response?: AxiosResponse
-}
+};
+
+export type Animation = {
+  owner: number,
+  title: string,
+  created_at: Date,
+  boughtcounter: number,
+  comments: number[],
+  banned: boolean,
+  id: number
+};
+
+export type Comment = {
+  owner: number,
+  created_at: Date,
+  content: string,
+  animID: number,
+  id: number
+};

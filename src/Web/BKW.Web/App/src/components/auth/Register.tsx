@@ -42,7 +42,7 @@ const Register: React.FC = () => {
 			<PageHeader
 				onBack={onBack}
 				title="Secure Image Webshop"
-        subTitle="Registration"
+        		subTitle="Registration"
 			/>
 			<Row justify='center' align='middle' style={{ minHeight: '100%' }}>
 				<Col span={6} >

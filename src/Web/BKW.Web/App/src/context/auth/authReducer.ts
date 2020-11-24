@@ -18,11 +18,11 @@ export type ActionType =
   // General
   | { type: "ERROR"; payload: string }
   | { type: "CLEAR_ERRORS" }
+  | { type: "LOADING"; }
   // Authentication
   | { type: "LOGIN_SUCCESS"; payload: { jwt: string, user: User }}
   | { type: "LOGOUT" }
   | { type: "REGISTRATION_SUCCESS"; }
-  | { type: "LOADING"; }
 
 export default (state: State, action: ActionType): State => {
   switch(action.type) {

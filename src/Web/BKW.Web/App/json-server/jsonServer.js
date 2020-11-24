@@ -45,7 +45,7 @@ const database = {
         { "owner": 1, "title": "Arizona Sunset", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 537, "comments": [], "banned": false, "id": 19},
         { "owner": 4, "title": "Elks crossing", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 26, "comments": [], "banned": true, "id": 20},
         { "owner": 1, "title": "My Very Fancy House", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 11, "comments": [], "banned": false, "id": 21},
-        { "owner": 3, "title": "This went personal..", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 45, "comments": [], "banned": true, "id": 22}
+        { "owner": 3, "title": "This went personal..", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 0, "comments": [], "banned": true, "id": 22}
     ],
     "comments": [
         { "owner": 2, "created_at": "2020-11-17T23:29:36Z", "content": "Nice animation! Thanks for the upload!", "animID": 1, "id": 1 },

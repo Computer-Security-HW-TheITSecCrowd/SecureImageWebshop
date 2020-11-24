@@ -1,13 +1,14 @@
 const baseURL: string = 'http://localhost:3001/api';
 const authURL: string = `${baseURL}/auth`;
-const animationURL: string = `${baseURL}/animation`;
+//const animationURL: string = `${baseURL}/animation`;
+const animationURL: string = `http://localhost:3001/animation`;
 const userURL: string = `${baseURL}/user`;
 
 export const loginEndpoint: string = `${authURL}/login`;
 export const registrationEndpoint: string = `${authURL}/register`;
 export const logoutEndpoint: string = `${authURL}/logout`;
 
-export const animationsEndpoint: string = `${animationURL}/`;
+export const animationsEndpoint: string = `${animationURL}s`;
 export const animationEndpoint = (animID: string) => `${animationURL}/${animID}/`;
 export const animationFileEndpoint = (animID: string) => animationEndpoint(animID) + '/file';
 export const animationDisableEndpoint = (animID: string) => animationEndpoint(animID) + '/disable';
