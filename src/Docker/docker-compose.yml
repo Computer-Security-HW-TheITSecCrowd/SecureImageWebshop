@@ -21,10 +21,10 @@ services:
     networks:
       - bkw-network
     volumes:
-      - bwk-data:/var/opt/mssql
+      - bkw-data:/var/opt/mssql
 
 volumes:
-  bwk-data:
+  bkw-data:
     external: false
 
 networks:
