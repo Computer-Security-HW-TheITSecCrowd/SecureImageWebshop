@@ -18,6 +18,7 @@ const AnimationCard: React.FC<AnimationProps> = ({ animation, loading }) => {
         if (selectedAnimation) {
             history.push(animationDetailsRoute);
         }
+        // eslint-disable-next-line
     }, [selectedAnimation]);
 
     const { Title, Text } = Typography;

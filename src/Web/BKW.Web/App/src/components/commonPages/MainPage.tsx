@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Col, Input, Row } from 'antd';
 
 import AuthenticatedLayout from '../layout/AuthenticatedLayout';
-import AnimationCard from '../adminPages/AnimationCard';
+import AnimationCard from './AnimationCard';
 import WebshopContext from '../../context/webshop/webshopContext';
 
 const MainPage: React.FC = () => {

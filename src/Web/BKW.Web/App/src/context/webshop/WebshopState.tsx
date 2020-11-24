@@ -1,5 +1,4 @@
 import React, { ReactNode, useReducer } from 'react';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import WebshopContext from './webshopContext';
@@ -8,11 +7,9 @@ import { initialState } from './webshopContext';
 import openNotification from '../../utils/notification';
 import { animationsEndpoint } from '../../constants/apiConstants';
 import { InteractionError, Animation } from '../../types';
-import { animationDetailsRoute } from '../../constants/routeConstants';
 
 const WebshopState: React.FC<ReactNode> = ({ children }) => {
   const [state, dispatch] = useReducer(webshopReducer, initialState);
-  const history = useHistory();
 
   const setLoading = () => {
     dispatch({ type: "LOADING" });
@@ -46,6 +43,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         type: "ANIMATIONS_LOADED",
         payload: res.data
       });
+      clearErrors();
     } catch (err) {
       handleError(err);
     }
