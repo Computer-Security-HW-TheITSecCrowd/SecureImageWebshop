@@ -6,8 +6,8 @@ import jwt_decode from 'jwt-decode';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
 import { initialState } from './authContext';
-import { LoginCredentials, User } from '../../types';
-import { loginEndpoint, logoutEndpoint } from '../../constants/apiConstants';
+import { InteractionError, LoginCredentials, RegistrationCredentials, User } from '../../types';
+import { loginEndpoint, logoutEndpoint, registrationEndpoint } from '../../constants/apiConstants';
 
 import openNotification from '../../utils/notification';
 import { loginRoute } from '../../constants/routeConstants';
@@ -25,6 +25,53 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
         type: "LOGIN_SUCCESS",
         payload: { user: user, jwt: token },
       });
+    }
+  };
+
+  const setLoading = () => {
+    dispatch({ type: "LOADING" });
+  };
+
+  const clearErrors = () => {
+    dispatch({ type: "CLEAR_ERRORS" });
+  };
+
+  const handleError = (err: InteractionError) => {
+    if (err.response) {
+      dispatch({
+        type: "ERROR",
+        payload: err.response.data.msg,
+      });
+      openNotification('error', err.response.data.msg);
+    } else {
+      dispatch({
+        type: "ERROR",
+        payload: err.message,
+      });
+      openNotification('error', err.message);
+    }
+  };
+
+  const register = async (formData: RegistrationCredentials) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    try {
+      setLoading();
+      await axios.post(registrationEndpoint, formData, config);
+
+      dispatch({
+        type: "REGISTRATION_SUCCESS"
+      });
+      openNotification('success', 'Successful registration');
+      clearErrors();
+      history.push(loginRoute);
+
+    } catch (err) {
+      handleError(err);
     }
   };
 
@@ -46,21 +93,10 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
         type: "LOGIN_SUCCESS",
         payload: { user: user, jwt: encoded_jwt },
       });
+      clearErrors();
 
     } catch (err) {
-      if (err.response) {
-        dispatch({
-          type: "ERROR",
-          payload: err.response.data.msg,
-        });
-        openNotification('error', err.response.data.msg);
-      } else {
-        dispatch({
-          type: "ERROR",
-          payload: err.message,
-        });
-        openNotification('error', err.message);
-      }
+      handleError(err);
     }
   };
 
@@ -70,25 +106,10 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
       dispatch({ type: "LOGOUT" });
       await axios.post(logoutEndpoint);
       history.push(loginRoute);
+      clearErrors();
     } catch (err) {
-      if (err.response) {
-        dispatch({
-          type: "ERROR",
-          payload: err.response.data.msg,
-        });
-        openNotification('error', err.response.data.msg);
-      } else {
-        dispatch({
-          type: "ERROR",
-          payload: err.message,
-        });
-        openNotification('error', err.message);
-      }
+      handleError(err);
     }
-  };
-
-  const setLoading = () => {
-    dispatch({ type: "LOADING" });
   };
 
   return (
@@ -101,6 +122,7 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
         user: state.user,
         login,
         logout,
+        register,
         checkTokenInLocalStorage
       }}
     >

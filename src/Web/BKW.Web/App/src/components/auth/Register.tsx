@@ -11,7 +11,7 @@ const Register: React.FC = () => {
 	const { Title } = Typography;
 
 	const authContext = useContext(AuthContext);
-	const { loading } = authContext;
+	const { loading, register } = authContext;
 
 	const onBack = (): void => {
 			history.push(loginRoute);
@@ -34,8 +34,7 @@ const Register: React.FC = () => {
 	};
 	
 	const onRegister = (): void => {
-	console.log("Register");
-	console.log(formData);
+	register && register(formData);
 	}
 
 	return (

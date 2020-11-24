@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { ReactNode } from "react";
 import { RouteProps } from "react-router-dom";
 
@@ -16,3 +17,13 @@ export type LoginCredentials = {
   username: string,
   password: string
 };
+
+export type RegistrationCredentials = {
+  username: string,
+  password: string,
+  passwordConfirmation: string
+};
+
+export interface InteractionError extends Error {
+  response?: AxiosResponse
+}

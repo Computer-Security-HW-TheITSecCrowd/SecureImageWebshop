@@ -12,7 +12,7 @@ import openNotification from '../../utils/notification';
 const Login: React.FC<RouteComponentProps> = ({ history }) => {
 
   const authContext = useContext(AuthContext);
-  const { isAuthenticated, user, error, loading, login, checkTokenInLocalStorage } = authContext;
+  const { isAuthenticated, user, loading, login, checkTokenInLocalStorage } = authContext;
 
   const [formData, setFormData] = useState({
     username: '',
