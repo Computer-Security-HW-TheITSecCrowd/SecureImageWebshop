@@ -30,23 +30,24 @@ namespace BKW.Backend.Api.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> Upload([FromForm(Name = "file")] IFormFile formFile)
+        public async Task<ActionResult<AnimationClient.Animation>> Upload([FromForm(Name = "file")] IFormFile formFile)
         {
-            byte[] bytes;
+            //byte[] bytes;
             using (var memoryStream = new MemoryStream())
             {
                 await formFile.CopyToAsync(memoryStream);
                 var anim = await parserService.ParseAnimation(memoryStream.ToArray());
                 var image = parserService.GetBitmapFromAnimation(anim.Images.First());
-                var imageMs = new MemoryStream();
+                /*var imageMs = new MemoryStream();
                 imageMs.Position = 0;
                 // ToDo gives back black background
                 image.Save(imageMs, ImageFormat.Png);
                 imageMs.Seek(0, SeekOrigin.Begin);
                 imageMs.Position = 0;
-                bytes = imageMs.ToArray();
+                bytes = imageMs.ToArray();*/
+                return anim;
             }
-            return File(bytes, "image/png");
+            //return File(bytes, "image/png");
         }
     }
 }
