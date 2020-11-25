@@ -45,7 +45,18 @@ services:
     ports:
       - 50051:50051
     networks:
-      - bkw-network            
+      - bkw-network     
+      
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+    depends_on:
+      - db
+    networks:
+      - bkw-network
+
 
 #volumes:
   #bkw-data:
