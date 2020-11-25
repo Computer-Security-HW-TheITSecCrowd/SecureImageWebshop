@@ -299,23 +299,24 @@ struct Parser {
                 Tlv nextTlv = Tlv::parse(content, index);
 
                 switch (nextTlv.type) {
-                    case TlvType::Header:
-                        cout << "Parsing header block..." << endl;
-                        throw ParsingException("Multiple header blocks");
-                    case TlvType::Credits:
-                        cout << "Parsing credits block..." << endl;
-                        if (credits.size() == 1) {
-                            throw ParsingException("Only one credits block is allowed");
-                        }
-                        credits.push_back(Credits::parse(nextTlv));
-                        cout << "Credits block parsed." << endl;
-                        break;
-                    case TlvType::Animation:
-                        cout << "Parsing animation block..." << endl;
-                        animationImages.push_back(AnimationImage::parse(nextTlv));
-                        cout << "Animation block parsed." << endl;
-                        break;
+                case TlvType::Header:
+                    cout << "Parsing header block..." << endl;
+                    throw ParsingException("Multiple header blocks");
+                case TlvType::Credits:
+                    cout << "Parsing credits block..." << endl;
+                    credits.push_back(Credits::parse(nextTlv));
+                    cout << "Credits block parsed." << endl;
+                    break;
+                case TlvType::Animation:
+                    cout << "Parsing animation block..." << endl;
+                    animationImages.push_back(AnimationImage::parse(nextTlv));
+                    cout << "Animation block parsed." << endl;
+                    break;
                 }
+            }
+
+            if (credits.size() != 1) {
+                throw ParsingException("Only one and one credits block is allowed");
             }
 
             Animation animation;
