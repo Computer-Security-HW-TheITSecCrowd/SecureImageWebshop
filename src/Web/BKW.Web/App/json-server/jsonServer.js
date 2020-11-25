@@ -6,22 +6,22 @@ server.use(middlewares);
 server.use(jsonServer.bodyParser);
 
 users = [
-    { id: 1, username: "john", password: "johnpass", role: "customer", token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiIxIiwidXNlcm5hbWUiOiJqb2huIiwicm9sZSI6ImN1c3RvbWVyIn0.-OJN39Y3e-DTFFSRJIGK_tUqFkSHBCH82HZBGw-lo4s" },
-    { id: 2, username: "jane", password: "janepass", role: "customer", token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiIyIiwidXNlcm5hbWUiOiJqYW5lIiwicm9sZSI6ImN1c3RvbWVyIn0.mI061iY6MOgYZCyaZ-ydjBXThjZGseuEJOExw0bFhbA" },
-    { id: 3, username: "jill", password: "jillpass", role: "customer", token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiIzIiwidXNlcm5hbWUiOiJqaWxsIiwicm9sZSI6ImN1c3RvbWVyIn0.Tjxk-jfsoulOpCH327zTYvFOUgM331vM9_BiKliuOhk" },
-    { id: 4, username: "james", password: "jamespass", role: "customer", token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI0IiwidXNlcm5hbWUiOiJqYW1lcyIsInJvbGUiOiJjdXN0b21lciJ9.nMg6RMHJprszEgHJCREZtPZeYYV9FSa-SOtA6CNtxVU" },
-    { id: 5, username: "jerry", password: "jerrypass", role: "customer", token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI1IiwidXNlcm5hbWUiOiJqZXJyeSIsInJvbGUiOiJjdXN0b21lciJ9.q6T4tl3iPRt0NjZZG0__M8PixZcnFdGFt6mBCzXSxwM" },
-    { id: 6, username: "adam", password: "adampass", role: "admin", token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2IiwidXNlcm5hbWUiOiJhZGFtIiwicm9sZSI6ImFkbWluIn0.baKqQTDKeeLcBGrYV5DVJP0SsGFt4F3T1zpB7I95BNI" }
+    { id: 1, username: "john", password: "johnpass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEiLCJVc2VybmFtZSI6ImpvaG4iLCJSb2xlIjoiQ3VzdG9tZXIifQ.zO8PaRZXRrNwtQNX9BH4fcuE3FyygwWYKt1dZFXs-oA" },
+    { id: 2, username: "jane", password: "janepass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjIiLCJVc2VybmFtZSI6ImphbmUiLCJSb2xlIjoiQ3VzdG9tZXIifQ.oy3iwwR7_6R9v9zb9AqDBCvuYn-RjGIjeS9lrXyI8aQ" },
+    { id: 3, username: "jill", password: "jillpass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjMiLCJVc2VybmFtZSI6ImppbGwiLCJSb2xlIjoiQ3VzdG9tZXIifQ.WG5l5-ydVkiP03T0yJ0ZnONrM2sefcyQgw_e8H9tTsE" },
+    { id: 4, username: "james", password: "jamespass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjQiLCJVc2VybmFtZSI6ImphbWVzIiwiUm9sZSI6IkN1c3RvbWVyIn0.8ohu6pLq_SJNvACJDysU5V4kYnQlig8sIt2b0bvxGuE" },
+    { id: 5, username: "jerry", password: "jerrypass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjUiLCJVc2VybmFtZSI6ImplcnJ5IiwiUm9sZSI6IkN1c3RvbWVyIn0.SKo_HIIK8FS5DF6sHuK2emMnZwEfjj3TeuYSnh_mUVA" },
+    { id: 6, username: "adam", password: "adampass", role: "Admin", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjYiLCJVc2VybmFtZSI6ImFkYW0iLCJSb2xlIjoiQWRtaW4ifQ.RTmUL93kayoi0JSb1EMeD3aMSTFmecK3v3s5x0vcwSQ" }
 ];
 
 const database = {
     "users": [
-        { "id": 1, "username": "john", "password": "johnpass", "role": "customer" },
-        { "id": 2, "username": "jane", "password": "janepass", "role": "customer" },
-        { "id": 3, "username": "jill", "password": "jillpass", "role": "customer" },
-        { "id": 4, "username": "james", "password": "jamespass", "role": "customer" },
-        { "id": 5, "username": "jerry", "password": "jerrypass", "role": "customer" },
-        { "id": 6, "username": "adam", "password": "adampass", "role": "admin" }
+        { "id": 1, "username": "john", "password": "johnpass", "role": "Customer" },
+        { "id": 2, "username": "jane", "password": "janepass", "role": "Customer" },
+        { "id": 3, "username": "jill", "password": "jillpass", "role": "Customer" },
+        { "id": 4, "username": "james", "password": "jamespass", "role": "Customer" },
+        { "id": 5, "username": "jerry", "password": "jerrypass", "role": "Customer" },
+        { "id": 6, "username": "adam", "password": "adampass", "role": "Admin" }
     ],
     "animations": [
         { "owner": 1, "title": "Down the River", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 44, "comments": [1, 2], "banned": false, "id": 1},
@@ -66,7 +66,7 @@ server.post('/auth/register', (req, res) => {
     if (filteredUsers.length > 0) {
         res.sendStatus(400);
     } else {
-        database['users'].push({ "id": database['users'].length + 1, "username": req.body.username, "password": req.body.password, "role": "customer"});
+        database['users'].push({ "id": database['users'].length + 1, "username": req.body.username, "password": req.body.password, "role": "Customer"});
         res.sendStatus(200);
     }
 });
@@ -74,7 +74,7 @@ server.post('/auth/register', (req, res) => {
 server.post('/auth/login', (req, res) => {
     const filteredUsers = users.filter(user => user.username === req.body.username && user.password === req.body.password);
     if (filteredUsers.length > 0) {
-        res.jsonp({ "token": filteredUsers[0].token});
+        res.jsonp({ "accessToken": filteredUsers[0].accessToken});
     } else {
         res.sendStatus(401);
     }
@@ -85,7 +85,7 @@ server.post('/auth/logout', (req, res) => {
 });
 
 server.post('/animations/:animID/disable', (req, res) => {
-    if (isAuthorized(req) && currentUser.role === 'admin') {
+    if (isAuthorized(req) && currentUser.role === 'Admin') {
         const filteredAnimations = database['animations'].filter(animation => animation.id == req.params.animID);
         if (filteredAnimations.length > 0) {
             filteredAnimations[0].banned = true;
@@ -99,7 +99,7 @@ server.post('/animations/:animID/disable', (req, res) => {
 });
 
 server.put('/animations', (req, res) => {
-    if (isAuthorized(req) && currentUser.role === 'customer') {
+    if (isAuthorized(req) && currentUser.role === 'Customer') {
         database['animations'].find(animation => animation.id == req.body.animID).boughtcounter++;
         res.sendStatus(200);
     } else {
