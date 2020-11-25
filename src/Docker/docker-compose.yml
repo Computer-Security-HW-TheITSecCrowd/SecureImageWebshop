@@ -23,6 +23,20 @@ services:
     volumes:
       - bkw-data:/var/opt/mssql
 
+  frontend:
+    build:
+      context: ../Web/BKW.Web/App
+      dockerfile: Dockerfile
+    volumes:
+      - ../Web/BKW.Web/App/src:/code/src
+      - ../Web/BKW.Web/App/public:/code/public
+    ports:
+      - 3000:3000
+    networks:
+      - bkw-network
+    depends_on:
+      - backend
+
 volumes:
   bkw-data:
     external: false
