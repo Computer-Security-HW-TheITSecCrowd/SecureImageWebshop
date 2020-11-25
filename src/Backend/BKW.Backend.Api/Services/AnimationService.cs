@@ -1,6 +1,7 @@
 ﻿using BKW.Backend.Dal.Animations;
 using BKW.Backend.Domain.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BKW.Backend.Api.Services
@@ -14,9 +15,11 @@ namespace BKW.Backend.Api.Services
             _animationRepository = animationRepository;
         }
 
-        public async Task<ICollection<Animation>> GetAnimations(int count)
+        public async Task<ICollection<Animation>> GetAnimations(int count, string? search)
         {
-            return await _animationRepository.FindAll(count);
+            var animations = await _animationRepository.FindAll(count);
+
+            return filteredAnimationsBySearch(animations, search);
         }
 
         public async Task<Animation> GetAnimation(string id)
@@ -24,14 +27,18 @@ namespace BKW.Backend.Api.Services
             return await _animationRepository.FindById(id);
         }
 
-        public async Task<ICollection<Animation>> GetAnimationsForPurchaser(string id)
+        public async Task<ICollection<Animation>> GetAnimationsForPurchaser(string id, int count, string? search)
         {
-            return await _animationRepository.FindByPurchaserId(id);
+            var animations = await _animationRepository.FindByPurchaserId(id, count);
+
+            return filteredAnimationsBySearch(animations, search);
         }
 
-        public async Task<ICollection<Animation>> GetAnimationsForOwner(string id)
+        public async Task<ICollection<Animation>> GetAnimationsForOwner(string id, int count, string? search)
         {
-            return await _animationRepository.FindByOwnerId(id);
+            var animations = await _animationRepository.FindByOwnerId(id, count);
+
+            return filteredAnimationsBySearch(animations, search);
         }
 
         public async Task<Animation> CreateAnimation(Animation animation)
@@ -49,6 +56,14 @@ namespace BKW.Backend.Api.Services
         public async Task Purchase(string purchaserId, string animationId)
         {
             await _animationRepository.InsertPurchase(purchaserId, animationId);
+        }
+
+        private ICollection<Animation> filteredAnimationsBySearch(ICollection<Animation> animations, string search)
+        {
+            if (search != null && search != string.Empty)
+                return animations.Where(a => a.Title.ToLower().Contains(search.ToLower())).ToList();
+
+            return animations;
         }
     }
 }

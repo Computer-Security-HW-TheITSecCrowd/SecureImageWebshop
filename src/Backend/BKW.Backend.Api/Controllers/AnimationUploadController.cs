@@ -37,6 +37,9 @@ namespace BKW.Backend.Api.Controllers
             {
                 await formFile.CopyToAsync(memoryStream);
                 var anim = await parserService.ParseAnimation(memoryStream.ToArray());
+                if (anim == null)
+                    return BadRequest();
+
                 var image = parserService.GetBitmapFromAnimation(anim.Images.First());
                 /*var imageMs = new MemoryStream();
                 imageMs.Position = 0;

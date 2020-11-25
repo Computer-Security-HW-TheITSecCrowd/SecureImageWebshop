@@ -30,13 +30,12 @@ namespace BKW.Backend.Api.Controllers
         private string getUserName() => User.FindFirst("Username").Value;
 
         [HttpGet]
-        [Authorize(Policy = "Admin")]
-        public async Task<ActionResult<IEnumerable<AnimationResponse>>> GetAnimations([FromQuery] string count)
+        public async Task<ActionResult<IEnumerable<AnimationResponse>>> GetAnimations([FromQuery] string count, [FromQuery] string? search)
         {
-            if (count == null)
+            if (!Int32.TryParse(count, out int parsedCount))
                 return BadRequest();
 
-            var animations = await _animationService.GetAnimations(Int32.Parse(count));
+            var animations = await _animationService.GetAnimations(parsedCount, search);
             var animationsResponse = animations.Select(animation => new AnimationResponse(animation));
 
             return Ok(animationsResponse);

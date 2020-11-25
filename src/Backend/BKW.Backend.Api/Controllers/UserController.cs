@@ -4,6 +4,7 @@ using BKW.Backend.Api.Services;
 using BKW.Backend.Dal.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,12 +26,15 @@ namespace BKW.Backend.Api.Controllers
 
         [HttpGet("animations")]
         [Authorize(Policy = "Customer")]
-        public async Task<ActionResult<AnimationResponse>> GetAnimations()
+        public async Task<ActionResult<AnimationResponse>> GetAnimations([FromQuery] string count, [FromQuery] string? search)
         {
+            if (!Int32.TryParse(count, out int parsedCount))
+                return BadRequest();
+
             var userId = getUserId();
 
-            var ownedAnimationsByUser = await _animationService.GetAnimationsForOwner(userId);
-            var purchasedAnimationsByUser = await _animationService.GetAnimationsForPurchaser(userId);
+            var ownedAnimationsByUser = await _animationService.GetAnimationsForOwner(userId, parsedCount, search);
+            var purchasedAnimationsByUser = await _animationService.GetAnimationsForPurchaser(userId, parsedCount, search);
             var animations = ownedAnimationsByUser.Concat(purchasedAnimationsByUser);
             var animationsResponse = animations.Select(animation => new AnimationResponse(animation));
 

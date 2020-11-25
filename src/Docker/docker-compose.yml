@@ -55,8 +55,7 @@ services:
     depends_on:
       - db
     networks:
-      - bkw-network
-
+      - bkw-network    
 
 #volumes:
   #bkw-data:

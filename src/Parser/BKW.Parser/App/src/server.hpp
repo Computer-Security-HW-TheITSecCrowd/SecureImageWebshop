@@ -48,7 +48,11 @@ class AnimationServiceImpl final : public animation::Parser::Service {
     auto [valid, anim, msg] = Parser::parse(rawBytes);
 
     if (!valid) {
+<<<<<<< HEAD
       return Status::OK;
+=======
+      return Status::CANCELLED;
+>>>>>>> origin/master
     }
 
     // Add credits
