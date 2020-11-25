@@ -7,7 +7,7 @@ import AuthContext from './authContext';
 import authReducer from './authReducer';
 import { initialState } from './authContext';
 import { InteractionError, LoginCredentials, RegistrationCredentials, User } from '../../types';
-import { loginEndpoint, logoutEndpoint, registrationEndpoint } from '../../constants/apiConstants';
+import { loginEndpoint, registrationEndpoint } from '../../constants/apiConstants';
 
 import openNotification from '../../utils/notification';
 import { loginRoute } from '../../constants/routeConstants';
@@ -86,7 +86,7 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
       setLoading();
       const res = await axios.post(loginEndpoint, formData, config);
 
-      const encoded_jwt = res.data.token;
+      const encoded_jwt = res.data.accessToken;
       const user = jwt_decode(encoded_jwt) as User;
 
       dispatch({
@@ -102,9 +102,7 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
 
   const logout = async () => {
     try {
-      // Dispatch first: we should clear browser data even if the request fails.
       dispatch({ type: "LOGOUT" });
-      await axios.post(logoutEndpoint);
       history.push(loginRoute);
       clearErrors();
     } catch (err) {

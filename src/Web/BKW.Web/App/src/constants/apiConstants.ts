@@ -7,7 +7,6 @@ export const userURL: string = `${baseURL}/user`;
 
 export const loginEndpoint: string = `${authURL}/login`;
 export const registrationEndpoint: string = `${authURL}/register`;
-export const logoutEndpoint: string = `${authURL}/logout`;
 
 /* Retrieve all animations */
 export const animationsEndpoint: string = useMockedBackend ? `${animationURL}s` : `${animationURL}`;

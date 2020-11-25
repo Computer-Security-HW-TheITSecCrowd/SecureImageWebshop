@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
                 <img className="logo" src='images/BKW_logo.svg' alt="Application logo"/>
             </Link>
             <Menu theme="dark" mode="horizontal" selectedKeys={[selectedKey]}>
-                { isAuthenticated && user && user.role === CUSTOMER && customerLinks }
+                { isAuthenticated && user && user.Role === CUSTOMER && customerLinks }
                 { isAuthenticated && authLinks }
             </Menu>
         </Header>

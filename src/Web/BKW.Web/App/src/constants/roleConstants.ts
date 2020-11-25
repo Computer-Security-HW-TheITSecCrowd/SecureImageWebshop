@@ -1,2 +1,2 @@
-export const ADMIN: string = 'admin';
-export const CUSTOMER: string = 'customer';
+export const ADMIN: string = 'Admin';
+export const CUSTOMER: string = 'Customer';

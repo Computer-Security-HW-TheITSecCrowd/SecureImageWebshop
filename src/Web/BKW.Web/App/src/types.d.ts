@@ -3,9 +3,9 @@ import { ReactNode } from "react";
 import { RouteProps } from "react-router-dom";
 
 export type User = {
-  username: string,
-  role: string,
-  id: number
+  Username: string,
+  Role: string,
+  Id: string
 } | null;
 
 export interface PrivateRouteProps extends RouteProps {
@@ -30,7 +30,7 @@ export type LoginCredentials = {
 export type RegistrationCredentials = {
   username: string,
   password: string,
-  passwordConfirmation: string
+  confirmPassword: string
 };
 
 export interface InteractionError extends Error {

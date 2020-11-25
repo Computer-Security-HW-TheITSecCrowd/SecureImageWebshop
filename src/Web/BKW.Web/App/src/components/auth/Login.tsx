@@ -1,4 +1,4 @@
-import React, { FormEvent, Fragment, useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Card, Row, Col, Button, Form, Input, Typography, Divider, PageHeader } from 'antd';
 import { KeyOutlined, UserOutlined } from '@ant-design/icons';
 import { RouteComponentProps } from 'react-router-dom';
@@ -20,18 +20,21 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
   });
 
   useEffect(() => {
+    console.log("Login useEffect");
+    console.log(isAuthenticated);
+    console.log(user);
     checkTokenInLocalStorage && checkTokenInLocalStorage();
     if (isAuthenticated && user) {
-      if (user.role === ADMIN) {
+      if (user.Role === ADMIN) {
         history.push(adminRoute);
-      } else if (user.role === CUSTOMER) {
+      } else if (user.Role === CUSTOMER) {
         history.push(animationsRoute);
       } else {
         openNotification('error', 'User\'s role is unknown!');
       }
     }
     // eslint-disable-next-line
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated]);
 
   const onChange = (event: React.FormEvent<HTMLInputElement>): void => {
     event.preventDefault();

@@ -20,7 +20,7 @@ const Register: React.FC = () => {
 	const [formData, setFormData] = useState({
 			username: '',
 			password: '',
-			passwordConfirmation: ''
+			confirmPassword: ''
 	});
 
 	const onChange = (event: React.FormEvent<HTMLInputElement>): void => {
@@ -34,7 +34,8 @@ const Register: React.FC = () => {
 	};
 	
 	const onRegister = (): void => {
-	register && register(formData);
+		console.log(formData);
+		register && register(formData);
 	}
 
 	return (
@@ -109,7 +110,7 @@ const Register: React.FC = () => {
 							>
 								<Input.Password
 									type='password'
-									name='passwordConfirmation'
+									name='confirmPassword'
 									required
 									onChange={onChange}
 								/>
