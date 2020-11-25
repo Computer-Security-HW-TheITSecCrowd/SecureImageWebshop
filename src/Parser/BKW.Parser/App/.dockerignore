@@ -1,0 +1,8 @@
+# Ignore everything
+**
+
+# But not these files...
+!src/Makefile
+!src/*.cpp
+!src/*.hpp
+!src/protos/*.proto

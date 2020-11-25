@@ -1,33 +1,39 @@
-# the compiler:
-CC = g++
-
-# Standard C++ version:
-STANDARD = -std=c++17
+CXX = g++
+CPPFLAGS += `pkg-config --cflags protobuf grpc`
+CXXFLAGS += -std=c++17 -DSERVER
+LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++ grpc`\
+           -Wl,--no-as-needed -lgrpc++_reflection -Wl,--as-needed\
+           -ldl
 
 # compiler flags:
-# -m64                    Compile for 64-bit to take max advantage of address space (important for ASLR; more virtual address space to chose from when randomising layout).
-# -fPIE                    Enable ASLR (Required to obtain the full security benefits of ASLR).
+# -m64                  Compile for 64-bit to take max advantage of address space (important for ASLR; more virtual address space to chose from when randomising layout).
+# -fPIE                 Enable ASLR (Required to obtain the full security benefits of ASLR).
 # -fstack-protector-all Enable Stack Smashing Protection (the -all is for: to guarantee guards are applied to all functions).
 # -DFORTIFY_SOURCE=2    Buffer ovverflow checks. Also adds checks at run-time (detected buffer overflow terminates the program).
 # -mmitigate-rop        Attempt to compile code without unintended return addresses, making ROP just a little harder.
 # -z noexecstack        Enable NX bit (This option marks the stack non-executable).
 CFLAGS = -m64 -fPIE -fstack-protector-all -DFORTIFY_SOURCE=2 -z noexecstack -I./include
 
-# The build target executable:
-TARGET = parser
+PROTOC = protoc
+GRPC_CPP_PLUGIN = grpc_cpp_plugin
+GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 
-# $(wildcard *.cpp /xxx/xxx/*.cpp): get all .cpp files from the current directory and dir "/xxx/xxx/"
-SRCS := $(wildcard *.cpp)
+PROTOS_PATH = ./protos
 
-# $(patsubst %.cpp,%.o,$(SRCS)): substitute all ".cpp" file name strings to ".o" file name strings
-OBJS := $(patsubst %.cpp,%.o,$(SRCS))
+vpath %.proto $(PROTOS_PATH)
 
-%.o: %.cpp
-	$(CC) $(STANDARD) $(CFLAGS) -c $<
+all: parser_server
 
-all: $(TARGET)
-$(TARGET): $(OBJS)
-	$(CC) -o $@ $^
+parser_server: animation.pb.o animation.grpc.pb.o main.o
+	$(CXX) $^ $(LDFLAGS) $(CFLAGS) -o $@
+
+.PRECIOUS: %.grpc.pb.cc
+%.grpc.pb.cc: %.proto
+	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=. --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
+
+.PRECIOUS: %.pb.cc
+%.pb.cc: %.proto
+	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
 clean:
-	rm -rf $(TARGET) *.o
+	rm -f *.o *.pb.cc *.pb.h parser_server
