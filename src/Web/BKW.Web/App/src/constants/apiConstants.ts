@@ -1,4 +1,4 @@
-const useMockedBackend = false;
+const useMockedBackend = true;
 export const baseURL: string = useMockedBackend ? `http://localhost:3001` : 'http://localhost:42069/api';
 
 export const authURL: string = `${baseURL}/auth`;

@@ -12,23 +12,23 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
   const [state, dispatch] = useReducer(webshopReducer, initialState);
 
   const setLoading = () => {
-    dispatch({ type: "LOADING" });
+    dispatch({ type: 'LOADING' });
   };
 
   const clearErrors = () => {
-    dispatch({ type: "CLEAR_ERRORS" });
+    dispatch({ type: 'CLEAR_ERRORS' });
   };
 
   const handleError = (err: InteractionError) => {
     if (err.response) {
       dispatch({
-        type: "ERROR",
+        type: 'ERROR',
         payload: err.response.data.msg,
       });
       openNotification('error', err.response.data.msg);
     } else {
       dispatch({
-        type: "ERROR",
+        type: 'ERROR',
         payload: err.message,
       });
       openNotification('error', err.message);
@@ -38,10 +38,13 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
   const getAnimations = async (filter: string) => {
     try {
       setLoading();
-      const res = await axios.get(animationsEndpoint + `?title_like=${filter}`);
+      const res =
+        filter !== ''
+          ? await axios.get(animationsEndpoint + `?title_like=${filter}`)
+          : await axios.get(animationsEndpoint + ``); // TODO backend needs a `count` query parameter (json-server does not)
       dispatch({
-        type: "ANIMATIONS_LOADED",
-        payload: res.data
+        type: 'ANIMATIONS_LOADED',
+        payload: res.data,
       });
       clearErrors();
     } catch (err) {
@@ -51,24 +54,24 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
 
   const selectAnimation = async (animation: Animation) => {
     dispatch({
-      type: "ANIMATION_SELECTED",
-      payload: animation
+      type: 'ANIMATION_SELECTED',
+      payload: animation,
     });
   };
 
   const animationSelectionClear = () => {
-    dispatch({ type: "ANIMATION_SELECTION_CLEAR" });
+    dispatch({ type: 'ANIMATION_SELECTION_CLEAR' });
   };
 
   const setSearchText = (text: string) => {
     dispatch({
-      type: "SEARCH_TEXT_SET",
-      payload: text
+      type: 'SEARCH_TEXT_SET',
+      payload: text,
     });
   };
 
   const clearWebshopState = () => {
-    dispatch({ type: "CLEAR_STATE" });
+    dispatch({ type: 'CLEAR_STATE' });
   };
 
   return (
@@ -83,7 +86,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         selectAnimation,
         animationSelectionClear,
         setSearchText,
-        clearWebshopState
+        clearWebshopState,
       }}
     >
       {children}

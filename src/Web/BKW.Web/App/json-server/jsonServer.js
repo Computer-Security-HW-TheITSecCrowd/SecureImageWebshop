@@ -109,7 +109,7 @@ server.put('/animations', (req, res) => {
 
 const isAuthorized = (req) => {
     if (req.headers.authorization) {
-        const filteredUsers = users.filter(user => user.token === req.headers.authorization.split(" ")[1]);
+        const filteredUsers = users.filter(user => user.accessToken === req.headers.authorization.split(" ")[1]);
         if (filteredUsers.length > 0) {
             currentUser = filteredUsers[0];
             return true;
@@ -118,6 +118,30 @@ const isAuthorized = (req) => {
     currentUser = null;
     return false;
 };
+
+server.get('/animations/:animID', (req, res) => {
+
+    console.log("anim + comment");
+
+    if (isAuthorized(req) && ['Admin', 'Customer'].indexOf(currentUser.role) > 0) {
+
+        const animID =  parseInt(req.params['animID']);
+
+        const animation = database['animations'].find(animation => animation.id === animID);
+        const comments = database['comments'].filter(comment => comment.animID === animID);
+        res.json({
+            id: animation.id,
+            owner: animation.owner,
+            title: animation.title,
+            created_at: animation.created_at,
+            boughtcounter: animation.boughtcounter,
+            banned: animation.banned,
+            comments
+        })
+    } else {
+        res.sendStatus(401);
+    }
+})
 
 server.use(router);
 server.use((req, res, next) => {
