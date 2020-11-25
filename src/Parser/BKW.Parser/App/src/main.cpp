@@ -1,11 +1,15 @@
 #include <iostream>
 #include <vector>
 #include "parser.hpp"
+#include "server.hpp"
 
 using std::cout;
 using std::endl;
 
 int main(int argc, char** argv) {
+#if SERVER
+    RunServer();
+#else
     if (argc != 2) {
         cout << "Invalid argument number" << endl;
         return EXIT_FAILURE;
@@ -19,6 +23,6 @@ int main(int argc, char** argv) {
             return EXIT_FAILURE;
         }
     }
-
+#endif
     return EXIT_SUCCESS;
 }

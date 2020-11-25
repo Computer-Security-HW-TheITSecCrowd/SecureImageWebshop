@@ -1,18 +1,20 @@
 syntax = "proto3";
 
+option csharp_namespace = "AnimationClient";
+
+package animation;
+
 service Parser {
-    rpc Validate (Empty) returns (IsValid);
+    rpc Validate (RawAnimation) returns (IsValid);
     rpc Parse (RawAnimation) returns (Animation);
 }
-
-message Empty { }
 
 message IsValid {
     bool value = 1;
 }
 
 message RawAnimation {
-    repeated uint32 bits = 1;
+    repeated uint32 bytes = 1;
 }
 
 message Animation {
@@ -37,8 +39,9 @@ message Image {
     uint32 width = 1;
     uint32 height = 2;
     string caption = 3;
-    string tags = 4;
-    Rgb content = 5;    
+    uint32 duration = 4;
+    repeated string tags = 5;
+    repeated Rgb content = 6;
 }
 
 message Rgb {

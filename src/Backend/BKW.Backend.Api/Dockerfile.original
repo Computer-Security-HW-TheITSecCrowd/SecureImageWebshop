@@ -8,8 +8,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["Backend/BKW.Backend.Api/BKW.Backend.Api.csproj", "Backend/BKW.Backend.Api/"]
-COPY ["Backend/BKW.Backend.Dal/BKW.Backend.Dal.csproj", "Backend/BKW.Backend.Dal/"]
-COPY ["Backend/BKW.Backend.Domain/BKW.Backend.Domain.csproj", "Backend/BKW.Backend.Domain/"]
 RUN dotnet restore "Backend/BKW.Backend.Api/BKW.Backend.Api.csproj"
 COPY . .
 WORKDIR "/src/Backend/BKW.Backend.Api"

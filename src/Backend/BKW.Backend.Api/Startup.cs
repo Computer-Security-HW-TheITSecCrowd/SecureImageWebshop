@@ -1,5 +1,6 @@
 using System.Text;
 using BKW.Backend.Api.Services;
+using BKW.Backend.Api.Services.ParserServices;
 using BKW.Backend.Dal.Animations;
 using BKW.Backend.Dal.Comments;
 using BKW.Backend.Dal.Data;
@@ -90,6 +91,8 @@ namespace SecureImageWebShopService
                 options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin"));
                 options.AddPolicy("Customer", policy => policy.RequireClaim("Role", "Customer"));
             });
+
+            services.AddParserServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
