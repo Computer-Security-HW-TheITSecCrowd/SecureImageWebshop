@@ -123,7 +123,7 @@ server.get('/animations/:animID', (req, res) => {
 
     console.log("anim + comment");
 
-    if (isAuthorized(req) && ['Admin', 'Customer'].indexOf(currentUser.role) > 0) {
+    if (isAuthorized(req) && ['Admin', 'Customer'].indexOf(currentUser.role) > -1) {
 
         const animID =  parseInt(req.params['animID']);
 
