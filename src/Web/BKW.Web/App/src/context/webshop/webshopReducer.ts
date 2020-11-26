@@ -1,3 +1,4 @@
+import { stat } from 'fs';
 import { Animation, AnimationWithComments, Comment } from '../../types';
 import { initialState } from './webshopContext';
 
@@ -22,7 +23,8 @@ export interface State {
   deleteComment?: (animID: string, commentID: string) => Promise<void>,
   clearComments?: () => void,
   uploadAnimation?: (formData: { title: string, upload: any }) => Promise<void>,
-  purchaseAnimation?: (animID: string) => Promise<void>
+  purchaseAnimation?: (animation: Animation) => Promise<void>,
+  disableAnimation?: (animation: AnimationWithComments) => Promise<void>
 };
 
 export type ActionType =
@@ -38,7 +40,8 @@ export type ActionType =
   | { type: "MORE_OWN_ANIMATIONS_LOADED"; payload: { ownAnimations: Animation[], hasMoreOwn: boolean } }
   | { type: "ANIMATION_SELECTED"; payload: AnimationWithComments }
   | { type: "ANIMATION_SELECTION_CLEAR"; }
-  | { type: "PURCHASED_ANIMATION"; }
+  | { type: "PURCHASED_ANIMATION"; payload: Animation }
+  | { type: "DISABLED_ANIMATION"; payload: AnimationWithComments }
   // Comments
   | { type: "COMMENTS_LOADED"; payload: Comment[] }
   | { type: "COMMENT_DELETED"; payload: string }
@@ -85,6 +88,16 @@ export default (state: State, action: ActionType): State => {
         ...state,
         selectedAnimation: null
       };
+    case "PURCHASED_ANIMATION":
+      return {
+        ...state,
+        ownAnimations: [...state.ownAnimations, action.payload]
+      }
+    case "DISABLED_ANIMATION":
+      return {
+        ...state,
+        selectedAnimation: action.payload
+      }
     case "COMMENTS_LOADED":
       return {
         ...state,

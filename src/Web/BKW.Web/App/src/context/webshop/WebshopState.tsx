@@ -10,7 +10,8 @@ import {
   animationEndpoint,
   uploadAnimationEndpoint,
   commentEndpoint,
-  userAnimationsEndpoint
+  userAnimationsEndpoint,
+  animationDisableEndpoint
 } from '../../constants/apiConstants';
 import { InteractionError, Animation, AnimationWithComments } from '../../types';
 
@@ -162,15 +163,40 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     dispatch({ type: 'CLEAR_STATE' });
   };
 
-  const purchaseAnimation = async (animID: string) => {
+  const purchaseAnimation = async (animation: Animation) => {
     try {
-      const res = await axios.put(userAnimationsEndpoint, { animID })
+      const res = await axios.put(userAnimationsEndpoint, { animID: animation.id })
       console.log(res.data);
       
       dispatch({
-        type: 'PURCHASED_ANIMATION'
+        type: 'PURCHASED_ANIMATION',
+        payload: animation
       });
       openNotification('success', 'Animation purchased');
+    } catch (err) {
+      handleError(err);
+    }
+  }
+
+  const disableAnimation = async (animation: Animation) => {
+    console.log("disable animation STATE");
+
+    try {
+      const res = await axios.post(animationDisableEndpoint(animation.id));
+
+      state.selectedAnimation && dispatch({
+        type: 'DISABLED_ANIMATION',
+        payload: {
+          id: state.selectedAnimation.id,
+          owner: state.selectedAnimation.owner,
+          title: state.selectedAnimation.title,
+          createdAt: state.selectedAnimation.createdAt,
+          comments: state.selectedAnimation.comments,
+          numberOfPurchase: state.selectedAnimation.numberOfPurchase,
+          banned: true
+        }
+      });
+      openNotification('info', 'Animation disabled');
     } catch (err) {
       handleError(err);
     }
@@ -199,7 +225,8 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         clearWebshopState,
         uploadAnimation,
         getOwnAnimations,
-        purchaseAnimation
+        purchaseAnimation,
+        disableAnimation
       }}
     >
       {children}

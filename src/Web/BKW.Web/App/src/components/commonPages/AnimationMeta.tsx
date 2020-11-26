@@ -14,24 +14,30 @@ const AnimationMeta: React.FC = () => {
     purchaseAnimation,
     getOwnAnimations,
     ownAnimations,
+    disableAnimation,
   } = webshopContext;
 
   const authContext = useContext(AuthContext);
   const { user } = authContext;
 
   useEffect(() => {
-    getOwnAnimations && getOwnAnimations("");
+    if (user?.Role === CUSTOMER) {
+      getOwnAnimations && getOwnAnimations('');
+    }
   }, []);
 
   const onPurchase = () => {
     console.log('Purchase image');
     selectedAnimation &&
       purchaseAnimation &&
-      purchaseAnimation(selectedAnimation.id);
+      purchaseAnimation(selectedAnimation);
   };
 
   const onDisable = () => {
     console.log('Disable image');
+    selectedAnimation &&
+      disableAnimation &&
+      disableAnimation(selectedAnimation);
   };
 
   const onDownload = () => {
@@ -61,17 +67,17 @@ const AnimationMeta: React.FC = () => {
           ownAnimations.some(
             (animation) => animation.id === selectedAnimation?.id
           ) ? (
-            <Button type='primary' onClick={onDownload}>
+            <Button type='primary' onClick={onDownload} disabled={selectedAnimation?.banned}>
               Download
             </Button>
           ) : (
-            <Button type='primary' onClick={onPurchase}>
+            <Button type='primary' onClick={onPurchase} disabled={selectedAnimation?.banned}>
               Purchase
             </Button>
           )
         ) : (
-          <Button type='primary' onClick={onDisable}>
-            Disable
+          <Button type='primary' onClick={onDisable} disabled={selectedAnimation?.banned}>
+            {selectedAnimation?.banned ? 'Disabled' : 'Disable'}
           </Button>
         )}
       </Space>
