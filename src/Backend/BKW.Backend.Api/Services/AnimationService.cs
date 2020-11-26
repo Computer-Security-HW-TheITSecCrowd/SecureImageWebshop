@@ -22,7 +22,8 @@ namespace BKW.Backend.Api.Services
         public async Task<ICollection<Animation>> GetAnimations(int count, string? search)
         {
             var animations = await _animationRepository.FindAll();
-            var filteredAnimationsBySearch = getFilteredAnimationsBySearch(animations, search);
+            var availableAnimations = getAvailableAnimations(animations);
+            var filteredAnimationsBySearch = getFilteredAnimationsBySearch(availableAnimations, search);
 
             return takeFirstNFromAnimations(filteredAnimationsBySearch, count);
         }
@@ -109,6 +110,11 @@ namespace BKW.Backend.Api.Services
         public async Task Purchase(string purchaserId, string animationId)
         {
             await _animationRepository.InsertPurchase(purchaserId, animationId);
+        }
+
+        private ICollection<Animation> getAvailableAnimations(ICollection<Animation> animations)
+        {
+            return animations.Where(a => a.Banned == false).ToList();
         }
 
         private ICollection<Animation> getFilteredAnimationsBySearch(ICollection<Animation> animations, string search)
