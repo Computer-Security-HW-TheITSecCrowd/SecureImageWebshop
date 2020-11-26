@@ -12,7 +12,8 @@ import {
   animationsEndpoint,
   animationCommentsEndpoint,
   animationEndpoint,
-  uploadAnimationEndpoint
+  uploadAnimationEndpoint,
+  commentEndpoint
 } from '../../constants/apiConstants';
 import { InteractionError, Animation, AnimationWithComments } from '../../types';
 
@@ -117,6 +118,20 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     }
   };
 
+  const deleteComment = async (animID: string, commentID: string) => {
+    try {
+      const res = await axios.delete(commentEndpoint(animID, commentID))
+
+      dispatch({
+        type: "COMMENT_DELETED",
+        payload: commentID
+      });
+      openNotification('info', 'Comment deleted')
+    } catch (err) {
+      handleError(err);
+    }
+  }
+
   const clearComments = () => {
     dispatch({
       type: 'COMMENTS_CLEAR'
@@ -148,6 +163,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         selectAnimation,
         animationSelectionClear,
         getAnimationComments,
+        deleteComment,
         clearComments,
         setSearchText,
         clearWebshopState,

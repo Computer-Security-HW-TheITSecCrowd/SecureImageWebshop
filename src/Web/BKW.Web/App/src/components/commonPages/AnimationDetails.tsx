@@ -11,10 +11,11 @@ import CommentForm from './CommentForm';
 
 const AnimationDetails: React.FC = () => {
   const webshopContext = useContext(WebshopContext);
-  const { selectedAnimation, animationSelectionClear } = webshopContext;
+  const { selectedAnimation, animationSelectionClear, clearComments } = webshopContext;
 
   const onBack = () => {
     animationSelectionClear && animationSelectionClear();
+    clearComments && clearComments();
   };
 
   return selectedAnimation ? (

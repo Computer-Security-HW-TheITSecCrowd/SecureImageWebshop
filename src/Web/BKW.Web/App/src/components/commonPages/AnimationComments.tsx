@@ -1,7 +1,7 @@
 import React, { MouseEvent, useContext, useEffect } from 'react';
 
 import { List, Row, Col, Descriptions, Button } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined } from '@ant-design/icons';
 
 import { ADMIN, CUSTOMER } from '../../constants/roleConstants';
 
@@ -19,6 +19,7 @@ const AnimationComments: React.FC = () => {
     animationSelectionClear,
     getAnimationComments,
     comments,
+    deleteComment,
   } = webshopContext;
   const { user } = authContext;
 
@@ -30,8 +31,11 @@ const AnimationComments: React.FC = () => {
 
   const onDelete = (id: string) => {
     // console.log('Delete item: ', e.currentTarget.)
-    
-  }
+
+    deleteComment &&
+      selectedAnimation &&
+      deleteComment(selectedAnimation.id, id);
+  };
 
   return (
     <Row justify='center'>
@@ -52,10 +56,21 @@ const AnimationComments: React.FC = () => {
                 {/* <CommentItem comment={item} /> */}
               </List.Item>
             ) : (
-              <List.Item key={item.id} actions={[
-                // <DeleteOutlined onClick={onDelete} />
-                <Button type='primary' icon={<DeleteOutlined />} onClick={_e => onDelete(item.id)} key={item.id} id={`delete-button-${item.id}`}/>
-              ]}>
+              <List.Item
+                key={item.id}
+                actions={[
+                  // <DeleteOutlined onClick={onDelete} />
+                  <Button
+                    type='primary'
+                    icon={<DeleteOutlined />}
+                    onClick={(_e) => onDelete(item.id)}
+                  />,
+                ]}
+              >
+                <List.Item.Meta
+                  title={item.createdBy}
+                  description={item.createdAt}
+                />
                 {item.content}
               </List.Item>
             )

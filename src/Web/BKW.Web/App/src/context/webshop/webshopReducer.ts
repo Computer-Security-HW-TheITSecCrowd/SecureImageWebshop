@@ -1,4 +1,6 @@
 // import { Animation, AnimationDetails } from '../../types';
+import { stat } from 'fs';
+import AnimationComments from '../../components/commonPages/AnimationComments';
 import { Animation, AnimationWithComments, Comment, CommentProps } from '../../types';
 import { initialState } from './webshopContext';
 
@@ -16,6 +18,7 @@ export interface State {
   setSearchText?: (text: string) => void,
   clearWebshopState?: () => void,
   getAnimationComments?: (animID: string) => Promise<void>,
+  deleteComment?: (animID: string, commentID: string) => Promise<void>,
   clearComments?: () => void,
   uploadAnimation?: (formData: { title: string, upload: any }) => Promise<void>
 };
@@ -33,6 +36,7 @@ export type ActionType =
   | { type: "ANIMATION_SELECTION_CLEAR"; }
   // Comments
   | { type: "COMMENTS_LOADED"; payload: Comment[] }
+  | { type: "COMMENT_DELETED"; payload: string }
   | { type: "COMMENTS_CLEAR"; }
   // Search
   | { type: "SEARCH_TEXT_SET"; payload: string }
@@ -69,6 +73,11 @@ export default (state: State, action: ActionType): State => {
         ...state,
         loading: false,
         comments: action.payload
+      }
+    case "COMMENT_DELETED":
+      return {
+        ...state,
+        comments: state.comments.filter(comment => comment.id !== action.payload)
       }
     case "COMMENTS_CLEAR":
       return {
