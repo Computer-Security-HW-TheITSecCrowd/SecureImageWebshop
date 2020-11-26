@@ -1,12 +1,14 @@
 ﻿using BKW.Backend.Api.Requests;
 using BKW.Backend.Api.Responses;
 using BKW.Backend.Api.Services;
+using BKW.Backend.Api.Services.ParserServices;
 using BKW.Backend.Dal.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,11 +21,13 @@ namespace BKW.Backend.Api.Controllers
     {
         private readonly IAnimationService _animationService;
         private readonly ICommentService _commentService;
+        private readonly IParserService _parserService;
 
-        public AnimationController(IAnimationService animationService, ICommentService commentService)
+        public AnimationController(IAnimationService animationService, ICommentService commentService, IParserService parserService)
         {
             _animationService = animationService;
             _commentService = commentService;
+            _parserService = parserService;
         }
 
         private string getUserId() => User.FindFirst("Id").Value;
@@ -61,16 +65,26 @@ namespace BKW.Backend.Api.Controllers
 
         [HttpPost]
         [Authorize(Policy = "Customer")]
-        public async Task<ActionResult> Upload([FromBody] UploadRequest request)
+        public async Task<ActionResult> Upload([FromForm] UploadRequest request)
         {
+            if (request.Title == null || request.FormFile == null)
+                return BadRequest("Title and file have to be given");
+
             var userId = getUserId();
 
-            var newAnimation = request.ToModel(userId);
-            await _animationService.CreateAnimation(newAnimation);
+            var animation = request.ToModel(userId);
+            var formFile = request.FormFile;
 
-            // TODO: save file in folder structure
+            try
+            {
+                await _animationService.CreateAnimation(animation, formFile);
+            }
+            catch(FileUploadException e)
+            {
+                return BadRequest(e.Message);
+            }
 
-            return CreatedAtAction(nameof(GetAnimation), new { id = newAnimation.Id }, new AnimationResponse(newAnimation));
+            return CreatedAtAction(nameof(GetAnimation), new { id = animation.Id }, new AnimationResponse(animation));
         }
 
         [HttpPost("{id}/disable")]
