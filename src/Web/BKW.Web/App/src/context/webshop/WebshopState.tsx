@@ -5,15 +5,12 @@ import WebshopContext from './webshopContext';
 import webshopReducer from './webshopReducer';
 import { initialState } from './webshopContext';
 import openNotification from '../../utils/notification';
-// import { animationEndpoint, animationsEndpoint, uploadAnimationEndpoint } from '../../constants/apiConstants';
-// import { InteractionError, Animation } from '../../types';
-import reportWebVitals from '../../reportWebVitals';
 import {
   animationsEndpoint,
-  animationCommentsEndpoint,
   animationEndpoint,
   uploadAnimationEndpoint,
-  commentEndpoint
+  commentEndpoint,
+  userAnimationsEndpoint
 } from '../../constants/apiConstants';
 import { InteractionError, Animation, AnimationWithComments } from '../../types';
 
@@ -64,6 +61,23 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     }
   };
 
+  const getOwnAnimations = async (filter: string, count: number = 10, loadingMore: boolean = false) => {
+    try {
+      !loadingMore && setLoading();
+      const res = await axios.get(userAnimationsEndpoint + `?count=${count}${filter ? `&search=${filter}` : ''}`);
+      dispatch({
+        type: loadingMore ? 'MORE_OWN_ANIMATIONS_LOADED' : 'OWN_ANIMATIONS_LOADED',
+        payload: {
+          ownAnimations: res.data,
+          hasMoreOwn: res.data.length === count
+        },
+      });
+      clearErrors();
+    } catch (err) {
+      handleError(err);
+    }
+  };
+
   const uploadAnimation = async (formData: { title: string, upload: any }) => {
     try {
       const config = {
@@ -75,7 +89,6 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         "title": formData.title,
         //"file": formData.upload
       };
-      console.log(data);
       await axios.post(uploadAnimationEndpoint, data, config);
       openNotification('success', `${formData.title} uploaded`);
     } catch (err) {
@@ -138,9 +151,9 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     })
   }
 
-  const setSearchText = (text: string) => {
+  const setSearchText = (text: string, gallery: boolean = false) => {
     dispatch({
-      type: 'SEARCH_TEXT_SET',
+      type: gallery ? 'GALLERY_SEARCH_TEXT_SET' : 'SEARCH_TEXT_SET',
       payload: text,
     });
   };
@@ -154,9 +167,12 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
       value={{
         animations: state.animations,
         hasMore: state.hasMore,
+        ownAnimations: state.ownAnimations,
+        hasMoreOwn: state.hasMoreOwn,
         comments: state.comments,
         selectedAnimation: state.selectedAnimation,
         searchText: state.searchText,
+        gallerySearchText: state.gallerySearchText,
         loading: state.loading,
         error: state.error,
         getAnimations,
@@ -168,6 +184,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         setSearchText,
         clearWebshopState,
         uploadAnimation,
+        getOwnAnimations
       }}
     >
       {children}

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Card, Typography, Image, Tooltip, Row, Col } from 'antd';
-import { CommentOutlined, TeamOutlined } from '@ant-design/icons';
+import { TeamOutlined } from '@ant-design/icons';
 
 import { AnimationProps } from '../../types';
 import WebshopContext from '../../context/webshop/webshopContext';
