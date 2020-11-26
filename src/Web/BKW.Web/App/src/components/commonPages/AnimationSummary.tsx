@@ -10,8 +10,8 @@ const AnimationSummary: React.FC = () => {
   const { selectedAnimation, animationSelectionClear } = webshopContext;
 
   return (
-    <Row justify='center'>
-      <Col span={10}>
+    <Row justify='center' gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+      <Col span={12} style={{display: 'flex', justifyContent: 'center'}}>
         <Image
           src={`https://picsum.photos/800/600?random=${
             selectedAnimation && selectedAnimation.id
@@ -19,9 +19,10 @@ const AnimationSummary: React.FC = () => {
           preview={false}
           height='24vw'
           width='32vw'
+          style={{margin: "0 auto"}}
         />
       </Col>
-      <Col span={10}>
+      <Col span={12} style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
         <AnimationMeta />
       </Col>
     </Row>

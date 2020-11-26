@@ -1,10 +1,12 @@
-import { Animation, AnimationDetails } from '../../types';
+// import { Animation, AnimationDetails } from '../../types';
+import { Animation, AnimationWithComments, Comment, CommentProps } from '../../types';
 import { initialState } from './webshopContext';
 
 export interface State {
   animations: Animation[],
   hasMore: boolean,
-  selectedAnimation?: AnimationDetails | null,
+  selectedAnimation?: AnimationWithComments | null,
+  comments: Comment[],
   searchText: string,
   loading: boolean,
   error: string | null,
@@ -13,6 +15,8 @@ export interface State {
   animationSelectionClear?: () => void,
   setSearchText?: (text: string) => void,
   clearWebshopState?: () => void,
+  getAnimationComments?: (animID: string) => Promise<void>,
+  clearComments?: () => void,
   uploadAnimation?: (formData: { title: string, upload: any }) => Promise<void>
 };
 
@@ -25,8 +29,11 @@ export type ActionType =
   // Animations
   | { type: "ANIMATIONS_LOADED"; payload: { animations: Animation[], hasMore: boolean } }
   | { type: "MORE_ANIMATIONS_LOADED"; payload: { animations: Animation[], hasMore: boolean } }
-  | { type: "ANIMATION_SELECTED"; payload: AnimationDetails }
+  | { type: "ANIMATION_SELECTED"; payload: AnimationWithComments }
   | { type: "ANIMATION_SELECTION_CLEAR"; }
+  // Comments
+  | { type: "COMMENTS_LOADED"; payload: Comment[] }
+  | { type: "COMMENTS_CLEAR"; }
   // Search
   | { type: "SEARCH_TEXT_SET"; payload: string }
 
@@ -57,6 +64,17 @@ export default (state: State, action: ActionType): State => {
         ...state,
         selectedAnimation: null
       };
+    case "COMMENTS_LOADED":
+      return {
+        ...state,
+        loading: false,
+        comments: action.payload
+      }
+    case "COMMENTS_CLEAR":
+      return {
+        ...state,
+        comments: []
+      }
     case "SEARCH_TEXT_SET":
       return {
         ...state,

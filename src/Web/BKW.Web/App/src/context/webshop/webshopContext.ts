@@ -4,6 +4,7 @@ import { State } from './webshopReducer';
 export const initialState: State = {
   animations: [],
   hasMore: true,
+  comments: [],
   searchText: '',
   loading: false,
   error: null

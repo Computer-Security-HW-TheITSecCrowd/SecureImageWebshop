@@ -50,11 +50,11 @@ const database = {
     "comments": [
         { "owner": "2", "createdAt": "2020-11-17T23:29:36Z", "content": "Nice animation! Thanks for the upload!", "animID": "1", "id": "1" },
         { "owner": "4", "createdAt": "2020-11-18T08:27:25Z", "content": "One of my favorites!", "animID": "1", "id": "2" },
-        { "owner": "2", "createdAt": "2020-10-22T21:31:32Z", "content": "Please do not try this at home!!!", "animID": "2", "id": "3" },
-        { "owner": "5", "createdAt": "2020-10-23T11:24:11Z", "content": "LOOOL", "animID": "2", "id": "4" },
-        { "owner": "1", "createdAt": "2020-11-18T08:27:25Z", "content": "OMG SOOO CUTE!", "animID": "7", "id": "5" },
-        { "owner": "3", "createdAt": "2020-10-22T21:31:32Z", "content": "My doggo looks similar", "animID": "7", "id": "6" },
-        { "owner": "3", "createdAt": "2020-10-23T11:24:11Z", "content": "Awww", "animID": "7", "id": "7" }
+        { "owner": "2", "createdAt": "2020-10-22T21:31:32Z", "content": "Please do not try this at home!!!", "animID": "1", "id": "3" },
+        { "owner": "5", "createdAt": "2020-10-23T11:24:11Z", "content": "LOOOL", "animID": "1", "id": "4" },
+        { "owner": "1", "createdAt": "2020-11-18T08:27:25Z", "content": "OMG SOOO CUTE!", "animID": "1", "id": "5" },
+        { "owner": "3", "createdAt": "2020-10-22T21:31:32Z", "content": "My doggo looks similar", "animID": "1", "id": "6" },
+        { "owner": "3", "createdAt": "2020-10-23T11:24:11Z", "content": "Awww", "animID": "1", "id": "7" }
     ]
 }
 

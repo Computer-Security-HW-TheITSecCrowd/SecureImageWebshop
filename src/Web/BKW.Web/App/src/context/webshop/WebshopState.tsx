@@ -5,9 +5,16 @@ import WebshopContext from './webshopContext';
 import webshopReducer from './webshopReducer';
 import { initialState } from './webshopContext';
 import openNotification from '../../utils/notification';
-import { animationEndpoint, animationsEndpoint, uploadAnimationEndpoint } from '../../constants/apiConstants';
-import { InteractionError, Animation } from '../../types';
+// import { animationEndpoint, animationsEndpoint, uploadAnimationEndpoint } from '../../constants/apiConstants';
+// import { InteractionError, Animation } from '../../types';
 import reportWebVitals from '../../reportWebVitals';
+import {
+  animationsEndpoint,
+  animationCommentsEndpoint,
+  animationEndpoint,
+  uploadAnimationEndpoint
+} from '../../constants/apiConstants';
+import { InteractionError, Animation, AnimationWithComments } from '../../types';
 
 const WebshopState: React.FC<ReactNode> = ({ children }) => {
   const [state, dispatch] = useReducer(webshopReducer, initialState);
@@ -92,6 +99,30 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     dispatch({ type: 'ANIMATION_SELECTION_CLEAR' });
   };
 
+  const getAnimationComments = async (animID: string) => {
+    try {
+      setLoading();
+
+      const res = await axios.get(animationEndpoint(animID));
+      console.log(res);
+      
+      dispatch({
+        type: 'COMMENTS_LOADED',
+        payload: res.data.comments
+      })
+
+      clearErrors();
+    } catch (err) {
+      handleError(err);
+    }
+  };
+
+  const clearComments = () => {
+    dispatch({
+      type: 'COMMENTS_CLEAR'
+    })
+  }
+
   const setSearchText = (text: string) => {
     dispatch({
       type: 'SEARCH_TEXT_SET',
@@ -108,6 +139,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
       value={{
         animations: state.animations,
         hasMore: state.hasMore,
+        comments: state.comments,
         selectedAnimation: state.selectedAnimation,
         searchText: state.searchText,
         loading: state.loading,
@@ -115,6 +147,8 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         getAnimations,
         selectAnimation,
         animationSelectionClear,
+        getAnimationComments,
+        clearComments,
         setSearchText,
         clearWebshopState,
         uploadAnimation,
