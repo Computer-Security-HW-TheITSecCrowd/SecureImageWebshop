@@ -162,6 +162,20 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     dispatch({ type: 'CLEAR_STATE' });
   };
 
+  const purchaseAnimation = async (animID: string) => {
+    try {
+      const res = await axios.put(userAnimationsEndpoint, { animID })
+      console.log(res.data);
+      
+      dispatch({
+        type: 'PURCHASED_ANIMATION'
+      });
+      openNotification('success', 'Animation purchased');
+    } catch (err) {
+      handleError(err);
+    }
+  }
+
   return (
     <WebshopContext.Provider
       value={{
@@ -184,7 +198,8 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         setSearchText,
         clearWebshopState,
         uploadAnimation,
-        getOwnAnimations
+        getOwnAnimations,
+        purchaseAnimation
       }}
     >
       {children}

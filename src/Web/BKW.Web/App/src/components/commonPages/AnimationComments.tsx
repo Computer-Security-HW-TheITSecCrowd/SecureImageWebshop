@@ -15,6 +15,7 @@ const AnimationComments: React.FC = () => {
   const authContext = useContext(AuthContext);
 
   const {
+    loading,
     selectedAnimation,
     animationSelectionClear,
     getAnimationComments,
@@ -45,6 +46,7 @@ const AnimationComments: React.FC = () => {
           header={<h1>Animation Comments</h1>}
           dataSource={comments}
           bordered
+          loading={loading}
           renderItem={(item: Comment) =>
             user && user.Role === CUSTOMER ? (
               <List.Item key={item.id}>

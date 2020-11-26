@@ -21,7 +21,8 @@ export interface State {
   getAnimationComments?: (animID: string) => Promise<void>,
   deleteComment?: (animID: string, commentID: string) => Promise<void>,
   clearComments?: () => void,
-  uploadAnimation?: (formData: { title: string, upload: any }) => Promise<void>
+  uploadAnimation?: (formData: { title: string, upload: any }) => Promise<void>,
+  purchaseAnimation?: (animID: string) => Promise<void>
 };
 
 export type ActionType =
@@ -37,6 +38,7 @@ export type ActionType =
   | { type: "MORE_OWN_ANIMATIONS_LOADED"; payload: { ownAnimations: Animation[], hasMoreOwn: boolean } }
   | { type: "ANIMATION_SELECTED"; payload: AnimationWithComments }
   | { type: "ANIMATION_SELECTION_CLEAR"; }
+  | { type: "PURCHASED_ANIMATION"; }
   // Comments
   | { type: "COMMENTS_LOADED"; payload: Comment[] }
   | { type: "COMMENT_DELETED"; payload: string }
