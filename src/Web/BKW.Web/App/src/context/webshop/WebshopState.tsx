@@ -5,7 +5,7 @@ import WebshopContext from './webshopContext';
 import webshopReducer from './webshopReducer';
 import { initialState } from './webshopContext';
 import openNotification from '../../utils/notification';
-import { animationsEndpoint } from '../../constants/apiConstants';
+import { animationsEndpoint, uploadAnimationEndpoint } from '../../constants/apiConstants';
 import { InteractionError, Animation } from '../../types';
 
 const WebshopState: React.FC<ReactNode> = ({ children }) => {
@@ -52,6 +52,20 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     }
   };
 
+  const uploadAnimation = async (formData: { title: string, upload: any }) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+      await axios.post(uploadAnimationEndpoint, { title: formData.title }, config);
+      openNotification('success', `${formData.title} uploaded`);
+    } catch (err) {
+      handleError(err);
+    }
+  };
+
   const selectAnimation = async (animation: Animation) => {
     dispatch({
       type: 'ANIMATION_SELECTED',
@@ -87,6 +101,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         animationSelectionClear,
         setSearchText,
         clearWebshopState,
+        uploadAnimation,
       }}
     >
       {children}

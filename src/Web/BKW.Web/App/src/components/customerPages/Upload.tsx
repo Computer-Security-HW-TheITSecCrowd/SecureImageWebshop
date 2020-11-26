@@ -1,13 +1,16 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { useContext } from 'react';
 import { Upload as AUpload, Button, Row, Input, Form, Card } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import AuthenticatedLayout from '../layout/AuthenticatedLayout';
-import openNotification from '../../utils/notification';
-import { UploadChangeParam } from 'antd/lib/upload';
-import { RcCustomRequestOptions, UploadFile } from 'antd/lib/upload/interface';
+import { RcCustomRequestOptions } from 'antd/lib/upload/interface';
+import WebshopContext from '../../context/webshop/webshopContext';
+import { FormInstance, useForm } from 'antd/lib/form/Form';
 
 const Upload: React.FC = () => {
+
+    const webshopContext = useContext(WebshopContext);
+    const { uploadAnimation } = webshopContext;
 
     const upload = ({ file, onSuccess }: RcCustomRequestOptions) => {
         setTimeout(() => {
@@ -21,7 +24,7 @@ const Upload: React.FC = () => {
       };
 
     const onFinish = (values: { title: string; upload: any }) => {
-        openNotification('success', `${values.title} uploaded`);
+        uploadAnimation && uploadAnimation(values);
     };
 
     return (

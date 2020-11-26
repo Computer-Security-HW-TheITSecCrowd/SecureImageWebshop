@@ -11,7 +11,8 @@ export interface State {
   selectAnimation?: (animation: Animation) => Promise<void>,
   animationSelectionClear?: () => void,
   setSearchText?: (text: string) => void,
-  clearWebshopState?: () => void
+  clearWebshopState?: () => void,
+  uploadAnimation?: (formData: { title: string, upload: any }) => Promise<void>
 };
 
 export type ActionType =

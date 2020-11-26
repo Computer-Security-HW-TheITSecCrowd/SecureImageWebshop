@@ -10,6 +10,7 @@ export const registrationEndpoint: string = `${authURL}/register`;
 
 /* Retrieve all animations */
 export const animationsEndpoint: string = useMockedBackend ? `${animationURL}s` : `${animationURL}?count=10`;
+export const uploadAnimationEndpoint: string = useMockedBackend? `${animationURL}s` : `${animationURL}`;
 export const animationEndpoint = (animID: string) => `${animationsEndpoint}/${animID}/`;
 export const animationFileEndpoint = (animID: string) => animationEndpoint(animID) + '/file';
 export const animationDisableEndpoint = (animID: string) => animationEndpoint(animID) + '/disable';
