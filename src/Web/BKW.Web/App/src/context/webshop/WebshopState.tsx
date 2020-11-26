@@ -7,6 +7,7 @@ import { initialState } from './webshopContext';
 import openNotification from '../../utils/notification';
 import { animationEndpoint, animationsEndpoint, uploadAnimationEndpoint } from '../../constants/apiConstants';
 import { InteractionError, Animation } from '../../types';
+import reportWebVitals from '../../reportWebVitals';
 
 const WebshopState: React.FC<ReactNode> = ({ children }) => {
   const [state, dispatch] = useReducer(webshopReducer, initialState);
@@ -35,16 +36,19 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     }
   };
 
-  const getAnimations = async (filter: string) => {
+  const getAnimations = async (filter: string, count: number = 10, loadingMore: boolean = false) => {
     try {
-      setLoading();
+      !loadingMore && setLoading();
       const res =
         filter !== ''
-          ? await axios.get(animationsEndpoint + `?title_like=${filter}`)
-          : await axios.get(animationsEndpoint + ``); // TODO backend needs a `count` query parameter (json-server does not)
+          ? await axios.get(animationsEndpoint + `?count=${count}&search=${filter}`)
+          : await axios.get(animationsEndpoint + `?count=${count}`);
       dispatch({
-        type: 'ANIMATIONS_LOADED',
-        payload: res.data,
+        type: loadingMore ? 'MORE_ANIMATIONS_LOADED' : 'ANIMATIONS_LOADED',
+        payload: {
+          animations: res.data,
+          hasMore: res.data.length === count
+        },
       });
       clearErrors();
     } catch (err) {
@@ -103,6 +107,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     <WebshopContext.Provider
       value={{
         animations: state.animations,
+        hasMore: state.hasMore,
         selectedAnimation: state.selectedAnimation,
         searchText: state.searchText,
         loading: state.loading,

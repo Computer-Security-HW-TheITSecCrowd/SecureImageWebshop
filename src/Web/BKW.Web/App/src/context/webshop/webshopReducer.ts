@@ -3,11 +3,12 @@ import { initialState } from './webshopContext';
 
 export interface State {
   animations: Animation[],
+  hasMore: boolean,
   selectedAnimation?: AnimationDetails | null,
   searchText: string,
   loading: boolean,
   error: string | null,
-  getAnimations?: (filter: string) => Promise<void>,
+  getAnimations?: (filter: string, count?: number, loadingMore?: boolean) => Promise<void>,
   selectAnimation?: (animation: Animation) => Promise<void>,
   animationSelectionClear?: () => void,
   setSearchText?: (text: string) => void,
@@ -22,7 +23,8 @@ export type ActionType =
   | { type: "LOADING"; }
   | { type: "CLEAR_STATE"; }
   // Animations
-  | { type: "ANIMATIONS_LOADED"; payload: Animation[] }
+  | { type: "ANIMATIONS_LOADED"; payload: { animations: Animation[], hasMore: boolean } }
+  | { type: "MORE_ANIMATIONS_LOADED"; payload: { animations: Animation[], hasMore: boolean } }
   | { type: "ANIMATION_SELECTED"; payload: AnimationDetails }
   | { type: "ANIMATION_SELECTION_CLEAR"; }
   // Search
@@ -34,7 +36,16 @@ export default (state: State, action: ActionType): State => {
       return {
         ...state,
         loading: false,
-        animations: action.payload
+        animations: action.payload.animations,
+        hasMore: action.payload.hasMore
+      };
+    case "MORE_ANIMATIONS_LOADED":
+      console.log("more animations loaded");
+      console.log(action.payload.animations);
+      return {
+        ...state,
+        animations: state.animations.concat(action.payload.animations.slice(state.animations.length, action.payload.animations.length)),
+        hasMore: action.payload.hasMore
       };
     case "ANIMATION_SELECTED":
       return {

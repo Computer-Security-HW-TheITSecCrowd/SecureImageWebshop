@@ -3,6 +3,7 @@ import { State } from './webshopReducer';
 
 export const initialState: State = {
   animations: [],
+  hasMore: true,
   searchText: '',
   loading: false,
   error: null

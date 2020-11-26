@@ -9,7 +9,7 @@ export const loginEndpoint: string = `${authURL}/login`;
 export const registrationEndpoint: string = `${authURL}/register`;
 
 /* Retrieve all animations */
-export const animationsEndpoint: string = useMockedBackend ? `${animationURL}s` : `${animationURL}?count=10`;
+export const animationsEndpoint: string = useMockedBackend ? `${animationURL}s` : `${animationURL}`;
 export const uploadAnimationEndpoint: string = useMockedBackend? `${animationURL}s` : `${animationURL}`;
 export const animationEndpoint = (animID: string) => useMockedBackend ? `${animationsEndpoint}/${animID}/` : `${animationURL}/${animID}`;
 export const animationFileEndpoint = (animID: string) => animationEndpoint(animID) + '/file';
