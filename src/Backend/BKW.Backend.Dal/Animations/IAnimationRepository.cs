@@ -13,5 +13,6 @@ namespace BKW.Backend.Dal.Animations
         Task<Animation> Insert(Animation animation);
         Task Update(string id, Animation animation);
         Task InsertPurchase(string purchaserId, string animationId);
+        Task RemoveAnimation(string id);
     }
 }

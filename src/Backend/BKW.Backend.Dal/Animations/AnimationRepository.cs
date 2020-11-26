@@ -93,15 +93,15 @@ namespace BKW.Backend.Dal.Animations
 
         public async Task InsertPurchase(string purchaserId, string animationId)
         {
-            var foundAnimation = await _context.Animations.AsNoTracking()
+            var animation = await _context.Animations.AsNoTracking()
                 .Include(a => a.Owner)
                 .Where(a => a.Id.Equals(animationId))
                 .SingleOrDefaultAsync();
 
-            if (foundAnimation == null)
+            if (animation == null)
                 throw new AnimationNotFoundException();
 
-            if (foundAnimation.OwnerId.Equals(purchaserId))
+            if (animation.OwnerId.Equals(purchaserId))
                 throw new AnimationAlreadyOwnedException();
 
             var purchase = await _context.Purchases.AsNoTracking()
@@ -119,7 +119,21 @@ namespace BKW.Backend.Dal.Animations
             };
 
             await _context.Purchases.AddAsync(newPurchase);
+            animation.NumberOfPurchase++;
             await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveAnimation(string id)
+        {
+            var animation = await _context.Animations
+                .Where(a => a.Id.Equals(id))
+                .SingleOrDefaultAsync();
+
+            if (animation != null)
+            {
+                _context.Animations.Remove(animation);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

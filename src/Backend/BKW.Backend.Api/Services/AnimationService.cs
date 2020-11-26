@@ -1,7 +1,10 @@
 ﻿using BKW.Backend.Dal.Animations;
 using BKW.Backend.Dal.Exceptions;
 using BKW.Backend.Domain.Models;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -45,9 +48,31 @@ namespace BKW.Backend.Api.Services
             return takeFirstNFromAnimations(filteredAnimationsBySearch, count);
         }
 
-        public async Task<Animation> CreateAnimation(Animation animation)
+        public async Task<Animation> CreateAnimation(Animation animation, IFormFile file)
         {
-            return await _animationRepository.Insert(animation);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+
+            var newAnimation = await _animationRepository.Insert(animation);
+
+            try
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                using (Stream stream = new FileStream(Path.Combine(path, newAnimation.Id), FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+            }
+            catch (Exception e)
+            {
+                await _animationRepository.RemoveAnimation(newAnimation.Id);
+                throw new FileUploadException(e.Message);
+            }
+
+            return newAnimation;
         }
 
         public async Task DisableAnimation(string id)
