@@ -53,18 +53,13 @@ const AnimationCard: React.FC<AnimationProps> = ({ animation, loading }) => {
                         <Col>
                             <Tooltip
                                 title={
-                                    animation.boughtcounter === 0 ?
+                                    animation.numberOfPurchase === 0 ?
                                         'Nobody bought it yet' :
-                                        animation.boughtcounter === 1 ?
-                                            `${animation.boughtcounter} user has bought this animation` :
-                                                `${animation.boughtcounter} users have bought this animation`}
+                                        animation.numberOfPurchase === 1 ?
+                                            `${animation.numberOfPurchase} user has bought this animation` :
+                                                `${animation.numberOfPurchase} users have bought this animation`}
                             >
-                                <Text type='secondary' style={{ marginRight: '16px' }}>{animation.boughtcounter}{' '}<TeamOutlined /></Text>
-                            </Tooltip>
-                        </Col>
-                        <Col>
-                            <Tooltip title={`${animation.comments.length} comments`}>
-                                <Text type='secondary'>{animation.comments.length}{' '}<CommentOutlined /></Text>
+                                <Text type='secondary' style={{ marginRight: '16px' }}>{animation.numberOfPurchase}{' '}<TeamOutlined /></Text>
                             </Tooltip>
                         </Col>
                     </Row>

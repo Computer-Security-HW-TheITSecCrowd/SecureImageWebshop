@@ -38,19 +38,28 @@ export interface InteractionError extends Error {
 }
 
 export type Animation = {
-  owner: number,
+  owner: string,
   title: string,
-  created_at: Date,
-  boughtcounter: number,
-  comments: number[],
+  createdAt: Date,
+  numberOfPurchase: number,
   banned: boolean,
-  id: number
+  id: string
+};
+
+export type AnimationDetails = {
+  owner: string,
+  title: string,
+  createdAt: Date,
+  numberOfPurchase: number,
+  banned: boolean,
+  id: string,
+  comments: Comment[]
 };
 
 export type Comment = {
   owner: number,
-  created_at: Date,
+  createdAt: Date,
   content: string,
   animID: number,
-  id: number
+  id: string
 };

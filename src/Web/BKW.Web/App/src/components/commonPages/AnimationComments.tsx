@@ -19,9 +19,9 @@ const AnimationComments: React.FC = () => {
           <List.Item>
             <CommentItem
               comment={{
-                id: item,
+                id: item.id,
                 owner: -1,
-                created_at: new Date(),
+                createdAt: new Date(),
                 content: "Test content",
                 animID: -1
               }}

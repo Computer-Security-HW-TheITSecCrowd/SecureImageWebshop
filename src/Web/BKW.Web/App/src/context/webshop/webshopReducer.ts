@@ -1,9 +1,9 @@
-import { Animation } from '../../types';
+import { Animation, AnimationDetails } from '../../types';
 import { initialState } from './webshopContext';
 
 export interface State {
   animations: Animation[],
-  selectedAnimation?: Animation | null,
+  selectedAnimation?: AnimationDetails | null,
   searchText: string,
   loading: boolean,
   error: string | null,
@@ -23,7 +23,7 @@ export type ActionType =
   | { type: "CLEAR_STATE"; }
   // Animations
   | { type: "ANIMATIONS_LOADED"; payload: Animation[] }
-  | { type: "ANIMATION_SELECTED"; payload: Animation }
+  | { type: "ANIMATION_SELECTED"; payload: AnimationDetails }
   | { type: "ANIMATION_SELECTION_CLEAR"; }
   // Search
   | { type: "SEARCH_TEXT_SET"; payload: string }

@@ -16,10 +16,10 @@ const AnimationMeta: React.FC = () => {
             {selectedAnimation.title}
           </Descriptions.Item>
           <Descriptions.Item label='Purchased'>
-            {selectedAnimation.boughtcounter + ' times'}
+            {selectedAnimation.numberOfPurchase + ' times'}
           </Descriptions.Item>
           <Descriptions.Item label='Created'>
-            {selectedAnimation.created_at}
+            {selectedAnimation.createdAt}
           </Descriptions.Item>
         </Descriptions>
       )}

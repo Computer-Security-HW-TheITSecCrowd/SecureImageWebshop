@@ -11,7 +11,7 @@ export const registrationEndpoint: string = `${authURL}/register`;
 /* Retrieve all animations */
 export const animationsEndpoint: string = useMockedBackend ? `${animationURL}s` : `${animationURL}?count=10`;
 export const uploadAnimationEndpoint: string = useMockedBackend? `${animationURL}s` : `${animationURL}`;
-export const animationEndpoint = (animID: string) => `${animationsEndpoint}/${animID}/`;
+export const animationEndpoint = (animID: string) => useMockedBackend ? `${animationsEndpoint}/${animID}/` : `${animationURL}/${animID}`;
 export const animationFileEndpoint = (animID: string) => animationEndpoint(animID) + '/file';
 export const animationDisableEndpoint = (animID: string) => animationEndpoint(animID) + '/disable';
 export const animationCommentsEndpoint = useMockedBackend ? (animID: string) => `${baseURL}/comments?animID=${animID}` : (animID: string) => animationEndpoint(animID) + '/comments';

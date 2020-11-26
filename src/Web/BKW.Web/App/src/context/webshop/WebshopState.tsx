@@ -5,7 +5,7 @@ import WebshopContext from './webshopContext';
 import webshopReducer from './webshopReducer';
 import { initialState } from './webshopContext';
 import openNotification from '../../utils/notification';
-import { animationsEndpoint, uploadAnimationEndpoint } from '../../constants/apiConstants';
+import { animationEndpoint, animationsEndpoint, uploadAnimationEndpoint } from '../../constants/apiConstants';
 import { InteractionError, Animation } from '../../types';
 
 const WebshopState: React.FC<ReactNode> = ({ children }) => {
@@ -56,10 +56,15 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     try {
       const config = {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
         },
       };
-      await axios.post(uploadAnimationEndpoint, { title: formData.title }, config);
+      const data = {
+        "title": formData.title,
+        //"file": formData.upload
+      };
+      console.log(data);
+      await axios.post(uploadAnimationEndpoint, data, config);
       openNotification('success', `${formData.title} uploaded`);
     } catch (err) {
       handleError(err);
@@ -67,10 +72,16 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
   };
 
   const selectAnimation = async (animation: Animation) => {
-    dispatch({
-      type: 'ANIMATION_SELECTED',
-      payload: animation,
-    });
+    try {
+      const res = await axios.get(animationEndpoint(animation.id));
+      console.log(res.data);
+      dispatch({
+        type: 'ANIMATION_SELECTED',
+        payload: res.data,
+      });
+    } catch (err) {
+      handleError(err);
+    }
   };
 
   const animationSelectionClear = () => {

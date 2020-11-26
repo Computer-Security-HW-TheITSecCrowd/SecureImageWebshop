@@ -6,55 +6,55 @@ server.use(middlewares);
 server.use(jsonServer.bodyParser);
 
 users = [
-    { id: 1, username: "john", password: "johnpass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEiLCJVc2VybmFtZSI6ImpvaG4iLCJSb2xlIjoiQ3VzdG9tZXIifQ.zO8PaRZXRrNwtQNX9BH4fcuE3FyygwWYKt1dZFXs-oA" },
-    { id: 2, username: "jane", password: "janepass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjIiLCJVc2VybmFtZSI6ImphbmUiLCJSb2xlIjoiQ3VzdG9tZXIifQ.oy3iwwR7_6R9v9zb9AqDBCvuYn-RjGIjeS9lrXyI8aQ" },
-    { id: 3, username: "jill", password: "jillpass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjMiLCJVc2VybmFtZSI6ImppbGwiLCJSb2xlIjoiQ3VzdG9tZXIifQ.WG5l5-ydVkiP03T0yJ0ZnONrM2sefcyQgw_e8H9tTsE" },
-    { id: 4, username: "james", password: "jamespass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjQiLCJVc2VybmFtZSI6ImphbWVzIiwiUm9sZSI6IkN1c3RvbWVyIn0.8ohu6pLq_SJNvACJDysU5V4kYnQlig8sIt2b0bvxGuE" },
-    { id: 5, username: "jerry", password: "jerrypass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjUiLCJVc2VybmFtZSI6ImplcnJ5IiwiUm9sZSI6IkN1c3RvbWVyIn0.SKo_HIIK8FS5DF6sHuK2emMnZwEfjj3TeuYSnh_mUVA" },
-    { id: 6, username: "adam", password: "adampass", role: "Admin", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjYiLCJVc2VybmFtZSI6ImFkYW0iLCJSb2xlIjoiQWRtaW4ifQ.RTmUL93kayoi0JSb1EMeD3aMSTFmecK3v3s5x0vcwSQ" }
+    { id: "1", username: "john", password: "johnpass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEiLCJVc2VybmFtZSI6ImpvaG4iLCJSb2xlIjoiQ3VzdG9tZXIifQ.zO8PaRZXRrNwtQNX9BH4fcuE3FyygwWYKt1dZFXs-oA" },
+    { id: "2", username: "jane", password: "janepass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjIiLCJVc2VybmFtZSI6ImphbmUiLCJSb2xlIjoiQ3VzdG9tZXIifQ.oy3iwwR7_6R9v9zb9AqDBCvuYn-RjGIjeS9lrXyI8aQ" },
+    { id: "3", username: "jill", password: "jillpass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjMiLCJVc2VybmFtZSI6ImppbGwiLCJSb2xlIjoiQ3VzdG9tZXIifQ.WG5l5-ydVkiP03T0yJ0ZnONrM2sefcyQgw_e8H9tTsE" },
+    { id: "4", username: "james", password: "jamespass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjQiLCJVc2VybmFtZSI6ImphbWVzIiwiUm9sZSI6IkN1c3RvbWVyIn0.8ohu6pLq_SJNvACJDysU5V4kYnQlig8sIt2b0bvxGuE" },
+    { id: "5", username: "jerry", password: "jerrypass", role: "Customer", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjUiLCJVc2VybmFtZSI6ImplcnJ5IiwiUm9sZSI6IkN1c3RvbWVyIn0.SKo_HIIK8FS5DF6sHuK2emMnZwEfjj3TeuYSnh_mUVA" },
+    { id: "6", username: "adam", password: "adampass", role: "Admin", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjYiLCJVc2VybmFtZSI6ImFkYW0iLCJSb2xlIjoiQWRtaW4ifQ.RTmUL93kayoi0JSb1EMeD3aMSTFmecK3v3s5x0vcwSQ" }
 ];
 
 const database = {
     "users": [
-        { "id": 1, "username": "john", "password": "johnpass", "role": "Customer" },
-        { "id": 2, "username": "jane", "password": "janepass", "role": "Customer" },
-        { "id": 3, "username": "jill", "password": "jillpass", "role": "Customer" },
-        { "id": 4, "username": "james", "password": "jamespass", "role": "Customer" },
-        { "id": 5, "username": "jerry", "password": "jerrypass", "role": "Customer" },
-        { "id": 6, "username": "adam", "password": "adampass", "role": "Admin" }
+        { "id": "1", "username": "john", "password": "johnpass", "role": "Customer" },
+        { "id": "2", "username": "jane", "password": "janepass", "role": "Customer" },
+        { "id": "3", "username": "jill", "password": "jillpass", "role": "Customer" },
+        { "id": "4", "username": "james", "password": "jamespass", "role": "Customer" },
+        { "id": "5", "username": "jerry", "password": "jerrypass", "role": "Customer" },
+        { "id": "6", "username": "adam", "password": "adampass", "role": "Admin" }
     ],
     "animations": [
-        { "owner": 1, "title": "Down the River", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 44, "comments": [1, 2], "banned": false, "id": 1},
-        { "owner": 2, "title": "How NOT to ride a bike", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 13, "comments": [3, 4], "banned": true, "id": 2},
-        { "owner": 3, "title": "Tale of a pidgeon", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 4, "comments": [], "banned": false, "id": 3},
-        { "owner": 4, "title": "Rainy mood", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 130, "comments": [], "banned": true, "id": 4},
-        { "owner": 5, "title": "Riverside rock", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 40, "comments": [], "banned": false, "id": 5},
-        { "owner": 2, "title": "Take me for a walk", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 1, "comments": [], "banned": true, "id": 6},
-        { "owner": 1, "title": "Corgi and corgo", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 409, "comments": [5, 6, 7], "banned": false, "id": 7},
-        { "owner": 4, "title": "Around the City", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 55, "comments": [], "banned": true, "id": 8},
-        { "owner": 3, "title": "Swansea at Night", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 356, "comments": [], "banned": false, "id": 9},
-        { "owner": 5, "title": "My daughter's first birthday cake", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 2, "comments": [], "banned": true, "id": 10},
-        { "owner": 5, "title": "How to make your hair in 2 seconds", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 6, "comments": [], "banned": false, "id": 11},
-        { "owner": 1, "title": "Bungee", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 21, "comments": [], "banned": true, "id": 12},
-        { "owner": 1, "title": "Winter Forest", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 488, "comments": [], "banned": false, "id": 13},
-        { "owner": 2, "title": "Dream Team of The Week", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 12, "comments": [], "banned": true, "id": 14},
-        { "owner": 3, "title": "Idk what this is", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 223, "comments": [], "banned": false, "id": 15},
-        { "owner": 2, "title": "Snake needs help with ladder", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 134, "comments": [], "banned": true, "id": 16},
-        { "owner": 2, "title": "Cute cats pooping", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 632, "comments": [], "banned": false, "id": 17},
-        { "owner": 2, "title": "Breaking screens in slow mo", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 99, "comments": [], "banned": true, "id": 18},
-        { "owner": 1, "title": "Arizona Sunset", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 537, "comments": [], "banned": false, "id": 19},
-        { "owner": 4, "title": "Elks crossing", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 26, "comments": [], "banned": true, "id": 20},
-        { "owner": 1, "title": "My Very Fancy House", "created_at": "2020-11-17T22:19:01Z", "boughtcounter": 11, "comments": [], "banned": false, "id": 21},
-        { "owner": 3, "title": "This went personal..", "created_at": "2020-10-22T21:09:02Z", "boughtcounter": 0, "comments": [], "banned": true, "id": 22}
+        { "owner": "1", "title": "Down the River", "createdAt": "2020-11-17T22:19:01Z", "numberOfPurchase": 44, "comments": [1, 2], "banned": false, "id": "1"},
+        { "owner": "2", "title": "How NOT to ride a bike", "createdAt": "2020-10-22T21:09:02Z", "numberOfPurchase": 13, "comments": [3, 4], "banned": true, "id": "2"},
+        { "owner": "3", "title": "Tale of a pidgeon", "createdAt": "2020-11-17T22:19:01Z", "numberOfPurchase": 4, "comments": [], "banned": false, "id": "3"},
+        { "owner": "4", "title": "Rainy mood", "createdAt": "2020-10-22T21:09:02Z", "numberOfPurchase": 130, "comments": [], "banned": true, "id": "4"},
+        { "owner": "5", "title": "Riverside rock", "createdAt": "2020-11-17T22:19:01Z", "numberOfPurchase": 40, "comments": [], "banned": false, "id": "5"},
+        { "owner": "2", "title": "Take me for a walk", "createdAt": "2020-10-22T21:09:02Z", "numberOfPurchase": 1, "comments": [], "banned": true, "id": "6"},
+        { "owner": "1", "title": "Corgi and corgo", "createdAt": "2020-11-17T22:19:01Z", "numberOfPurchase": 409, "comments": [5, 6, 7], "banned": false, "id": "7"},
+        { "owner": "4", "title": "Around the City", "createdAt": "2020-10-22T21:09:02Z", "numberOfPurchase": 55, "comments": [], "banned": true, "id": "8"},
+        { "owner": "3", "title": "Swansea at Night", "createdAt": "2020-11-17T22:19:01Z", "numberOfPurchase": 356, "comments": [], "banned": false, "id": "9"},
+        { "owner": "5", "title": "My daughter's first birthday cake", "createdAt": "2020-10-22T21:09:02Z", "numberOfPurchase": 2, "comments": [], "banned": true, "id": "10"},
+        { "owner": "5", "title": "How to make your hair in 2 seconds", "createdAt": "2020-11-17T22:19:01Z", "numberOfPurchase": 6, "comments": [], "banned": false, "id": "11"},
+        { "owner": "1", "title": "Bungee", "createdAt": "2020-10-22T21:09:02Z", "numberOfPurchase": 21, "comments": [], "banned": true, "id": "12"},
+        { "owner": "1", "title": "Winter Forest", "createdAt": "2020-11-17T22:19:01Z", "numberOfPurchase": 488, "comments": [], "banned": false, "id": "13"},
+        { "owner": "2", "title": "Dream Team of The Week", "createdAt": "2020-10-22T21:09:02Z", "numberOfPurchase": 12, "comments": [], "banned": true, "id": "14"},
+        { "owner": "3", "title": "Idk what this is", "createdAt": "2020-11-17T22:19:01Z", "numberOfPurchase": 223, "comments": [], "banned": false, "id": "15"},
+        { "owner": "2", "title": "Snake needs help with ladder", "createdAt": "2020-10-22T21:09:02Z", "numberOfPurchase": 134, "comments": [], "banned": true, "id": "16"},
+        { "owner": "2", "title": "Cute cats pooping", "createdAt": "2020-11-17T22:19:01Z", "numberOfPurchase": 632, "comments": [], "banned": false, "id": "17"},
+        { "owner": "2", "title": "Breaking screens in slow mo", "createdAt": "2020-10-22T21:09:02Z", "numberOfPurchase": 99, "comments": [], "banned": true, "id": "18"},
+        { "owner": "1", "title": "Arizona Sunset", "createdAt": "2020-11-17T22:19:01Z", "numberOfPurchase": 537, "comments": [], "banned": false, "id": "19"},
+        { "owner": "4", "title": "Elks crossing", "createdAt": "2020-10-22T21:09:02Z", "numberOfPurchase": 26, "comments": [], "banned": true, "id": "20"},
+        { "owner": "1", "title": "My Very Fancy House", "createdAt": "2020-11-17T22:19:01Z", "numberOfPurchase": 11, "comments": [], "banned": false, "id": "21"},
+        { "owner": "3", "title": "This went personal..", "createdAt": "2020-10-22T21:09:02Z", "numberOfPurchase": 0, "comments": [], "banned": true, "id": "22"}
     ],
     "comments": [
-        { "owner": 2, "created_at": "2020-11-17T23:29:36Z", "content": "Nice animation! Thanks for the upload!", "animID": 1, "id": 1 },
-        { "owner": 4, "created_at": "2020-11-18T08:27:25Z", "content": "One of my favorites!", "animID": 1, "id": 2 },
-        { "owner": 2, "created_at": "2020-10-22T21:31:32Z", "content": "Please do not try this at home!!!", "animID": 2, "id": 3 },
-        { "owner": 5, "created_at": "2020-10-23T11:24:11Z", "content": "LOOOL", "animID": 2, "id": 4 },
-        { "owner": 1, "created_at": "2020-11-18T08:27:25Z", "content": "OMG SOOO CUTE!", "animID": 7, "id": 5 },
-        { "owner": 3, "created_at": "2020-10-22T21:31:32Z", "content": "My doggo looks similar", "animID": 7, "id": 6 },
-        { "owner": 3, "created_at": "2020-10-23T11:24:11Z", "content": "Awww", "animID": 7, "id": 7 }
+        { "owner": "2", "createdAt": "2020-11-17T23:29:36Z", "content": "Nice animation! Thanks for the upload!", "animID": "1", "id": "1" },
+        { "owner": "4", "createdAt": "2020-11-18T08:27:25Z", "content": "One of my favorites!", "animID": "1", "id": "2" },
+        { "owner": "2", "createdAt": "2020-10-22T21:31:32Z", "content": "Please do not try this at home!!!", "animID": "2", "id": "3" },
+        { "owner": "5", "createdAt": "2020-10-23T11:24:11Z", "content": "LOOOL", "animID": "2", "id": "4" },
+        { "owner": "1", "createdAt": "2020-11-18T08:27:25Z", "content": "OMG SOOO CUTE!", "animID": "7", "id": "5" },
+        { "owner": "3", "createdAt": "2020-10-22T21:31:32Z", "content": "My doggo looks similar", "animID": "7", "id": "6" },
+        { "owner": "3", "createdAt": "2020-10-23T11:24:11Z", "content": "Awww", "animID": "7", "id": "7" }
     ]
 }
 
@@ -125,7 +125,7 @@ server.get('/animations/:animID', (req, res) => {
 
     if (isAuthorized(req) && ['Admin', 'Customer'].indexOf(currentUser.role) > -1) {
 
-        const animID =  parseInt(req.params['animID']);
+        const animID =  req.params['animID'];
 
         const animation = database['animations'].find(animation => animation.id === animID);
         const comments = database['comments'].filter(comment => comment.animID === animID);
@@ -133,8 +133,8 @@ server.get('/animations/:animID', (req, res) => {
             id: animation.id,
             owner: animation.owner,
             title: animation.title,
-            created_at: animation.created_at,
-            boughtcounter: animation.boughtcounter,
+            createAt: animation.createdAt,
+            numberOfPurchase: animation.numberOfPurchase,
             banned: animation.banned,
             comments
         })
