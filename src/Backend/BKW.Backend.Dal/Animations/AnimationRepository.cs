@@ -17,11 +17,10 @@ namespace BKW.Backend.Dal.Animations
             _context = context;
         }
 
-        public async Task<ICollection<Animation>> FindAll(int count)
+        public async Task<ICollection<Animation>> FindAll()
         {
             var animations = await _context.Animations.AsNoTracking()
                 .Include(a => a.Owner)
-                .Take(count)
                 .ToListAsync();
 
             return animations;
@@ -38,25 +37,23 @@ namespace BKW.Backend.Dal.Animations
             return animation;
         }
 
-        public async Task<ICollection<Animation>> FindByPurchaserId(string id, int count)
+        public async Task<ICollection<Animation>> FindByPurchaserId(string id)
         {
             var animations = await _context.Purchases.AsNoTracking()
                 .Include(p => p.Animation)
                     .ThenInclude(a => a.Owner)
                 .Where(p => p.PurchaserId == id)
-                .Take(count)
                 .Select(p => p.Animation)
                 .ToListAsync();
 
             return animations;
         }
 
-        public async Task<ICollection<Animation>> FindByOwnerId(string id, int count)
+        public async Task<ICollection<Animation>> FindByOwnerId(string id)
         {
             var animations = await _context.Animations.AsNoTracking()
                 .Include(a => a.Owner)
                 .Where(a => a.OwnerId.Equals(id))
-                .Take(count)
                 .ToListAsync();
 
             return animations;

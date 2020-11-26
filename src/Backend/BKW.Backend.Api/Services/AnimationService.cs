@@ -17,9 +17,10 @@ namespace BKW.Backend.Api.Services
 
         public async Task<ICollection<Animation>> GetAnimations(int count, string? search)
         {
-            var animations = await _animationRepository.FindAll(count);
+            var animations = await _animationRepository.FindAll();
+            var filteredAnimationsBySearch = getFilteredAnimationsBySearch(animations, search);
 
-            return filteredAnimationsBySearch(animations, search);
+            return takeFirstNFromAnimations(filteredAnimationsBySearch, count);
         }
 
         public async Task<Animation> GetAnimation(string id)
@@ -29,16 +30,18 @@ namespace BKW.Backend.Api.Services
 
         public async Task<ICollection<Animation>> GetAnimationsForPurchaser(string id, int count, string? search)
         {
-            var animations = await _animationRepository.FindByPurchaserId(id, count);
+            var animations = await _animationRepository.FindByPurchaserId(id);
+            var filteredAnimationsBySearch = getFilteredAnimationsBySearch(animations, search);
 
-            return filteredAnimationsBySearch(animations, search);
+            return takeFirstNFromAnimations(filteredAnimationsBySearch, count);
         }
 
         public async Task<ICollection<Animation>> GetAnimationsForOwner(string id, int count, string? search)
         {
-            var animations = await _animationRepository.FindByOwnerId(id, count);
+            var animations = await _animationRepository.FindByOwnerId(id);
+            var filteredAnimationsBySearch = getFilteredAnimationsBySearch(animations, search);
 
-            return filteredAnimationsBySearch(animations, search);
+            return takeFirstNFromAnimations(filteredAnimationsBySearch, count);
         }
 
         public async Task<Animation> CreateAnimation(Animation animation)
@@ -58,12 +61,17 @@ namespace BKW.Backend.Api.Services
             await _animationRepository.InsertPurchase(purchaserId, animationId);
         }
 
-        private ICollection<Animation> filteredAnimationsBySearch(ICollection<Animation> animations, string search)
+        private ICollection<Animation> getFilteredAnimationsBySearch(ICollection<Animation> animations, string search)
         {
             if (search != null && search != string.Empty)
                 return animations.Where(a => a.Title.ToLower().Contains(search.ToLower())).ToList();
 
             return animations;
+        }
+
+        private ICollection<Animation> takeFirstNFromAnimations(ICollection<Animation> animations, int n)
+        {
+            return animations.Take(n).ToList();
         }
     }
 }
