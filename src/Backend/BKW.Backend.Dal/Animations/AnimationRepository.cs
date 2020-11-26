@@ -31,6 +31,7 @@ namespace BKW.Backend.Dal.Animations
             var animation = await _context.Animations.AsNoTracking()
                 .Include(a => a.Owner)
                 .Include(a => a.Comments)
+                .Include(a => a.Purchases)
                 .Where(a => a.Id.Equals(id))
                 .SingleOrDefaultAsync();
 

@@ -66,7 +66,7 @@ namespace BKW.Backend.Api.Controllers
                 return NotFound();
 
             var userId = getUserId();
-            if (!animation.OwnerId.Equals(userId) || !animation.Purchases.Any(p => p.PurchaserId.Equals(userId)))
+            if (!animation.OwnerId.Equals(userId) && !animation.Purchases.Any(p => p.PurchaserId.Equals(userId)))
                 return Forbid();
 
             try
