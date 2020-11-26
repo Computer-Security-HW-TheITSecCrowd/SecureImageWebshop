@@ -25,6 +25,7 @@ const AnimationDetails: React.FC = () => {
         <AnimationSummary />
         <Divider />
         <AnimationComments />
+        <Divider />
         <CommentForm />
       </div>
     </AuthenticatedLayout>
