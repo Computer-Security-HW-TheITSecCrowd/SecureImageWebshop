@@ -58,9 +58,26 @@ namespace BKW.Backend.Api.Controllers
 
         [HttpGet("{id}/file")]
         [Authorize(Policy = "Customer")]
-        public async Task<ActionResult<byte[]>> Download(string id)
+        public async Task<ActionResult> Download(string id)
         {
-            return StatusCode(StatusCodes.Status501NotImplemented);
+            var animation = await _animationService.GetAnimation(id);
+
+            if (animation == null)
+                return NotFound();
+
+            var userId = getUserId();
+            if (!animation.OwnerId.Equals(userId) || !animation.Purchases.Any(p => p.PurchaserId.Equals(userId)))
+                return Forbid();
+
+            try
+            {
+                var memory = await _animationService.GetFile(id);
+                return File(memory, "application/octet-stream", animation.Title);
+            }
+            catch (FileDownloadException e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
         [HttpPost]

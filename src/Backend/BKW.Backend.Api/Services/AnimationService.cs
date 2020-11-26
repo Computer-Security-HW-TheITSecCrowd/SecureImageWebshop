@@ -48,6 +48,25 @@ namespace BKW.Backend.Api.Services
             return takeFirstNFromAnimations(filteredAnimationsBySearch, count);
         }
 
+        public async Task<MemoryStream> GetFile(string id)
+        {
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", id);
+                var memory = new MemoryStream();
+                using (var stream = new FileStream(path, FileMode.Open))
+                {
+                    await stream.CopyToAsync(memory);
+                }
+                memory.Position = 0;
+                return memory;
+            }
+            catch (Exception e)
+            {
+                throw new FileDownloadException(e.Message);
+            }
+        }
+
         public async Task<Animation> CreateAnimation(Animation animation, IFormFile file)
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
