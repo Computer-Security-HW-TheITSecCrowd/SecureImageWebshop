@@ -43,13 +43,13 @@ const Navbar: React.FC = () => {
     const customerLinks = (
         <Fragment>
             <Menu.Item key={animationsRoute}>
-                <Link to={animationsRoute}>Animations</Link>
+                <Link to={animationsRoute} onClick={animationSelectionClear}>Animations</Link>
             </Menu.Item>
             <Menu.Item key={galleryRoute}>
-                <Link to={galleryRoute}>Gallery</Link>
+                <Link to={galleryRoute} onClick={animationSelectionClear}>Gallery</Link>
             </Menu.Item>
             <Menu.Item key={uploadRoute}>
-                <Link to={uploadRoute}><UploadOutlined />{' '}Upload</Link>
+                <Link to={uploadRoute} onClick={animationSelectionClear}><UploadOutlined />{' '}Upload</Link>
             </Menu.Item>
         </Fragment>
     );
