@@ -1,4 +1,5 @@
 ﻿using BKW.Backend.Dal.Animations;
+using BKW.Backend.Dal.Exceptions;
 using BKW.Backend.Domain.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,8 +50,13 @@ namespace BKW.Backend.Api.Services
             return await _animationRepository.Insert(animation);
         }
 
-        public async Task DisableAnimation(string id, Animation animation)
+        public async Task DisableAnimation(string id)
         {
+            var animation = await GetAnimation(id);
+
+            if (animation == null)
+                throw new AnimationNotFoundException();
+
             animation.Banned = true;
 
             await _animationRepository.Update(id, animation);

@@ -77,13 +77,15 @@ namespace BKW.Backend.Api.Controllers
         [Authorize(Policy = "Admin")]
         public async Task<ActionResult> DisableAnimation(string id)
         {
-            var animation = await _animationService.GetAnimation(id);
-
-            if (animation == null)
-                return NotFound();
-
-            await _animationService.DisableAnimation(id, animation);
-
+            try
+            {
+                await _animationService.DisableAnimation(id);
+            }
+            catch (AnimationNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            
             return NoContent();
         }
 
