@@ -1,4 +1,4 @@
-const useMockedBackend = true;
+const useMockedBackend = false;
 export const baseURL: string = useMockedBackend ? `http://localhost:3001` : 'http://localhost:42069/api';
 
 export const authURL: string = `${baseURL}/auth`;
@@ -9,7 +9,7 @@ export const loginEndpoint: string = `${authURL}/login`;
 export const registrationEndpoint: string = `${authURL}/register`;
 
 /* Retrieve all animations */
-export const animationsEndpoint: string = useMockedBackend ? `${animationURL}s` : `${animationURL}`;
+export const animationsEndpoint: string = useMockedBackend ? `${animationURL}s` : `${animationURL}?count=10`;
 export const animationEndpoint = (animID: string) => `${animationsEndpoint}/${animID}/`;
 export const animationFileEndpoint = (animID: string) => animationEndpoint(animID) + '/file';
 export const animationDisableEndpoint = (animID: string) => animationEndpoint(animID) + '/disable';
