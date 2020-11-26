@@ -11,7 +11,7 @@ namespace BKW.Backend.Api.Services
         Task<ICollection<Animation>> GetAnimationsForPurchaser(string id, int count, string? search);
         Task<ICollection<Animation>> GetAnimationsForOwner(string id, int count, string? search);
         Task<Animation> CreateAnimation(Animation animation);
-        Task DisableAnimation(string id, Animation animation);
+        Task DisableAnimation(string id);
         Task Purchase(string purchaserId, string animationId);
     }
 }
