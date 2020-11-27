@@ -1,4 +1,5 @@
-﻿using BKW.Backend.Dal.Animations;
+﻿using BKW.Backend.Api.Services.ParserServices;
+using BKW.Backend.Dal.Animations;
 using BKW.Backend.Dal.Exceptions;
 using BKW.Backend.Domain.Models;
 using Microsoft.AspNetCore.Http;
@@ -13,10 +14,12 @@ namespace BKW.Backend.Api.Services
     public class AnimationService : IAnimationService
     {
         private readonly IAnimationRepository _animationRepository;
+        private readonly IParserService _parserService;
 
-        public AnimationService(IAnimationRepository animationRepository)
+        public AnimationService(IAnimationRepository animationRepository, IParserService parserService)
         {
             _animationRepository = animationRepository;
+            _parserService = parserService;
         }
 
         public async Task<ICollection<Animation>> GetAnimations(int count, string? search)
@@ -65,6 +68,22 @@ namespace BKW.Backend.Api.Services
             catch (Exception e)
             {
                 throw new FileDownloadException(e.Message);
+            }
+        }
+
+        public async Task<AnimationClient.Image> GetFirstImageOfAnimation(Animation animation)
+        {
+            try
+            {
+                var memoryStream = await GetFile(animation.Id);
+                var parsedAnimation = await _parserService.ParseAnimation(memoryStream.ToArray());
+                var image = parsedAnimation.Images.First();
+
+                return image;
+            }
+            catch (FileNotFoundException)
+            {
+                return new AnimationClient.Image();
             }
         }
 

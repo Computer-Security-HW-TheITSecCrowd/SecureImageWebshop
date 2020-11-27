@@ -5,6 +5,7 @@ using BKW.Backend.Dal.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,7 +37,14 @@ namespace BKW.Backend.Api.Controllers
             var ownedAnimationsByUser = await _animationService.GetAnimationsForOwner(userId, parsedCount, search);
             var purchasedAnimationsByUser = await _animationService.GetAnimationsForPurchaser(userId, parsedCount, search);
             var animations = ownedAnimationsByUser.Concat(purchasedAnimationsByUser);
-            var animationsResponse = animations.Select(animation => new AnimationResponse(animation));
+            
+            var animationsResponse = new List<AnimationResponse>();
+
+            foreach (var animation in animations)
+            {
+                var image = await _animationService.GetFirstImageOfAnimation(animation);
+                animationsResponse.Add(new AnimationResponse(animation, image.Content, image.Width, image.Height));
+            }
 
             return Ok(animationsResponse);
         }

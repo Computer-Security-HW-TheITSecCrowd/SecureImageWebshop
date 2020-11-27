@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,13 +20,11 @@ namespace BKW.Backend.Api.Controllers
     {
         private readonly IAnimationService _animationService;
         private readonly ICommentService _commentService;
-        private readonly IParserService _parserService;
 
         public AnimationController(IAnimationService animationService, ICommentService commentService, IParserService parserService)
         {
             _animationService = animationService;
             _commentService = commentService;
-            _parserService = parserService;
         }
 
         private string getUserId() => User.FindFirst("Id").Value;
@@ -40,7 +37,13 @@ namespace BKW.Backend.Api.Controllers
                 return BadRequest();
 
             var animations = await _animationService.GetAnimations(parsedCount, search);
-            var animationsResponse = animations.Select(animation => new AnimationResponse(animation));
+
+            var animationsResponse = new List<AnimationResponse>();
+            foreach (var animation in animations)
+            {
+                var image = await _animationService.GetFirstImageOfAnimation(animation);
+                animationsResponse.Add(new AnimationResponse(animation, image.Content, image.Width, image.Height));
+            }
 
             return Ok(animationsResponse);
         }
@@ -53,7 +56,9 @@ namespace BKW.Backend.Api.Controllers
             if (animation == null)
                 return NotFound();
 
-            return Ok(new AnimationCommentsResponse(animation));
+            var image = await _animationService.GetFirstImageOfAnimation(animation);
+
+            return Ok(new AnimationCommentsResponse(animation, image.Content, image.Width, image.Height));
         }
 
         [HttpGet("{id}/file")]
@@ -101,7 +106,12 @@ namespace BKW.Backend.Api.Controllers
                 return BadRequest(e.Message);
             }
 
-            return CreatedAtAction(nameof(GetAnimation), new { id = animation.Id }, new AnimationResponse(animation));
+            var image = await _animationService.GetFirstImageOfAnimation(animation);
+
+            return CreatedAtAction(
+                nameof(GetAnimation),
+                new { id = animation.Id },
+                new AnimationResponse(animation, image.Content, image.Width, image.Height));
         }
 
         [HttpPost("{id}/disable")]
