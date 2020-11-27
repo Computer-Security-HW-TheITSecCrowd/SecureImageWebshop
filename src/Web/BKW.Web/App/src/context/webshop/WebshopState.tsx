@@ -82,16 +82,10 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
 
   const uploadAnimation = async (formData: { title: string, upload: any }) => {
     try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
-      const data = {
-        "title": formData.title,
-        //"file": formData.upload
-      };
-      await axios.post(uploadAnimationEndpoint, data, config);
+      const data = new FormData();
+      data.append('title', formData.title);
+      data.append('formFile', formData.upload);
+      await axios.post(uploadAnimationEndpoint, data);
       openNotification('success', `${formData.title} uploaded`);
     } catch (err) {
       handleError(err);
