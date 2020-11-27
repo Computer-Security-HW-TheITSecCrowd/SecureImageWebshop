@@ -52,6 +52,16 @@ namespace BKW.Backend.Api.Services
             return takeFirstNFromAnimations(filteredAnimationsBySearch, count);
         }
 
+        public async Task<bool> IsAnimationPurchasedOrOwnedByUser(Animation animation, string userId)
+        {
+            var purchasedAnimations = await _animationRepository.FindByPurchaserId(userId);
+            var ownedAnimations = await _animationRepository.FindByOwnerId(userId);
+
+            var purchasedOrOwnedAnimations = purchasedAnimations.Concat(ownedAnimations);
+
+            return purchasedOrOwnedAnimations.Any(a => a.Id.Equals(animation.Id));
+        }
+
         public async Task<MemoryStream> GetFile(string id)
         {
             try

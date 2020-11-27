@@ -12,6 +12,7 @@ namespace BKW.Backend.Api.Services
         Task<Animation> GetAnimation(string id);
         Task<ICollection<Animation>> GetAnimationsForPurchaser(string id, int count, string? search);
         Task<ICollection<Animation>> GetAnimationsForOwner(string id, int count, string? search);
+        Task<bool> IsAnimationPurchasedOrOwnedByUser(Animation animation, string userId);
         Task<MemoryStream> GetFile(string id);
         Task<AnimationClient.Image> GetFirstImageOfAnimation(Animation animation);
         Task<Animation> CreateAnimation(Animation animation, IFormFile file);

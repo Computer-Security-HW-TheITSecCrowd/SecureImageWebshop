@@ -56,9 +56,13 @@ namespace BKW.Backend.Api.Controllers
             if (animation == null)
                 return NotFound();
 
+            var userId = getUserId();
+
+            var purchasedOrOwnedByUser = await _animationService.IsAnimationPurchasedOrOwnedByUser(animation, userId);
+
             var image = await _animationService.GetFirstImageOfAnimation(animation);
 
-            return Ok(new AnimationCommentsResponse(animation, image.Content, image.Width, image.Height));
+            return Ok(new AnimationCommentsResponse(animation, purchasedOrOwnedByUser, image.Content, image.Width, image.Height));
         }
 
         [HttpGet("{id}/file")]
