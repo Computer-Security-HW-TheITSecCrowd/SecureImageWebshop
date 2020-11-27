@@ -47,7 +47,7 @@ const CommentForm: React.FC = () => {
             ]}
             style={{ margin: '0 auto', width: '50vw' }}
           >
-            <Input placeholder='Write your command here' />
+            <Input placeholder='Write your comment here' />
           </Form.Item>
 
           <Form.Item>
