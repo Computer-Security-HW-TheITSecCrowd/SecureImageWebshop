@@ -72,7 +72,7 @@ namespace BKW.Backend.Api.Controllers
             try
             {
                 var memory = await _animationService.GetFile(id);
-                return File(memory, "application/octet-stream", animation.Title);
+                return File(memory, "application/octet-stream", $"{animation.Title}.caff");
             }
             catch (FileDownloadException e)
             {
