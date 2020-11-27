@@ -11,6 +11,7 @@ export interface State {
   searchText: string,
   gallerySearchText: string,
   loading: boolean,
+  downloading: boolean,
   error: string | null,
   getAnimations?: (filter: string, count?: number, loadingMore?: boolean) => Promise<void>,
   getOwnAnimations?: (filter: string, count?: number, loadingMore?: boolean) => Promise<void>,
@@ -24,7 +25,8 @@ export interface State {
   clearComments?: () => void,
   uploadAnimation?: (formData: { title: string, upload: any }) => Promise<void>,
   purchaseAnimation?: (animation: Animation) => Promise<void>,
-  disableAnimation?: (animation: AnimationWithComments) => Promise<void>
+  disableAnimation?: (animation: AnimationWithComments) => Promise<void>,
+  downloadAnimation?: (animID: string, title: string) => Promise<void>
 };
 
 export type ActionType =
@@ -42,6 +44,8 @@ export type ActionType =
   | { type: "ANIMATION_SELECTION_CLEAR"; }
   | { type: "PURCHASED_ANIMATION"; payload: Animation }
   | { type: "DISABLED_ANIMATION"; payload: AnimationWithComments }
+  | { type: "DOWNLOADING"; }
+  | { type: "DOWNLOAD_FINISHED"; }
   // Comments
   | { type: "COMMENTS_LOADED"; payload: Comment[] }
   | { type: "COMMENT_DELETED"; payload: string }
@@ -134,6 +138,16 @@ export default (state: State, action: ActionType): State => {
       return {
         ...state,
         loading: true
+      };
+    case "DOWNLOADING":
+      return {
+        ...state,
+        downloading: true
+      };
+    case "DOWNLOAD_FINISHED":
+      return {
+        ...state,
+        downloading: false
       };
     case "CLEAR_STATE":
       return initialState;

@@ -5,6 +5,7 @@ import WebshopContext from './webshopContext';
 import webshopReducer from './webshopReducer';
 import { initialState } from './webshopContext';
 import openNotification from '../../utils/notification';
+import downloadBlob from '../../utils/downloadBlob';
 import {
   animationsEndpoint,
   animationEndpoint,
@@ -12,7 +13,8 @@ import {
   commentEndpoint,
   userAnimationsEndpoint,
   animationDisableEndpoint,
-  animationCommentsEndpoint
+  animationCommentsEndpoint,
+  animationFileEndpoint
 } from '../../constants/apiConstants';
 import { InteractionError, Animation, AnimationWithComments } from '../../types';
 
@@ -23,6 +25,14 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     dispatch({ type: 'LOADING' });
   };
 
+  const startDownloading = () => {
+    dispatch({ type: 'DOWNLOADING' });
+  };
+
+  const finishDownloading = () => {
+    dispatch({ type: 'DOWNLOAD_FINISHED' });
+  };
+
   const clearErrors = () => {
     dispatch({ type: 'CLEAR_ERRORS' });
   };
@@ -31,9 +41,9 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     if (err.response) {
       dispatch({
         type: 'ERROR',
-        payload: err.response.data.msg,
+        payload: err.response.data,
       });
-      openNotification('error', err.response.data.msg);
+      openNotification('error', err.response.data);
     } else {
       dispatch({
         type: 'ERROR',
@@ -211,6 +221,22 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     }
   }
 
+  const downloadAnimation = async (animID: string, title: string) => {
+    startDownloading();
+    try {
+      const res = await axios.get(animationFileEndpoint(animID));
+      const blob = new Blob(
+        [ res.data ],
+        { type: 'application/octet-stream' }
+      );
+      downloadBlob(blob, `${title}.caff`);
+    } catch (err) {
+      openNotification('error', 'Download failed');
+    } finally {
+      finishDownloading();
+    }
+  };
+
   return (
     <WebshopContext.Provider
       value={{
@@ -223,6 +249,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         searchText: state.searchText,
         gallerySearchText: state.gallerySearchText,
         loading: state.loading,
+        downloading: state.downloading,
         error: state.error,
         getAnimations,
         selectAnimation,
@@ -236,7 +263,8 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         uploadAnimation,
         getOwnAnimations,
         purchaseAnimation,
-        disableAnimation
+        disableAnimation,
+        downloadAnimation
       }}
     >
       {children}

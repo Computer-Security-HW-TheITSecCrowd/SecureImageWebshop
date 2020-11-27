@@ -10,6 +10,7 @@ export const initialState: State = {
   searchText: '',
   gallerySearchText: '',
   loading: false,
+  downloading: false,
   error: null
 };
 

@@ -5,7 +5,7 @@ import { Descriptions, Button, Space } from 'antd';
 import WebshopContext from '../../context/webshop/webshopContext';
 import AuthContext from '../../context/auth/authContext';
 
-import { ADMIN, CUSTOMER } from '../../constants/roleConstants';
+import { CUSTOMER } from '../../constants/roleConstants';
 
 const AnimationMeta: React.FC = () => {
   const webshopContext = useContext(WebshopContext);
@@ -15,6 +15,8 @@ const AnimationMeta: React.FC = () => {
     getOwnAnimations,
     ownAnimations,
     disableAnimation,
+    downloading,
+    downloadAnimation,
   } = webshopContext;
 
   const authContext = useContext(AuthContext);
@@ -40,9 +42,12 @@ const AnimationMeta: React.FC = () => {
       disableAnimation(selectedAnimation);
   };
 
-  const onDownload = () => {
-    console.log('Download image');
+  const onDownload = async () => {
+    selectedAnimation &&
+    downloadAnimation &&
+    downloadAnimation(selectedAnimation.id, selectedAnimation.title);
   };
+
 
   return (
     <Fragment>
@@ -67,7 +72,7 @@ const AnimationMeta: React.FC = () => {
           ownAnimations.some(
             (animation) => animation.id === selectedAnimation?.id
           ) ? (
-            <Button type='primary' onClick={onDownload} disabled={selectedAnimation?.banned}>
+            <Button type='primary' onClick={onDownload} disabled={selectedAnimation?.banned} loading={downloading}>
               Download
             </Button>
           ) : (

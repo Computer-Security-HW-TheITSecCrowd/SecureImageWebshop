@@ -40,9 +40,9 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
     if (err.response) {
       dispatch({
         type: "ERROR",
-        payload: err.response.data.msg,
+        payload: err.response.data.title ? err.response.data.title : err.response.data.toString(),
       });
-      openNotification('error', err.response.data.msg);
+      openNotification('error', err.response.data.title ? err.response.data.title : err.response.data.toString());
     } else {
       dispatch({
         type: "ERROR",
