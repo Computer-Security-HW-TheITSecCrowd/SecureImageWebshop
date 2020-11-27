@@ -1,4 +1,3 @@
-import { stat } from 'fs';
 import { Animation, AnimationWithComments, Comment } from '../../types';
 import { initialState } from './webshopContext';
 

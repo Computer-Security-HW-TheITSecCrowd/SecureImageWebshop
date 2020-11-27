@@ -59,7 +59,7 @@ const AnimationMeta: React.FC = () => {
               {selectedAnimation.numberOfPurchase + ' times'}
             </Descriptions.Item>
             <Descriptions.Item label='Created'>
-              {selectedAnimation.createdAt}
+              {new Date(selectedAnimation.createdAt).toLocaleString()}
             </Descriptions.Item>
           </Descriptions>
         )}

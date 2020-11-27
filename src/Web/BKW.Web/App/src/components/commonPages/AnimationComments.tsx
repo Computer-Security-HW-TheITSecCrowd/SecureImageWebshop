@@ -53,7 +53,7 @@ const AnimationComments: React.FC = () => {
                style={{ border: '1px solid #bfbfbf'}}>
                 <List.Item.Meta
                   title={item.createdBy}
-                  description={item.createdAt}
+                  description={new Date(item.createdAt).toLocaleString()}
                 />
                 {item.content}
                 {/* <CommentItem comment={item} /> */}
