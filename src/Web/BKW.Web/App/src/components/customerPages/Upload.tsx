@@ -3,8 +3,8 @@ import { Upload as AUpload, Button, Row, Input, Form, Card } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import AuthenticatedLayout from '../layout/AuthenticatedLayout';
-import { RcCustomRequestOptions, UploadChangeParam } from 'antd/lib/upload/interface';
 import WebshopContext from '../../context/webshop/webshopContext';
+import openNotification from '../../utils/notification';
 
 const Upload: React.FC = () => {
 
@@ -18,19 +18,17 @@ const Upload: React.FC = () => {
 
     const [state, setState] = useState(initialState);
 
-    /* const upload = ({ file, onSuccess }: RcCustomRequestOptions) => {
-        setTimeout(() => {
-            onSuccess({result: 'ok'}, file);
-        }, 0);
-    }; */
-
     const normFile = (e: { file: any; }) => {
         console.log('Upload event:', e);
         return e && e.file;
     };
 
     const onFinish = (values: { title: string; upload: any }) => {
-        uploadAnimation && uploadAnimation(values);
+        if (!values.upload) {
+            openNotification('error', 'Please select a file to upload!');
+        } else {
+            uploadAnimation && uploadAnimation(values);
+        }
     };
 
     return (
@@ -54,7 +52,7 @@ const Upload: React.FC = () => {
                         valuePropName='file'
                         getValueFromEvent={normFile}
                     >
-                        <AUpload name='file' /* customRequest={upload} */ accept='.caff'
+                        <AUpload name='upload' accept='.caff' 
                             beforeUpload={file => {
                                 const reader = new FileReader();
 
