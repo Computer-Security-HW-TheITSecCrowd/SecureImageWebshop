@@ -21,7 +21,21 @@ services:
     networks:
       - bkw-network
     #volumes:
-     # - bkw-data:/var/opt/mssql
+    #  - bkw-data:/var/opt/mssql
+
+  frontend:
+    build:
+      context: ../Web/BKW.Web/App
+      dockerfile: Dockerfile
+    volumes:
+      - ../Web/BKW.Web/App/src:/code/src
+      - ../Web/BKW.Web/App/public:/code/public
+    ports:
+      - 3000:3000
+    networks:
+      - bkw-network
+    depends_on:
+      - backend
 
   parser:
     image: ${DOCKER_REGISTRY:-bkw}parser:${IMAGE_TAG:-latest}
@@ -31,7 +45,17 @@ services:
     ports:
       - 50051:50051
     networks:
-      - bkw-network            
+      - bkw-network     
+      
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+    depends_on:
+      - db
+    networks:
+      - bkw-network    
 
 #volumes:
   #bkw-data:
