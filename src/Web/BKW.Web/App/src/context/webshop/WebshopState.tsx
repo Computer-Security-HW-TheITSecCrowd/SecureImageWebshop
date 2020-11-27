@@ -81,7 +81,10 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         type: loadingMore ? 'MORE_OWN_ANIMATIONS_LOADED' : 'OWN_ANIMATIONS_LOADED',
         payload: {
           ownAnimations: res.data,
-          hasMoreOwn: res.data.length === count
+          // The query returns 'count' of the owned animations and 'count' of the purchased animations. 
+          // It means that we know that there is no more data for sure only if the returned animation
+          // count is less than 'count' (because none of the two categories could fill its quota).
+          hasMoreOwn: res.data.length >= count
         },
       });
       clearErrors();
@@ -186,11 +189,6 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     try {
       const res = await axios.put(userAnimationsEndpoint, { animID: animation.id })
       console.log(res.data);
-      
-      dispatch({
-        type: 'PURCHASED_ANIMATION',
-        payload: animation
-      });
       openNotification('success', 'Animation purchased');
     } catch (err) {
       handleError(err);

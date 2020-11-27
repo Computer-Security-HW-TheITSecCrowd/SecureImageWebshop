@@ -42,7 +42,6 @@ export type ActionType =
   | { type: "MORE_OWN_ANIMATIONS_LOADED"; payload: { ownAnimations: Animation[], hasMoreOwn: boolean } }
   | { type: "ANIMATION_SELECTED"; payload: AnimationWithComments }
   | { type: "ANIMATION_SELECTION_CLEAR"; }
-  | { type: "PURCHASED_ANIMATION"; payload: Animation }
   | { type: "DISABLED_ANIMATION"; payload: AnimationWithComments }
   | { type: "DOWNLOADING"; }
   | { type: "DOWNLOAD_FINISHED"; }
@@ -93,11 +92,6 @@ export default (state: State, action: ActionType): State => {
         ...state,
         selectedAnimation: null
       };
-    case "PURCHASED_ANIMATION":
-      return {
-        ...state,
-        ownAnimations: [...state.ownAnimations, action.payload]
-      }
     case "DISABLED_ANIMATION":
       return {
         ...state,
