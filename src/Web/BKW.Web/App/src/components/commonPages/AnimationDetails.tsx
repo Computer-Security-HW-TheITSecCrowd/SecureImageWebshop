@@ -24,9 +24,9 @@ const AnimationDetails: React.FC = () => {
       <div style={{ padding: '4vh 4vw' }}>
         <AnimationSummary />
         <Divider />
-        <AnimationComments />
-        <Divider />
         <CommentForm />
+        <Divider />
+        <AnimationComments />
       </div>
     </AuthenticatedLayout>
   ) : (

@@ -21,6 +21,7 @@ export interface State {
   clearWebshopState?: () => void,
   getAnimationComments?: (animID: string) => Promise<void>,
   deleteComment?: (animID: string, commentID: string) => Promise<void>,
+  sendComment?: (animID: string, content: string) => Promise<void>,
   clearComments?: () => void,
   uploadAnimation?: (formData: { title: string, upload: any }) => Promise<void>,
   purchaseAnimation?: (animation: Animation) => Promise<void>,
@@ -45,6 +46,7 @@ export type ActionType =
   // Comments
   | { type: "COMMENTS_LOADED"; payload: Comment[] }
   | { type: "COMMENT_DELETED"; payload: string }
+  | { type: "COMMENT_SENT"; payload: Comment }
   | { type: "COMMENTS_CLEAR"; }
   // Search
   | { type: "SEARCH_TEXT_SET"; payload: string }
@@ -108,6 +110,11 @@ export default (state: State, action: ActionType): State => {
       return {
         ...state,
         comments: state.comments.filter(comment => comment.id !== action.payload)
+      }
+    case "COMMENT_SENT":
+      return {
+        ...state,
+        comments: [ ...state.comments, action.payload ]
       }
     case "COMMENTS_CLEAR":
       return {

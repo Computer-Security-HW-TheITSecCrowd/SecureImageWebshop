@@ -11,7 +11,8 @@ import {
   uploadAnimationEndpoint,
   commentEndpoint,
   userAnimationsEndpoint,
-  animationDisableEndpoint
+  animationDisableEndpoint,
+  animationCommentsEndpoint
 } from '../../constants/apiConstants';
 import { InteractionError, Animation, AnimationWithComments } from '../../types';
 
@@ -146,6 +147,20 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     }
   }
 
+  const sendComment = async (animID: string, content: string) => {
+    try {
+      const res = await axios.post(animationCommentsEndpoint(animID), { content })
+
+      dispatch({
+        type: "COMMENT_SENT",
+        payload: res.data
+      })
+      openNotification('success', 'Comment sent')
+    } catch (err) {
+      handleError(err);
+    }
+  }
+
   const clearComments = () => {
     dispatch({
       type: 'COMMENTS_CLEAR'
@@ -220,6 +235,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         animationSelectionClear,
         getAnimationComments,
         deleteComment,
+        sendComment,
         clearComments,
         setSearchText,
         clearWebshopState,

@@ -1,6 +1,6 @@
 import React, { MouseEvent, useContext, useEffect } from 'react';
 
-import { List, Row, Col, Descriptions, Button } from 'antd';
+import { List, Row, Col, Descriptions, Button, Divider } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
 import { ADMIN, CUSTOMER } from '../../constants/roleConstants';
@@ -43,13 +43,14 @@ const AnimationComments: React.FC = () => {
       <Col span={20}>
         <List
           style={{ width: '100%' }}
-          header={<h1>Animation Comments</h1>}
+          // header={<h1 style={{ margin: '0 auto' }}>Comments</h1>}
           dataSource={comments}
           bordered
           loading={loading}
           renderItem={(item: Comment) =>
             user && user.Role === CUSTOMER ? (
-              <List.Item key={item.id}>
+              <List.Item key={item.id}
+               style={{ border: '1px solid #bfbfbf'}}>
                 <List.Item.Meta
                   title={item.createdBy}
                   description={item.createdAt}
@@ -60,6 +61,7 @@ const AnimationComments: React.FC = () => {
             ) : (
               <List.Item
                 key={item.id}
+                style={{ border: '1px solid #bfbfbf'}}
                 actions={[
                   // <DeleteOutlined onClick={onDelete} />
                   <Button
