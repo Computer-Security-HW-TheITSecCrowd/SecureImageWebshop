@@ -94,7 +94,7 @@ namespace BKW.Backend.Dal.Animations
 
         public async Task InsertPurchase(string purchaserId, string animationId)
         {
-            var animation = await _context.Animations.AsNoTracking()
+            var animation = await _context.Animations
                 .Include(a => a.Owner)
                 .Where(a => a.Id.Equals(animationId))
                 .SingleOrDefaultAsync();
