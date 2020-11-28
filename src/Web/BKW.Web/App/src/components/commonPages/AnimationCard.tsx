@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Card, Typography, Image, Tooltip, Row, Col } from 'antd';
+import { Card, Typography, Image, Tooltip, Row, Col, Skeleton } from 'antd';
 import { TeamOutlined } from '@ant-design/icons';
 
 import { AnimationProps } from '../../types';
@@ -29,7 +29,11 @@ const AnimationCard: React.FC<AnimationProps> = ({ animation, loading }) => {
             }}
             loading={loading}
             hoverable={true}
-            cover={<Image alt='Animation preview' src={`https://picsum.photos/300/300?random=${animation.id}`} preview={false} height='15vw' width='15vw' />}
+            cover={
+                animation.banned ?
+                    <Skeleton.Image style={{ height: '15vw', width: '15vw'}} /> :
+                <Image alt='Animation preview' src={`https://picsum.photos/300/300?random=${animation.id}`} preview={false} height='15vw' width='15vw' />
+            }
         >
             <Card.Meta
                 title={
