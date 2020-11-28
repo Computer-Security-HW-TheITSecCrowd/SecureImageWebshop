@@ -3,13 +3,6 @@ import { Form, Input, Button, Row, Col } from 'antd';
 
 import WebshopContext from '../../context/webshop/webshopContext';
 
-const { TextArea } = Input;
-
-// const layout = {
-//   labelCol: { span: 6 },
-//   wrapperCol: { span: 16 },
-// };
-
 type CommentFormResult = {
   content: string;
 };
@@ -32,7 +25,6 @@ const CommentForm: React.FC = () => {
     <Row justify='center'>
       <Col span={20}>
         <Form
-          //   {...layout}
           form={form}
           name='commentForm'
           onFinish={onFinish}
@@ -40,7 +32,6 @@ const CommentForm: React.FC = () => {
           style={{ margin: '0 auto' }}
         >
           <Form.Item
-            // label='Username'
             name='content'
             rules={[
               { required: true, message: 'Please write an awesome comment' },

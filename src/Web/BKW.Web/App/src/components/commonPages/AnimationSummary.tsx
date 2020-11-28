@@ -1,10 +1,10 @@
-import React, { Fragment, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Col, Row, Image, Skeleton } from 'antd';
 
 import WebshopContext from '../../context/webshop/webshopContext';
 import AuthContext from '../../context/auth/authContext';
 
-import { ADMIN, CUSTOMER } from '../../constants/roleConstants';
+import { CUSTOMER } from '../../constants/roleConstants';
 
 import AnimationMeta from './AnimationMeta';
 
