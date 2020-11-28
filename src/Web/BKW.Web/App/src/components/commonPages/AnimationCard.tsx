@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Card, Typography, Image, Tooltip, Row, Col, Skeleton } from 'antd';
 import { TeamOutlined } from '@ant-design/icons';
@@ -10,7 +10,7 @@ import { animationDetailsRoute } from '../../constants/routeConstants';
 const AnimationCard: React.FC<AnimationProps> = ({ animation, loading }) => {
 
     const webshopContext = useContext(WebshopContext);
-    const { selectAnimation, selectedAnimation } = webshopContext;
+    const { selectAnimation } = webshopContext;
 
     const history = useHistory();
 

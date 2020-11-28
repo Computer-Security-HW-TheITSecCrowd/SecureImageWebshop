@@ -60,7 +60,7 @@ const AnimationMeta: React.FC = () => {
             </Descriptions.Item>
           </Descriptions>
         )}
-        {user && user.Role == CUSTOMER ? (
+        {user && user.Role === CUSTOMER ? (
           selectedAnimation?.purchasedOrOwnedByUser ? (
             <Button type='primary' onClick={onDownload} disabled={selectedAnimation?.banned} loading={downloading}>
               Download

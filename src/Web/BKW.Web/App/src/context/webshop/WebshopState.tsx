@@ -16,7 +16,7 @@ import {
   animationCommentsEndpoint,
   animationFileEndpoint
 } from '../../constants/apiConstants';
-import { InteractionError, Animation, AnimationWithComments } from '../../types';
+import { InteractionError, Animation } from '../../types';
 
 const WebshopState: React.FC<ReactNode> = ({ children }) => {
   const [state, dispatch] = useReducer(webshopReducer, initialState);
@@ -134,7 +134,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
 
   const deleteComment = async (animID: string, commentID: string) => {
     try {
-      const res = await axios.delete(commentEndpoint(animID, commentID))
+      await axios.delete(commentEndpoint(animID, commentID))
 
       dispatch({
         type: "COMMENT_DELETED",
@@ -179,7 +179,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
 
   const purchaseAnimation = async (animation: Animation) => {
     try {
-      const res = await axios.put(userAnimationsEndpoint, { animID: animation.id })
+      await axios.put(userAnimationsEndpoint, { animID: animation.id })
       dispatch({ type: "PURCHASED_ANIMATION" });
       openNotification('success', 'Animation purchased');
     } catch (err) {
@@ -191,7 +191,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
     console.log("disable animation STATE");
 
     try {
-      const res = await axios.post(animationDisableEndpoint(animation.id));
+      await axios.post(animationDisableEndpoint(animation.id));
 
       state.selectedAnimation && dispatch({
         type: 'DISABLED_ANIMATION',

@@ -8,7 +8,6 @@ import Register from './components/auth/Register';
 import MainPage from './components/commonPages/MainPage';
 import Upload from './components/customerPages/Upload';
 import Gallery from './components/customerPages/Gallery';
-import Animations from './components/customerPages/Animations';
 import AnimationDetails from './components/commonPages/AnimationDetails';
 import LoginRedirect from './components/auth/LoginRedirect';
 
