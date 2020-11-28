@@ -7,7 +7,7 @@ import WebshopContext from '../../context/webshop/webshopContext';
 const MainPage: React.FC = () => {
 
     const webshopContext = useContext(WebshopContext);
-    const { getAnimations, animations, searchText, setSearchText, hasMore } = webshopContext;
+    const { getAnimations, animations, searchText, setSearchText, hasMore, loading, moreLoading } = webshopContext;
 
     const onSearch = (term: string) => {
         setSearchText && setSearchText(term);
@@ -19,6 +19,8 @@ const MainPage: React.FC = () => {
             {
                 getAnimations && 
                 <ImageViewer
+                    loading={loading}
+                    moreLoading={moreLoading}
                     getAnimations={getAnimations}
                     onSearch={onSearch}
                     dataSource={animations}

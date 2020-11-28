@@ -12,6 +12,9 @@ export interface State {
   gallerySearchText: string,
   loading: boolean,
   downloading: boolean,
+  uploading: boolean,
+  moreLoading: boolean,
+  moreOwnLoading: boolean,
   error: string | null,
   getAnimations?: (filter: string, count?: number, loadingMore?: boolean) => Promise<void>,
   getOwnAnimations?: (filter: string, count?: number, loadingMore?: boolean) => Promise<void>,
@@ -43,7 +46,11 @@ export type ActionType =
   | { type: "ANIMATION_SELECTION_CLEAR"; }
   | { type: "DISABLED_ANIMATION"; payload: AnimationWithComments }
   | { type: "DOWNLOADING"; }
+  | { type: "UPLOADING"; }
+  | { type: "MORE_LOADING"; }
+  | { type: "MORE_OWN_LOADING"; }
   | { type: "DOWNLOAD_FINISHED"; }
+  | { type: "UPLOAD_FINISHED"; }
   | { type: "PURCHASED_ANIMATION"; }
   // Comments
   | { type: "COMMENTS_LOADED"; payload: Comment[] }
@@ -67,7 +74,8 @@ export default (state: State, action: ActionType): State => {
       return {
         ...state,
         animations: state.animations.concat(action.payload.animations.slice(state.animations.length, action.payload.animations.length)),
-        hasMore: action.payload.hasMore
+        hasMore: action.payload.hasMore,
+        moreLoading: false
       };
     case "OWN_ANIMATIONS_LOADED":
       return {
@@ -80,12 +88,14 @@ export default (state: State, action: ActionType): State => {
       return {
         ...state,
         ownAnimations: state.ownAnimations.concat(action.payload.ownAnimations.slice(state.ownAnimations.length, action.payload.ownAnimations.length)),
-        hasMoreOwn: action.payload.hasMoreOwn
+        hasMoreOwn: action.payload.hasMoreOwn,
+        moreOwnLoading: false
       };
     case "ANIMATION_SELECTED":
       return {
         ...state,
-        selectedAnimation: action.payload
+        selectedAnimation: action.payload,
+        loading: false
       };
     case "ANIMATION_SELECTION_CLEAR":
       return {
@@ -132,6 +142,26 @@ export default (state: State, action: ActionType): State => {
       return {
         ...state,
         loading: true
+      };
+    case "MORE_LOADING":
+      return {
+        ...state,
+        moreLoading: true
+      };
+    case "MORE_OWN_LOADING":
+      return {
+        ...state,
+        moreOwnLoading: true
+      };
+    case "UPLOADING":
+      return {
+        ...state,
+        uploading: true
+      };
+    case "UPLOAD_FINISHED":
+      return {
+        ...state,
+        uploading: false
       };
     case "PURCHASED_ANIMATION":
       return state.selectedAnimation ? {

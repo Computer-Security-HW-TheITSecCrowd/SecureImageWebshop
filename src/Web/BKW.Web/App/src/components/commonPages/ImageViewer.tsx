@@ -9,13 +9,14 @@ export interface ImageViewerProps {
     getAnimations: (filter: string, count?: number | undefined, loadingMore?: boolean | undefined) => Promise<void>,
     onSearch: (term: string) => void,
     searchText: string,
+    loading: boolean,
+    moreLoading: boolean,
     hasMore: boolean,
     dataSource: Animation[]
 };
 
-const ImageViewer = ({ getAnimations, onSearch, searchText, hasMore, dataSource }: ImageViewerProps) => {
+const ImageViewer = ({ getAnimations, onSearch, searchText, hasMore, dataSource, loading, moreLoading }: ImageViewerProps) => {
 
-    const [moreLoading, setMoreLoading] = useState(false);
     const [loadedCount, setLoadedCount] = useState(0);
 
     const { Search } = Input;
@@ -28,9 +29,7 @@ const ImageViewer = ({ getAnimations, onSearch, searchText, hasMore, dataSource 
 
     const handleInfiniteOnLoad = () => {
         if (!hasMore) return;
-        setMoreLoading(true);
         getAnimations && getAnimations(searchText, loadedCount + 10, true);
-        setMoreLoading(false);
         setLoadedCount(dataSource.length);
     };
 
@@ -49,21 +48,22 @@ const ImageViewer = ({ getAnimations, onSearch, searchText, hasMore, dataSource 
                     hasMore={hasMore}
                 >
                     <List
+                        loading={loading}
                         grid={{ column: 5 }}
                         dataSource={dataSource}
                         renderItem={item =>
-                            <List.Item style={{ margin: '32px'}}>
+                            <List.Item style={{ marginStart: '32px'}}>
                                 <AnimationCard animation={item} loading={false} />
                             </List.Item>
                         }
                     />
-                    {moreLoading && hasMore && (
-                        <div className="list-loading-container">
-                            <Spin />
-                        </div>
-                    )}
                 </InfiniteScroll>
             </div>
+            {moreLoading && (
+                <div className="list-loading-container">
+                    <Spin size='large' />
+                </div>
+            )}
         </Fragment>
     );
 };

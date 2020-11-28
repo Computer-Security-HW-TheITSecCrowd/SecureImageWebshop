@@ -28,8 +28,8 @@ code {
   height: 100%;
 }
 .list-loading-container {
-  position: absolute;
-  bottom: 40px;
-  width: 100%;
+  position: relative;
+  bottom: 20px;
+  width: 100%s;
   text-align: center;
 }

@@ -11,6 +11,9 @@ export const initialState: State = {
   gallerySearchText: '',
   loading: false,
   downloading: false,
+  uploading: false,
+  moreLoading: false,
+  moreOwnLoading: false,
   error: null
 };
 

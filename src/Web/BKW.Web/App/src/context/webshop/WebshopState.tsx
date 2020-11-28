@@ -56,6 +56,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
   const getAnimations = async (filter: string, count: number = 10, loadingMore: boolean = false) => {
     try {
       !loadingMore && setLoading();
+      loadingMore && dispatch({ type: "MORE_LOADING" });
       const res =
         filter !== ''
           ? await axios.get(animationsEndpoint + `?count=${count}&search=${filter}`)
@@ -76,6 +77,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
   const getOwnAnimations = async (filter: string, count: number = 10, loadingMore: boolean = false) => {
     try {
       !loadingMore && setLoading();
+      loadingMore && dispatch({ type: "MORE_OWN_LOADING" });
       const res = await axios.get(userAnimationsEndpoint + `?count=${count}${filter ? `&search=${filter}` : ''}`);
       dispatch({
         type: loadingMore ? 'MORE_OWN_ANIMATIONS_LOADED' : 'OWN_ANIMATIONS_LOADED',
@@ -95,6 +97,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
 
   const uploadAnimation = async (formData: { title: string, upload: any }) => {
     try {
+      dispatch({ type: "UPLOADING" });
       const data = new FormData();
       data.append('title', formData.title);
       data.append('formFile', formData.upload);
@@ -102,11 +105,14 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
       openNotification('success', `${formData.title} uploaded`);
     } catch (err) {
       handleError(err);
+    } finally {
+      dispatch({ type: "UPLOAD_FINISHED" });
     }
   };
 
   const selectAnimation = async (animation: Animation) => {
     try {
+      setLoading();
       const res = await axios.get(animationEndpoint(animation.id));
       console.log(res.data);
       dispatch({
@@ -235,6 +241,9 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         gallerySearchText: state.gallerySearchText,
         loading: state.loading,
         downloading: state.downloading,
+        moreLoading: state.moreLoading,
+        moreOwnLoading: state.moreOwnLoading,
+        uploading: state.uploading,
         error: state.error,
         getAnimations,
         selectAnimation,

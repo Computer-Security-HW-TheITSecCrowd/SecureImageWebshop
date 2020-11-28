@@ -14,17 +14,18 @@ const AnimationCard: React.FC<AnimationProps> = ({ animation, loading }) => {
 
     const history = useHistory();
 
-    useEffect(() => {
+    /* useEffect(() => {
         if (selectedAnimation) {
             history.push(animationDetailsRoute);
         }
         // eslint-disable-next-line
-    }, [selectedAnimation]);
+    }, [selectedAnimation]); */
 
     const { Title, Text } = Typography;
 
     const onSelectAnimation = () => {
         selectAnimation && selectAnimation(animation);
+        history.push(animationDetailsRoute);
     };
 
     return (

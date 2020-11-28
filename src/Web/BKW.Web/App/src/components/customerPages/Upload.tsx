@@ -9,7 +9,7 @@ import openNotification from '../../utils/notification';
 const Upload: React.FC = () => {
 
     const webshopContext = useContext(WebshopContext);
-    const { uploadAnimation } = webshopContext;
+    const { uploadAnimation, uploading } = webshopContext;
 
     const initialState: { title: string, upload: string | ArrayBuffer | null } = {
         title: '',
@@ -69,7 +69,7 @@ const Upload: React.FC = () => {
                         </AUpload>
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" loading={uploading}>
                             Upload
                         </Button>
                     </Form.Item>

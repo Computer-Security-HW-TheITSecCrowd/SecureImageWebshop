@@ -7,7 +7,7 @@ import WebshopContext from '../../context/webshop/webshopContext';
 const Gallery: React.FC = () => {
 
     const webshopContext = useContext(WebshopContext);
-    const { getOwnAnimations, ownAnimations, gallerySearchText, setSearchText, hasMoreOwn } = webshopContext;
+    const { getOwnAnimations, ownAnimations, gallerySearchText, setSearchText, hasMoreOwn, loading, moreOwnLoading } = webshopContext;
 
     const onSearch = (term: string) => {
         setSearchText && setSearchText(term, true);
@@ -19,6 +19,8 @@ const Gallery: React.FC = () => {
             {
                 getOwnAnimations && 
                 <ImageViewer
+                    loading={loading}
+                    moreLoading={moreOwnLoading}
                     getAnimations={getOwnAnimations}
                     onSearch={onSearch}
                     dataSource={ownAnimations}
