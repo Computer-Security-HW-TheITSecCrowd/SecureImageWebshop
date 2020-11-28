@@ -19,7 +19,6 @@ export interface State {
   animationSelectionClear?: () => void,
   setSearchText?: (text: string, gallery?: boolean) => void,
   clearWebshopState?: () => void,
-  getAnimationComments?: (animID: string) => Promise<void>,
   deleteComment?: (animID: string, commentID: string) => Promise<void>,
   sendComment?: (animID: string, content: string) => Promise<void>,
   clearComments?: () => void,

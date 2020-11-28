@@ -113,6 +113,10 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         type: 'ANIMATION_SELECTED',
         payload: res.data,
       });
+      dispatch({
+        type: 'COMMENTS_LOADED',
+        payload: res.data.comments
+      })
     } catch (err) {
       handleError(err);
     }
@@ -120,24 +124,6 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
 
   const animationSelectionClear = () => {
     dispatch({ type: 'ANIMATION_SELECTION_CLEAR' });
-  };
-
-  const getAnimationComments = async (animID: string) => {
-    try {
-      setLoading();
-
-      const res = await axios.get(animationEndpoint(animID));
-      console.log(res);
-      
-      dispatch({
-        type: 'COMMENTS_LOADED',
-        payload: res.data.comments
-      })
-
-      clearErrors();
-    } catch (err) {
-      handleError(err);
-    }
   };
 
   const deleteComment = async (animID: string, commentID: string) => {
@@ -253,7 +239,6 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         getAnimations,
         selectAnimation,
         animationSelectionClear,
-        getAnimationComments,
         deleteComment,
         sendComment,
         clearComments,
