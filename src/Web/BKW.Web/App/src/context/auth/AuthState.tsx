@@ -11,6 +11,7 @@ import { loginEndpoint, registrationEndpoint } from '../../constants/apiConstant
 
 import openNotification from '../../utils/notification';
 import { loginRoute } from '../../constants/routeConstants';
+import setAuthToken from '../../utils/setAuthToken';
 
 const AuthState: React.FC<ReactNode> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -103,6 +104,7 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
   const logout = async () => {
     try {
       dispatch({ type: "LOGOUT" });
+      setAuthToken('');
       history.push(loginRoute);
       clearErrors();
     } catch (err) {
