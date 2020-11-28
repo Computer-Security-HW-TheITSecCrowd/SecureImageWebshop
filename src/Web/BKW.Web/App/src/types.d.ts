@@ -51,10 +51,10 @@ export type AnimationWithComments = {
   title: string,
   createdAt: Date,
   numberOfPurchase: number,
-  comments: Comment[],
+  comments?: Comment[],
   banned: boolean,
   id: string,
-  purchasedOrOwnedByUser: boolean
+  purchasedOrOwnedByUser?: boolean
 }
 
 export type Comment = {

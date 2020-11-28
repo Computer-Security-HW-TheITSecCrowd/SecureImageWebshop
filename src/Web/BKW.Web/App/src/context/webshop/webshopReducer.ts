@@ -95,7 +95,6 @@ export default (state: State, action: ActionType): State => {
       return {
         ...state,
         selectedAnimation: action.payload,
-        loading: false
       };
     case "ANIMATION_SELECTION_CLEAR":
       return {

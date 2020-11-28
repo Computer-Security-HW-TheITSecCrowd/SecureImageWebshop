@@ -113,12 +113,12 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
   const selectAnimation = async (animation: Animation) => {
     try {
       setLoading();
-      const res = await axios.get(animationEndpoint(animation.id));
-      console.log(res.data);
       dispatch({
         type: 'ANIMATION_SELECTED',
-        payload: res.data,
+        payload: animation,
       });
+      const res = await axios.get(animationEndpoint(animation.id));
+      console.log(res.data);
       dispatch({
         type: 'COMMENTS_LOADED',
         payload: res.data.comments

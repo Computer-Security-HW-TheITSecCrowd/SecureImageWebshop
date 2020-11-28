@@ -1,10 +1,9 @@
 import React, { Fragment, useContext } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { PageHeader,  Divider } from 'antd';
 
 import { CUSTOMER } from '../../constants/roleConstants';
 
-import { animationsRoute } from '../../constants/routeConstants';
 import WebshopContext from '../../context/webshop/webshopContext';
 import AuthContext from '../../context/auth/authContext';
 import AuthenticatedLayout from '../layout/AuthenticatedLayout';
@@ -23,14 +22,17 @@ const AnimationDetails: React.FC = () => {
   const authContext = useContext(AuthContext);
   const { user } = authContext;
 
+  const history = useHistory();
+
   const onBack = () => {
     animationSelectionClear && animationSelectionClear();
     clearComments && clearComments();
+    history.goBack();
   };
 
-  return selectedAnimation ? (
+  return (
     <AuthenticatedLayout>
-      <PageHeader onBack={onBack} title={selectedAnimation.title} />
+      <PageHeader onBack={onBack} title={selectedAnimation?.title} />
       <div style={{ padding: '4vh 4vw' }}>
         <AnimationSummary />
         <Divider />
@@ -43,8 +45,6 @@ const AnimationDetails: React.FC = () => {
         <AnimationComments />
       </div>
     </AuthenticatedLayout>
-  ) : (
-    <Redirect to={animationsRoute} />
   );
 };
 
