@@ -45,6 +45,7 @@ export type ActionType =
   | { type: "DISABLED_ANIMATION"; payload: AnimationWithComments }
   | { type: "DOWNLOADING"; }
   | { type: "DOWNLOAD_FINISHED"; }
+  | { type: "PURCHASED_ANIMATION"; }
   // Comments
   | { type: "COMMENTS_LOADED"; payload: Comment[] }
   | { type: "COMMENT_DELETED"; payload: string }
@@ -132,6 +133,22 @@ export default (state: State, action: ActionType): State => {
       return {
         ...state,
         loading: true
+      };
+    case "PURCHASED_ANIMATION":
+      return state.selectedAnimation ? {
+        ...state,
+        selectedAnimation: {
+          id: state.selectedAnimation.id,
+          owner: state.selectedAnimation.owner,
+          title: state.selectedAnimation.title,
+          createdAt: state.selectedAnimation.createdAt,
+          comments: state.selectedAnimation.comments,
+          numberOfPurchase: state.selectedAnimation.numberOfPurchase,
+          purchasedOrOwnedByUser: true,
+          banned: state.selectedAnimation.banned
+        }
+      } : {
+        ...state
       };
     case "DOWNLOADING":
       return {

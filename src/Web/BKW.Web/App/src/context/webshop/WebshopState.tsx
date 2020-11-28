@@ -188,7 +188,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
   const purchaseAnimation = async (animation: Animation) => {
     try {
       const res = await axios.put(userAnimationsEndpoint, { animID: animation.id })
-      console.log(res.data);
+      dispatch({ type: "PURCHASED_ANIMATION" });
       openNotification('success', 'Animation purchased');
     } catch (err) {
       handleError(err);
@@ -210,6 +210,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
           createdAt: state.selectedAnimation.createdAt,
           comments: state.selectedAnimation.comments,
           numberOfPurchase: state.selectedAnimation.numberOfPurchase,
+          purchasedOrOwnedByUser: state.selectedAnimation.purchasedOrOwnedByUser,
           banned: true
         }
       });

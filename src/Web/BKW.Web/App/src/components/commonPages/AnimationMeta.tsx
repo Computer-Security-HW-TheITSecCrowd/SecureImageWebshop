@@ -12,8 +12,6 @@ const AnimationMeta: React.FC = () => {
   const {
     selectedAnimation,
     purchaseAnimation,
-    getOwnAnimations,
-    ownAnimations,
     disableAnimation,
     downloading,
     downloadAnimation,
@@ -21,12 +19,6 @@ const AnimationMeta: React.FC = () => {
 
   const authContext = useContext(AuthContext);
   const { user } = authContext;
-
-  useEffect(() => {
-    if (user?.Role === CUSTOMER) {
-      getOwnAnimations && getOwnAnimations('');
-    }
-  }, []);
 
   const onPurchase = () => {
     console.log('Purchase image');
@@ -69,9 +61,7 @@ const AnimationMeta: React.FC = () => {
           </Descriptions>
         )}
         {user && user.Role == CUSTOMER ? (
-          ownAnimations.some(
-            (animation) => animation.id === selectedAnimation?.id
-          ) ? (
+          selectedAnimation?.purchasedOrOwnedByUser ? (
             <Button type='primary' onClick={onDownload} disabled={selectedAnimation?.banned} loading={downloading}>
               Download
             </Button>

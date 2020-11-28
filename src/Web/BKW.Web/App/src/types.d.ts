@@ -46,16 +46,6 @@ export type Animation = {
   id: string
 };
 
-// export type AnimationDetails = {
-//   owner: string,
-//   title: string,
-//   createdAt: Date,
-//   numberOfPurchase: number,
-//   banned: boolean,
-//   id: string,
-//   comments: Comment[]
-// };
-
 export type AnimationWithComments = {
   owner: string,
   title: string,
@@ -63,7 +53,8 @@ export type AnimationWithComments = {
   numberOfPurchase: number,
   comments: Comment[],
   banned: boolean,
-  id: string
+  id: string,
+  purchasedOrOwnedByUser: boolean
 }
 
 export type Comment = {
