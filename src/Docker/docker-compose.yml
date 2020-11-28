@@ -20,8 +20,6 @@ services:
       ACCEPT_EULA: "Y"
     networks:
       - bkw-network
-    #volumes:
-    #  - bkw-data:/var/opt/mssql
 
   frontend:
     build:
@@ -42,24 +40,8 @@ services:
     build:
       context: ../Parser/BKW.Parser/App/
       dockerfile: Dockerfile
-    ports:
-      - 50051:50051
     networks:
       - bkw-network     
-      
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8081:8080
-    depends_on:
-      - db
-    networks:
-      - bkw-network    
-
-#volumes:
-  #bkw-data:
-    # external: false
 
 networks:
   bkw-network:
