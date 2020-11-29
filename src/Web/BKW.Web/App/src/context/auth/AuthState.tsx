@@ -18,17 +18,6 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
 
   const history = useHistory();
 
-  const checkTokenInLocalStorage = async () => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      const user = jwt_decode(token) as User;
-      dispatch({
-        type: "LOGIN_SUCCESS",
-        payload: { user: user, jwt: token },
-      });
-    }
-  };
-
   const setLoading = () => {
     dispatch({ type: "LOADING" });
   };
@@ -115,7 +104,6 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        accessToken: state.accessToken,
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
         error: state.error,
@@ -123,7 +111,6 @@ const AuthState: React.FC<ReactNode> = ({ children }) => {
         login,
         logout,
         register,
-        checkTokenInLocalStorage
       }}
     >
       {children}

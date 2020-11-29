@@ -5,13 +5,11 @@ import { initialState } from './authContext';
 export interface State {
   loading: boolean,
   isAuthenticated: boolean,
-  accessToken: string | null,
   error: string | null,
   user: User,
   login?: (formData: LoginCredentials) => Promise<void>,
   logout?: () => Promise<void>,
   register?: (formData: RegistrationCredentials) => Promise<void>,
-  checkTokenInLocalStorage?: () => Promise<void>
 };
 
 export type ActionType =
@@ -28,7 +26,6 @@ export default (state: State, action: ActionType): State => {
   switch(action.type) {
 
     case "LOGIN_SUCCESS":
-      localStorage.setItem('accessToken', action.payload.jwt);
       setAuthToken(action.payload.jwt);
       return {
         ...state,
@@ -58,7 +55,6 @@ export default (state: State, action: ActionType): State => {
         error: null
       };
     case "LOGOUT":
-      localStorage.removeItem('accessToken');
       return initialState;
     default:
       return {

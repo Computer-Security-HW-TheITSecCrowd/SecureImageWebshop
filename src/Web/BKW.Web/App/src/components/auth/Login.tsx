@@ -12,7 +12,7 @@ import openNotification from '../../utils/notification';
 const Login: React.FC<RouteComponentProps> = ({ history }) => {
 
   const authContext = useContext(AuthContext);
-  const { isAuthenticated, user, loading, login, checkTokenInLocalStorage } = authContext;
+  const { isAuthenticated, user, loading, login } = authContext;
 
   const [formData, setFormData] = useState({
     username: '',
@@ -20,7 +20,6 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
   });
 
   useEffect(() => {
-    checkTokenInLocalStorage && checkTokenInLocalStorage();
     if (isAuthenticated && user) {
       if (user.Role === ADMIN) {
         history.push(adminRoute);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import AuthState from './context/auth/AuthState';
@@ -14,8 +14,14 @@ import LoginRedirect from './components/auth/LoginRedirect';
 import { adminRoute, animationDetailsRoute, animationsRoute, galleryRoute, loginRoute, registerRoute, uploadRoute } from './constants/routeConstants';
 import { ADMIN, CUSTOMER } from './constants/roleConstants';
 import PrivateRoute from './components/routing/PrivateRoute';
+import setAuthToken from './utils/setAuthToken';
 
 function App() {
+
+  useEffect(() => {
+    setAuthToken('');
+  }, []);
+
   return (
     <AuthState>
       <WebshopState>
