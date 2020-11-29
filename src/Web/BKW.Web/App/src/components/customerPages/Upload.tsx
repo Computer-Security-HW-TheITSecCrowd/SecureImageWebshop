@@ -27,7 +27,11 @@ const Upload: React.FC = () => {
         if (!values.upload) {
             openNotification('error', 'Please select a file to upload!');
         } else {
-            uploadAnimation && uploadAnimation(values);
+            if (!uploading) {
+                uploadAnimation && uploadAnimation(values);
+            } else {
+                openNotification('info', 'Please wait until the current upload is finished');
+            }
         }
     };
 

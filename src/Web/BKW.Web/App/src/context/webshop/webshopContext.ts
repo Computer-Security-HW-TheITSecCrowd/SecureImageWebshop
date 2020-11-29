@@ -7,6 +7,7 @@ export const initialState: State = {
   ownAnimations: [],
   hasMoreOwn: true,
   comments: [],
+  images: new Map(),
   searchText: '',
   gallerySearchText: '',
   loading: false,

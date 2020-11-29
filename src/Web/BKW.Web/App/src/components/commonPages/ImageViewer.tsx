@@ -40,12 +40,13 @@ const ImageViewer = ({ getAnimations, onSearch, searchText, hasMore, dataSource,
                     <Search placeholder="Search..." onSearch={onSearch} enterButton defaultValue={searchText}/>
                 </Col>
             </Row>
-            <div className="list-infinite-container">
+            <div className="list-infinite-container" style={{ overflowY: 'scroll', height: '70vh' }} >
                 <InfiniteScroll
                     initialLoad={false}
                     pageStart={0}
                     loadMore={handleInfiniteOnLoad}
                     hasMore={hasMore}
+                    useWindow={false}
                 >
                     <List
                         loading={loading}

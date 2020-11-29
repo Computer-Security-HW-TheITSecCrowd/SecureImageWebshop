@@ -10,7 +10,7 @@ import { animationDetailsRoute } from '../../constants/routeConstants';
 const AnimationCard: React.FC<AnimationProps> = ({ animation, loading }) => {
 
     const webshopContext = useContext(WebshopContext);
-    const { selectAnimation } = webshopContext;
+    const { selectAnimation, images } = webshopContext;
 
     const history = useHistory();
 
@@ -30,9 +30,9 @@ const AnimationCard: React.FC<AnimationProps> = ({ animation, loading }) => {
             loading={loading}
             hoverable={true}
             cover={
-                animation.banned ?
+                animation.banned || !images.has(animation.id) ?
                     <Skeleton.Image style={{ height: '15vw', width: '15vw'}} /> :
-                <Image alt='Animation preview' src={`https://picsum.photos/300/300?random=${animation.id}`} preview={false} height='15vw' width='15vw' />
+                <Image alt='Animation preview' src={`data:image/png;base64,${images.get(animation.id)}`} preview={false} height='15vw' width='15vw'/>
             }
         >
             <Card.Meta

@@ -14,7 +14,8 @@ import {
   userAnimationsEndpoint,
   animationDisableEndpoint,
   animationCommentsEndpoint,
-  animationFileEndpoint
+  animationFileEndpoint,
+  previewEndpoint
 } from '../../constants/apiConstants';
 import { InteractionError, Animation } from '../../types';
 
@@ -68,6 +69,17 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
           hasMore: res.data.length === count
         },
       });
+      res.data.forEach(async (animation: Animation) => {
+        const previewRes = await axios.get(previewEndpoint(animation.id), { responseType: 'arraybuffer' });
+        const data = Buffer.from(previewRes.data, 'binary').toString('base64');
+          dispatch({
+            type: "IMAGE_LOADED",
+            payload: {
+              id: animation.id,
+              image: data
+            }
+          });
+      });
       clearErrors();
     } catch (err) {
       handleError(err);
@@ -88,6 +100,17 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
           // count is less than 'count' (because none of the two categories could fill its quota).
           hasMoreOwn: res.data.length >= count
         },
+      });
+      res.data.forEach(async (animation: Animation) => {
+        const previewRes = await axios.get(previewEndpoint(animation.id), { responseType: 'arraybuffer' });
+        const data = Buffer.from(previewRes.data, 'binary').toString('base64');
+          dispatch({
+            type: "IMAGE_LOADED",
+            payload: {
+              id: animation.id,
+              image: data
+            }
+          });
       });
       clearErrors();
     } catch (err) {
@@ -236,6 +259,7 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         ownAnimations: state.ownAnimations,
         hasMoreOwn: state.hasMoreOwn,
         comments: state.comments,
+        images: state.images,
         selectedAnimation: state.selectedAnimation,
         searchText: state.searchText,
         gallerySearchText: state.gallerySearchText,

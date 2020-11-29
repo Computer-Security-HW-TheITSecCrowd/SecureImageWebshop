@@ -8,6 +8,7 @@ export interface State {
   hasMoreOwn: boolean,
   selectedAnimation?: AnimationWithComments | null,
   comments: Comment[],
+  images: Map<string, any>,
   searchText: string,
   gallerySearchText: string,
   loading: boolean,
@@ -60,6 +61,8 @@ export type ActionType =
   // Search
   | { type: "SEARCH_TEXT_SET"; payload: string }
   | { type: "GALLERY_SEARCH_TEXT_SET"; payload: string }
+  // Images
+  | { type: "IMAGE_LOADED"; payload: { id: string, image: any } }
 
 export default (state: State, action: ActionType): State => {
   switch(action.type) {
@@ -187,6 +190,11 @@ export default (state: State, action: ActionType): State => {
       return {
         ...state,
         downloading: false
+      };
+    case "IMAGE_LOADED":
+      return {
+        ...state,
+        images: state.images.set(action.payload.id, action.payload.image)
       };
     case "CLEAR_STATE":
       return initialState;

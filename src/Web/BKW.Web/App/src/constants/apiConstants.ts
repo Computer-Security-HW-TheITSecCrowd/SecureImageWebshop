@@ -16,5 +16,6 @@ export const animationFileEndpoint = (animID: string) => animationEndpoint(animI
 export const animationDisableEndpoint = (animID: string) => animationEndpoint(animID) + '/disable';
 export const animationCommentsEndpoint = useMockedBackend ? (animID: string) => `${baseURL}/comments?animID=${animID}` : (animID: string) => animationEndpoint(animID) + '/comments';
 export const commentEndpoint = useMockedBackend ? (animID: string, commentID: string) => `${baseURL}/comments?animID=${animID}&id=${commentID}` : (animID: string, commentID: string) => animationCommentsEndpoint(animID) + `/${commentID}`;
+export const previewEndpoint = (animID: string) => animationEndpoint(animID) + '/image';
 
 export const userAnimationsEndpoint = `${userURL}/animations`;

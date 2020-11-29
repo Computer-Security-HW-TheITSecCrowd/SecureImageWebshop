@@ -11,7 +11,7 @@ export type User = {
 export interface PrivateRouteProps extends RouteProps {
   roles: string[],
   path: string
-}
+};
 
 export type AnimationProps = {
   animation: Animation,
@@ -20,7 +20,7 @@ export type AnimationProps = {
 
 export type CommentProps = {
   comment: Comment
-}
+};
 
 export type LoginCredentials = {
   username: string,
@@ -35,7 +35,7 @@ export type RegistrationCredentials = {
 
 export interface InteractionError extends Error {
   response?: AxiosResponse
-}
+};
 
 export type Animation = {
   owner: string,
@@ -55,7 +55,7 @@ export type AnimationWithComments = {
   banned: boolean,
   id: string,
   purchasedOrOwnedByUser?: boolean
-}
+};
 
 export type Comment = {
   createdBy: string,

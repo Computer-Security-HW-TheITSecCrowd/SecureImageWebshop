@@ -20,9 +20,6 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
   });
 
   useEffect(() => {
-    console.log("Login useEffect");
-    console.log(isAuthenticated);
-    console.log(user);
     checkTokenInLocalStorage && checkTokenInLocalStorage();
     if (isAuthenticated && user) {
       if (user.Role === ADMIN) {
