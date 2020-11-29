@@ -80,7 +80,11 @@ const Register: React.FC = () => {
 								name='Password'
 								rules={[
 									{ required: true, message: "Please provide a password!" },
-									{ min: 8, message: "Password must contain at least 8 characters!" }
+									{ min: 8, message: "Password must contain at least 8 characters!" },
+									{ pattern: new RegExp('(?=.*[A-Z])'), message: "Password must contain minimum 1 uppercase letter!" },
+									{ pattern: new RegExp('(?=.*[a-z])'), message: "Password must contain minimum 1 lowercase letter!" },
+									{ pattern: new RegExp('(?=.*[0-9])'), message: "Password must contain minimum 1 number!" },
+									{ pattern: new RegExp('(?=.*[$&+,:;=?@#|\'<>.^*()%!-])'), message: "Password must contain minimum 1 symbol!" }
 								]}
 								hasFeedback
 							>
