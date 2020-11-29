@@ -14,7 +14,6 @@ const CommentForm: React.FC = () => {
   const [form] = Form.useForm()
 
   const onFinish = (values: CommentFormResult) => {
-    console.log('Send comment', values);
     selectedAnimation &&
       sendComment &&
       sendComment(selectedAnimation.id, values.content);

@@ -34,7 +34,6 @@ const Register: React.FC = () => {
 	};
 	
 	const onRegister = (): void => {
-		console.log(formData);
 		register && register(formData);
 	}
 

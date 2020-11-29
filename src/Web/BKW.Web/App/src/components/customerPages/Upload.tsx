@@ -19,7 +19,6 @@ const Upload: React.FC = () => {
     const [state, setState] = useState(initialState);
 
     const normFile = (e: { file: any; }) => {
-        console.log('Upload event:', e);
         return e && e.file;
     };
 

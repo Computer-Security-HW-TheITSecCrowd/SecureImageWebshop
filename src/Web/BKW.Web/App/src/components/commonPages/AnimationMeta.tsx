@@ -21,14 +21,12 @@ const AnimationMeta: React.FC = () => {
   const { user } = authContext;
 
   const onPurchase = () => {
-    console.log('Purchase image');
     selectedAnimation &&
       purchaseAnimation &&
       purchaseAnimation(selectedAnimation);
   };
 
   const onDisable = () => {
-    console.log('Disable image');
     selectedAnimation &&
       disableAnimation &&
       disableAnimation(selectedAnimation);

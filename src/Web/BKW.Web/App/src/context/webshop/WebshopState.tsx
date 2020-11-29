@@ -141,7 +141,6 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
         payload: animation,
       });
       const res = await axios.get(animationEndpoint(animation.id));
-      console.log(res.data);
       dispatch({
         type: 'COMMENTS_LOADED',
         payload: res.data.comments
@@ -211,7 +210,6 @@ const WebshopState: React.FC<ReactNode> = ({ children }) => {
   }
 
   const disableAnimation = async (animation: Animation) => {
-    console.log("disable animation STATE");
 
     try {
       await axios.post(animationDisableEndpoint(animation.id));
