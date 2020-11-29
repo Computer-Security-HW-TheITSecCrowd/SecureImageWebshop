@@ -23,7 +23,6 @@ const AnimationSummary: React.FC = () => {
         ) : (
           selectedAnimation && <Image
             src={`data:image/png;base64,${images.get(selectedAnimation.id)}`}
-            preview={false}
             height='24vw'
             width='32vw'
             style={{ margin: '0 auto' }}
