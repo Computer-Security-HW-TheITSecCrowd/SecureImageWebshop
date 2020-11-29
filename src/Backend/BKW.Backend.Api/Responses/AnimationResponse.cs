@@ -9,11 +9,7 @@ namespace BKW.Backend.Api.Responses
 {
     public class AnimationResponse
     {
-        public AnimationResponse(
-            Animation animation,
-            RepeatedField<AnimationClient.Rgb> image,
-            uint imageWidth,
-            uint imageHeight)
+        public AnimationResponse(Animation animation)
         {
             Id = animation.Id;
             Title = animation.Title;
@@ -21,9 +17,6 @@ namespace BKW.Backend.Api.Responses
             NumberOfPurchase = animation.NumberOfPurchase;
             Banned = animation.Banned;
             Owner = animation.Owner.UserName;
-            ImageWidth = imageWidth;
-            ImageHeight = imageHeight;
-            Image = image;
         }
 
         public string Id { get; set; }
@@ -32,8 +25,5 @@ namespace BKW.Backend.Api.Responses
         public int NumberOfPurchase { get; set; }
         public bool Banned { get; set; }
         public string Owner { get; set; }
-        public uint ImageWidth { get; set; }
-        public uint ImageHeight { get; set; }
-        public RepeatedField<AnimationClient.Rgb> Image { get; set; }
     }
 }

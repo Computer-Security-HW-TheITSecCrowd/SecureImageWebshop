@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,11 +21,13 @@ namespace BKW.Backend.Api.Controllers
     {
         private readonly IAnimationService _animationService;
         private readonly ICommentService _commentService;
+        private readonly IParserService _parserService;
 
         public AnimationController(IAnimationService animationService, ICommentService commentService, IParserService parserService)
         {
             _animationService = animationService;
             _commentService = commentService;
+            _parserService = parserService;
         }
 
         private string getUserId() => User.FindFirst("Id").Value;
@@ -41,8 +44,7 @@ namespace BKW.Backend.Api.Controllers
             var animationsResponse = new List<AnimationResponse>();
             foreach (var animation in animations)
             {
-                var image = await _animationService.GetFirstImageOfAnimation(animation);
-                animationsResponse.Add(new AnimationResponse(animation, image.Content, image.Width, image.Height));
+                animationsResponse.Add(new AnimationResponse(animation));
             }
 
             return Ok(animationsResponse);
@@ -60,9 +62,7 @@ namespace BKW.Backend.Api.Controllers
 
             var purchasedOrOwnedByUser = await _animationService.IsAnimationPurchasedOrOwnedByUser(animation, userId);
 
-            var image = await _animationService.GetFirstImageOfAnimation(animation);
-
-            return Ok(new AnimationCommentsResponse(animation, purchasedOrOwnedByUser, image.Content, image.Width, image.Height));
+            return Ok(new AnimationCommentsResponse(animation, purchasedOrOwnedByUser));
         }
 
         [HttpGet("{id}/file")]
@@ -80,12 +80,31 @@ namespace BKW.Backend.Api.Controllers
 
             try
             {
-                var memory = await _animationService.GetFile(id);
+                var memory = await _animationService.GetCaffFile(id);
                 return File(memory, "application/octet-stream", $"{animation.Title}.caff");
             }
             catch (FileDownloadException e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("{id}/image")]
+        public async Task<ActionResult> GetImage(string id)
+        {
+            var animation = await _animationService.GetAnimation(id);
+
+            if (animation == null)
+                return NotFound();
+
+            try
+            {
+                var memory = await _animationService.GetPngFile(id);
+                return File(memory, "image/png");
+            }
+            catch (FileDownloadException e)
+            {
+                return BadRequest(e.Message);
             }
         }
 
@@ -93,29 +112,41 @@ namespace BKW.Backend.Api.Controllers
         [Authorize(Policy = "Customer")]
         public async Task<ActionResult> Upload([FromForm] UploadRequest request)
         {
-            if (request.Title == null || request.FormFile == null)
-                return BadRequest("Title and file have to be given");
-
             var userId = getUserId();
-
             var animation = request.ToModel(userId);
             var formFile = request.FormFile;
 
-            try
-            {
-                await _animationService.CreateAnimation(animation, formFile);
-            }
-            catch(FileUploadException e)
-            {
-                return BadRequest(e.Message);
-            }
+            if (request.Title == null || formFile == null)
+                return BadRequest("Title and file have to be given");
 
-            var image = await _animationService.GetFirstImageOfAnimation(animation);
+            using (var memoryStream = new MemoryStream())
+            {
+                try
+                {
+                    await formFile.CopyToAsync(memoryStream);
 
-            return CreatedAtAction(
-                nameof(GetAnimation),
-                new { id = animation.Id },
-                new AnimationResponse(animation, image.Content, image.Width, image.Height));
+                    var animationIsValid = await _parserService.IsAnimationValid(memoryStream.ToArray());
+                    if (!animationIsValid)
+                        return BadRequest("The caff file is not valid.");
+
+                    var parsedAnimation = await _parserService.ParseAnimation(memoryStream.ToArray());
+                    if (parsedAnimation == null)
+                        return BadRequest();
+
+                    var image = _parserService.GetBitmapFromAnimation(parsedAnimation.Images.First());
+
+                    await _animationService.CreateAnimation(animation, formFile, image);
+
+                    return CreatedAtAction(
+                        nameof(GetAnimation),
+                        new { id = animation.Id },
+                        new AnimationResponse(animation));
+                }
+                catch (FileUploadException e)
+                {
+                    return BadRequest(e.Message);
+                }
+            }
         }
 
         [HttpPost("{id}/disable")]

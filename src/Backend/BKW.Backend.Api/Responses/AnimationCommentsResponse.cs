@@ -13,12 +13,7 @@ namespace BKW.Backend.Api.Responses
         public List<CommentResponse> Comments { get; set; }
         public bool PurchasedOrOwnedByUser { get; set; }
 
-        public AnimationCommentsResponse(
-            Animation animation,
-            bool purchasedOrOwnedByUser,
-            RepeatedField<AnimationClient.Rgb> image,
-            uint imageWidth,
-            uint imageHeight) : base(animation, image, imageWidth, imageHeight)
+        public AnimationCommentsResponse(Animation animation, bool purchasedOrOwnedByUser) : base(animation)
         {
             Comments = animation.Comments.Select(comment => new CommentResponse(comment)).ToList();
             PurchasedOrOwnedByUser = purchasedOrOwnedByUser;

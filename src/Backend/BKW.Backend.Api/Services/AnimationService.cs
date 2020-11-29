@@ -1,10 +1,11 @@
-﻿using BKW.Backend.Api.Services.ParserServices;
-using BKW.Backend.Dal.Animations;
+﻿using BKW.Backend.Dal.Animations;
 using BKW.Backend.Dal.Exceptions;
 using BKW.Backend.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,12 +15,13 @@ namespace BKW.Backend.Api.Services
     public class AnimationService : IAnimationService
     {
         private readonly IAnimationRepository _animationRepository;
-        private readonly IParserService _parserService;
 
-        public AnimationService(IAnimationRepository animationRepository, IParserService parserService)
+        private readonly string pathCaffs = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "Caffs");
+        private readonly string pathPngs = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "Pngs");
+
+        public AnimationService(IAnimationRepository animationRepository)
         {
             _animationRepository = animationRepository;
-            _parserService = parserService;
         }
 
         public async Task<ICollection<Animation>> GetAnimations(int count, string? search)
@@ -62,58 +64,40 @@ namespace BKW.Backend.Api.Services
             return purchasedOrOwnedAnimations.Any(a => a.Id.Equals(animation.Id));
         }
 
-        public async Task<MemoryStream> GetFile(string id)
+        public async Task<MemoryStream> GetCaffFile(string id)
         {
-            try
-            {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", id);
-                var memory = new MemoryStream();
-                using (var stream = new FileStream(path, FileMode.Open))
-                {
-                    await stream.CopyToAsync(memory);
-                }
-                memory.Position = 0;
-                return memory;
-            }
-            catch (Exception e)
-            {
-                throw new FileDownloadException(e.Message);
-            }
+            return await getFile(id, pathCaffs);
         }
 
-        public async Task<AnimationClient.Image> GetFirstImageOfAnimation(Animation animation)
+        public async Task<MemoryStream> GetPngFile(string id)
         {
-            try
-            {
-                var memoryStream = await GetFile(animation.Id);
-                var parsedAnimation = await _parserService.ParseAnimation(memoryStream.ToArray());
-                var image = parsedAnimation.Images.First();
-
-                return image;
-            }
-            catch (FileNotFoundException)
-            {
-                return new AnimationClient.Image();
-            }
+            return await getFile(id, pathPngs);
         }
 
-        public async Task<Animation> CreateAnimation(Animation animation, IFormFile file)
+        public async Task<Animation> CreateAnimation(Animation animation, IFormFile file, Bitmap image)
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
-
             var newAnimation = await _animationRepository.Insert(animation);
 
             try
             {
-                if (!Directory.Exists(path))
+                // save caff
+                if (!Directory.Exists(pathCaffs))
                 {
-                    Directory.CreateDirectory(path);
+                    Directory.CreateDirectory(pathCaffs);
                 }
 
-                using (Stream stream = new FileStream(Path.Combine(path, newAnimation.Id), FileMode.Create))
+                using (Stream stream = new FileStream(Path.Combine(pathCaffs, newAnimation.Id), FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
+
+                // save png
+                if (!Directory.Exists(pathPngs))
+                {
+                    Directory.CreateDirectory(pathPngs);
+                }
+
+                image.Save(Path.Combine(pathPngs, newAnimation.Id), ImageFormat.Png);
             }
             catch (Exception e)
             {
@@ -157,6 +141,25 @@ namespace BKW.Backend.Api.Services
         private ICollection<Animation> takeFirstNFromAnimations(ICollection<Animation> animations, int n)
         {
             return animations.Take(n).ToList();
+        }
+
+        private async Task<MemoryStream> getFile(string id, string path)
+        {
+            try
+            {
+                var pathFile = Path.Combine(path, id);
+                var memory = new MemoryStream();
+                using (var stream = new FileStream(pathFile, FileMode.Open))
+                {
+                    await stream.CopyToAsync(memory);
+                }
+                memory.Position = 0;
+                return memory;
+            }
+            catch (Exception e)
+            {
+                throw new FileDownloadException(e.Message);
+            }
         }
     }
 }

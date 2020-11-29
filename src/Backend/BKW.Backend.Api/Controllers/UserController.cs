@@ -42,8 +42,7 @@ namespace BKW.Backend.Api.Controllers
 
             foreach (var animation in animations)
             {
-                var image = await _animationService.GetFirstImageOfAnimation(animation);
-                animationsResponse.Add(new AnimationResponse(animation, image.Content, image.Width, image.Height));
+                animationsResponse.Add(new AnimationResponse(animation));
             }
 
             return Ok(animationsResponse);

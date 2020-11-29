@@ -24,7 +24,7 @@ namespace BKW.Backend.Api.Services.ParserServices
                        green: data[arrayIndex].g,
                        blue: data[arrayIndex].b
                     );
-                    //pic.SetPixel(x, y, c);
+                    pic.SetPixel(x, y, c);
                 }
             }
 
