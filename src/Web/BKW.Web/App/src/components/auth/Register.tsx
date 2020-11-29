@@ -83,7 +83,7 @@ const Register: React.FC = () => {
 									{ pattern: new RegExp('(?=.*[A-Z])'), message: "Password must contain minimum 1 uppercase letter!" },
 									{ pattern: new RegExp('(?=.*[a-z])'), message: "Password must contain minimum 1 lowercase letter!" },
 									{ pattern: new RegExp('(?=.*[0-9])'), message: "Password must contain minimum 1 number!" },
-									{ pattern: new RegExp('(?=.*[$&+,:;=?@#|\'<>.^*()%!-])'), message: "Password must contain minimum 1 symbol!" }
+									{ pattern: new RegExp('(?=.*[$&+,:;=?@#|\'<>.^*()%!_-])'), message: "Password must contain minimum 1 symbol!" }
 								]}
 								hasFeedback
 							>
